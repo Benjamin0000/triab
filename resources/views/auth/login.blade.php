@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" class="js">
-<head>
-    <meta charset="utf-8">
-    <meta name="author" content="Softnio">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <link rel="shortcut icon" href="/assets/frontpage/img/logo.png">
-    <title>Login | Triab</title>
-    <link rel="stylesheet" href="/assets/css/dashlite.css">
-    <link id="skin-default" rel="stylesheet" href="/assets/css/theme.css">
-</head>
+@include('auth.includes.header', ['title'=>'Sign in | Triab'])
 <body style="background-color: #25245e" class="container-fluid">
 <div class="container">
     <div class="text-center" style="margin-top: 20px;margin-bottom:20px">
@@ -32,7 +21,13 @@
                 </div>
             @elseif(session('error'))
                 <div class="alert alert-danger">
-                    <div>&#9432; {{session('error')}}</div>
+                    <div><i class="fa fa-info-circle"></i> {{session('error')}}</div>
+                </div>
+            @elseif(session('success'))
+                <div class="alert alert-success">
+                    <div>
+                        <i class="fa fa-check-circle"></i> {{session('success')}}
+                    </div>
                 </div>
             @endif 
             <form action="{{route('login')}}" method="POST" class="form-validate is-alter" autocomplete="off">
@@ -56,7 +51,7 @@
                     </div>
                 </div>
                 <div style="margin-bottom: 5px">
-                    <a href="">Forgot password</a>
+                    <a href="{{route('forgot')}}">Forgot password</a>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Sign In</button>

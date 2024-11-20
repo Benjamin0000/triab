@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dulce App</title>
+    <title>Triab</title>
     <link rel="stylesheet" href="/assets/css/dashlite.css" />
     <link id="skin-default" rel="stylesheet" href="/assets/css/theme.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="icon" href="/logo.png">
+    <link rel="icon" href="/assets/frontpage/img/logo.png">
     <script>
         function loadButton(btn){
             $(btn).html("<i class='fa-solid fa-arrows-spin fa-spin'></i>");
@@ -54,7 +54,7 @@
                     <div class="nk-footer">
                         <div class="container-fluid">
                             <div class="nk-footer-wrap">
-                                <div class="nk-footer-copyright">&copy; 2024 Tech Breakers LTD.</div>
+                                <div class="nk-footer-copyright">&copy; 2024 Triab Global Resources.</div>
                             </div>
                         </div>
                     </div>

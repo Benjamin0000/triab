@@ -9,11 +9,12 @@
             </div>
             <div class="nk-header-brand d-xl-none">
                 <a href="#" class="logo-link">
-                    <img class="logo-light logo-img" src="/logo.png" srcset="/logo.png" alt="logo" />
-                    <img class="logo-dark logo-img" src="/logo.png" srcset="/logo.png" alt="logo-dark" />
+                    <img class="logo-light logo-img" src="/assets/frontpage/img/logo.png" srcset="/assets/frontpage/img/logo.png" alt="logo" />
+                    <img class="logo-dark logo-img" src="/assets/frontpage/img/logo.png" srcset="/assets/frontpage/img/logo.png" alt="logo-dark" />
                 </a>
             </div>
-            <div>Dulce Portal</div> 
+
+            <div>{{$user->gnumber}}</div>
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
                     
@@ -22,7 +23,7 @@
                             <div class="user-toggle">
                                 <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
                                 <div class="user-info d-none d-md-block">
-                                    <div class="user-status">Administrator</div>
+                                    <div class="user-status">{{$user->gnumber}}</div>
                                     <div class="user-name dropdown-indicator">{{$user->name}}</div>
                                 </div>
                             </div>

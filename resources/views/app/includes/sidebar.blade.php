@@ -6,8 +6,8 @@
         </div>
         <div class="nk-sidebar-brand">
             <a href="#" class="logo-link nk-sidebar-logo">
-                <img class="logo-light logo-img" src="/logo.png" srcset="/logo.png" alt="logo" />
-                <img class="logo-dark logo-img" src="/logo.png" srcset="/logo.png" alt="logo-dark" />
+                <img class="logo-light logo-img" src="/assets/frontpage/img/logo.png" srcset="/assets/frontpage/img/logo.png" alt="logo" />
+                <img class="logo-dark logo-img" src="/assets/frontpage/img/logo.png" srcset="/assets/frontpage/img/logo.png" alt="logo-dark" />
             </a>
         </div>
     </div>
@@ -16,23 +16,23 @@
             <div class="nk-sidebar-menu" data-simplebar>
                 <ul class="nk-menu">
                     <li class="nk-menu-item">
-                        <a href="{{route('admin.dashboard.index')}}" class="nk-menu-link">
+                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span><span class="nk-menu-text">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nk-menu-item">
+                    {{-- <li class="nk-menu-item">
                         <a href="{{route('admin.branches.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-layers-fill"></em></span><span class="nk-menu-text">Branches</span>
                         </a>
-                    </li>
+                    </li> --}}
                     
-                    <li class="nk-menu-item">
+                    {{-- <li class="nk-menu-item">
                         <a href="{{route('admin.managers.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span><span class="nk-menu-text">Managers</span>
                         </a>
-                    </li>
+                    </li> --}}
  
-                    
+{{--                     
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-cart-fill"></em></span><span class="nk-menu-text">Items</span>
@@ -44,8 +44,8 @@
                                 </li>
                            @endforeach
                         </ul>
-                    </li>
-
+                    </li> --}}
+{{-- 
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-cart-fill"></em></span><span class="nk-menu-text">Stocks</span>
@@ -57,7 +57,7 @@
                                 </li>
                            @endforeach
                         </ul>
-                    </li>
+                    </li> --}}
 
 
                     <li class="nk-menu-item has-sub">
@@ -65,13 +65,11 @@
                             <span class="nk-menu-icon"><i class="fa-solid fa-gears"></i></span><span class="nk-menu-text">Settings</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            @foreach(get_branches() as $key=>$name)
-                                <li class="nk-menu-item">
-                                    <a href="{{route('admin.settings.index', $key)}}" class="nk-menu-link"><span class="nk-menu-text">{{$name}}</span></a>
-                                </li>
-                           @endforeach
+                            <li class="nk-menu-item">
+                                <a href="{{route('admin.packages.index')}}" class="nk-menu-link"><span class="nk-menu-text">Packages</span></a>
+                            </li>
                         </ul>
-                    </li>
+                    </li> 
 
 
                     

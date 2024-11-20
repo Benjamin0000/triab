@@ -14,20 +14,6 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, Uuids, HasApiTokens;
 
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name', 
-        'email',
-        'password',
-        'gnumber',
-        'ref_by'
-    ];
-
     /**
      * The attributes that should be hidden for serialization.
      *

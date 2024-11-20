@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
+
 
 class FrontController extends Controller
 {
@@ -16,19 +16,8 @@ class FrontController extends Controller
         return view('front.welcome'); 
     }
 
-    /**
-     * Show login form
-     */
-    public function login_form()
+    public function login(Request $request)
     {
-        return view('auth.login'); 
-    }
-
-    /**
-     * Show register form
-     */
-    public function register_form()
-    {
-        return view('auth.register'); 
+        return $request->all(); 
     }
 }

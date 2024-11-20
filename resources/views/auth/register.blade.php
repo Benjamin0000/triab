@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" class="js">
-<head>
-    <meta charset="utf-8">
-    <meta name="author" content="Softnio">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <link rel="shortcut icon" href="/assets/frontpage/img/logo.png">
-    <title>Registration | Triab</title>
-    <link rel="stylesheet" href="/assets/css/dashlite.css">
-    <link id="skin-default" rel="stylesheet" href="/assets/css/theme.css">
-</head>
+@include('auth.includes.header', ['title'=>'Sign Up | Triab'])
 <body style="background-color: #25245e" class="container-fluid">
 <div class="container">
     <div class="text-center" style="margin-top: 20px;margin-bottom:20px">
@@ -18,7 +7,15 @@
         </a>
     </div>
     <div class="row justify-content-center" style="margin:20px">
-        <div class="col-lg-4 col-md-6 bg-white p-3" style="border-radius: 10px">
+        <div class="col-lg-5 col-md-6 bg-white p-3" style="border-radius: 10px">
+        @if(session('success'))
+            <div>
+                <h4 class="text-center text-success">Registration Successful</h4>
+                <p class="text-center text-primary">
+                    A verification link has been sent to your email. Please click on it to verify your account.
+                </p>
+            </div> 
+        @else 
             <br>
             <h4 class="text-center">Create account</h4>
             <p class="text-center">Let's get you started with your Triab account.</p>
@@ -27,32 +24,42 @@
                 <div class="alert alert-danger">
                     <ul>
                         @foreach($errors->all() as $error)
-                            <li>{{$error}}</li>
+                            <li>&#9432;  {{$error}}</li>
                         @endforeach 
                     </ul>
                 </div>
             @elseif(session('error'))
                 <div class="alert alert-danger">
-                    <div>&#9432; {{session('error')}}</div>
+                    <div><i class="fa fa-info-circle"></i> {{session('error')}}</div>
                 </div>
             @endif 
-            <form action="{{route('login')}}" method="POST" class="form-validate is-alter" autocomplete="off">
+            <form action="{{route('register')}}" method="POST" class="form-validate is-alter" autocomplete="off">
                 <div class="form-group">
                     <div class="form-label-group">
-                        <label class="form-label">Full name</label>
+                        <label class="form-label">Full name <span class="text-danger">*</span></label>
                     </div>
                     <div class="form-control-wrap"><input autocomplete="off" value='{{old('name')}}' type="text" name="name" class="form-control form-control-lg" required placeholder="Enter your Full name"></div>
                 </div> 
                 <div class="form-group">
-                    <div class="form-label-group">
-                        <label class="form-label">Email address</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <label class="form-label">Email address <span class="text-danger">*</span></label>
+                            </div>
+                            <div class="form-control-wrap"><input autocomplete="off" value='{{old('email')}}' type="email" name="email" class="form-control form-control-lg" required placeholder="Enter email address"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <label class="form-label">Mobile number <span class="text-danger">*</span></label>
+                            </div>
+                            <div class="form-control-wrap"><input autocomplete="off" value='{{old('mobile_number')}}' step="any" type="number" name="mobile_number" class="form-control form-control-lg" required placeholder="eg: 08027755940"></div>
+                        </div>
                     </div>
-                    <div class="form-control-wrap"><input autocomplete="off" value='{{old('email')}}' type="email" name="email" class="form-control form-control-lg" required placeholder="Enter your email address"></div>
                 </div> 
                 @csrf
                 <div class="form-group">
                     <div class="form-label-group">
-                        <label class="form-label" for="password">Password</label>
+                        <label class="form-label" for="password">Password <span class="text-danger">*</span></label>
                     </div>
                     <div class="form-control-wrap">
                         <a tabindex="-1" href="#" class="form-icon form-icon-right passcode-switch lg" id="togglePassword">
@@ -62,20 +69,23 @@
                         <input autocomplete="new-password" type="password" name="password" class="form-control form-control-lg" required id="password" placeholder="Enter your password">
                     </div>
                 </div>
-               
                 <div class="form-group">
-                    <div class="form-label-group">
-                        <label class="form-label">Sponsor Trb ID (optional)</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <label class="form-label">Sponsor</label>
+                            </div>
+                            <div class="form-control-wrap"><input autocomplete="off" value='{{old('sponsor')}}' type="text" name="sponsor" class="form-control form-control-lg" placeholder="Triab ID"></div>        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-lg-none d-md-none d-sm-block"><br></div>
+                            <div class="form-label-group">
+                                <label class="form-label">Place under</label>
+                            </div>
+                            <div class="form-control-wrap"><input autocomplete="off" value='{{old('place_under')}}' type="text" name="place_under" class="form-control form-control-lg" placeholder="Triab ID"></div>
+                        </div>
                     </div>
-                    <div class="form-control-wrap"><input autocomplete="off" value='{{old('sponsor')}}' type="text" name="sponsor" class="form-control form-control-lg" required placeholder="Triab ID"></div>
                 </div> 
-                <div class="form-group">
-                    <div class="form-label-group">
-                        <label class="form-label">Place under (optional)</label>
-                    </div>
-                    <div class="form-control-wrap"><input autocomplete="off" value='{{old('place_under')}}' type="text" name="sponsor" class="form-control form-control-lg" required placeholder="Triab ID"></div>
-                </div>
-
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Sign up</button>
                 </div>
@@ -83,6 +93,7 @@
                     Already have an account? <a href="/login">Sign in</a>
                 </div>
             </form>
+        @endif 
         </div>
     </div>
 </div>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('cost', 65, 2)->default(0);
             $table->decimal('discount', 65, 2)->default(0);
             $table->integer('max_gen')->default(0); //max reward gen
+            $table->integer('total_users')->default(0); 
             $table->timestamps();
         });
     }
@@ -24,9 +25,6 @@ return new class extends Migration
     //benefits from Package purchase. 
     //get cashback into your main balance. starting from you the main user who signed up. 
     //pv 
-    
-
-
     //move to g-steam wheel 
 
     /**
