@@ -35,4 +35,7 @@ Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 #main admin
 Route::get('/main/settings',  [SettingsController::class, 'index'])->name('admin.settings');
 Route::get('/main/settings/packages', [SettingsController::class, 'packages'])->name('admin.packages.index'); 
-Route::post('/main/settings/packages', [SettingsController::class, 'packages'])->name('admin.packages.create_package'); 
+Route::post('/main/settings/packages', [SettingsController::class, 'create_package'])->name('admin.packages.create_package'); 
+Route::put('/main/settings/package/{id}', [SettingsController::class, 'update_package'])->name('admin.package.update'); 
+Route::delete('/main/settings/package/{id}', [SettingsController::class, 'destroy_package'])->name('admin.package.destroy');
+Route::post('/main/settings/update_parameters', [SettingsController::class, 'update_parameters'])->name('admin.package.update_parameters');

@@ -38,40 +38,78 @@ class SettingsController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function create_package(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'name'=>['required', 'max:100'], 
+            'cost'=>['required'],
+            'discount'=>['required'], 
+            'level'=>['required']
+        ]); 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $name = $request->input('name'); 
+        $cost = (float)$request->input('cost'); 
+        $discount = (float)$request->input('discount'); 
+        $level = (int)$request->input('level'); 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        Package::create([
+            'name'=>$name,
+            'cost'=>$cost,
+            'discount'=>$discount,
+            'max_gen'=>$level
+        ]); 
+
+        return ['success'=>'Package created']; 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update_package(Request $request, string $id)
     {
-        //
+        $package = Package::find($id); 
+        if(!$package) return ['error'=>"Package not found"]; 
+
+        $request->validate([
+            'name'=>['required', 'max:100'], 
+            'cost'=>['required'],
+            'discount'=>['required'], 
+            'level'=>['required']
+        ]); 
+
+        $data = $request->all(); 
+        $data['max_gen'] = $data['level']; 
+        $package->update($data); 
+        return ['success'=>"Package updated"]; 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy_package(string $id)
     {
-        //
+        $package = Package::find($id); 
+        if(!$package) return back()->with('error', "Package not found"); 
+
+        if($package->total_users <= 0){
+            $package->delete(); 
+            return back()->with('success', 'Package Deleted'); 
+        }
+        return back(); 
+    }
+
+    public function update_parameters(Request $request)
+    {
+        $cashback = $request->input('cashback'); 
+        $pv = $request->input('pv'); 
+        $pv_price = $request->input('pv_price'); 
+        $pv_to_token = $request->input('pv_to_token'); 
+
+        set_register('cashback', $cashback); 
+        set_register('pv', $pv); 
+        set_register('pv_price', $pv_price); 
+        set_register('pv_to_token', $pv_to_token); 
+        
+        return back()->with('success', 'Updated'); 
     }
 }

@@ -15,11 +15,39 @@
         <div class="nk-sidebar-content">
             <div class="nk-sidebar-menu" data-simplebar>
                 <ul class="nk-menu">
+
+                    
                     <li class="nk-menu-item">
                         <a href="{{route('dashboard.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span><span class="nk-menu-text">Dashboard</span>
                         </a>
                     </li>
+
+                    <li class="nk-menu-item">
+                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span><span class="nk-menu-text">Fund Account</span>
+                        </a>
+                    </li>
+
+                    <li class="nk-menu-item">
+                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span><span class="nk-menu-text">Bills Payment</span>
+                        </a>
+                    </li>
+
+                    <li class="nk-menu-item">
+                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span><span class="nk-menu-text">Triab Market</span>
+                        </a>
+                    </li>
+
+                    <li class="nk-menu-item">
+                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon fa-solid fa-gears"></em></span><span class="nk-menu-text">Settings</span>
+                        </a>
+                    </li>
+
+
                     {{-- <li class="nk-menu-item">
                         <a href="{{route('admin.branches.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-layers-fill"></em></span><span class="nk-menu-text">Branches</span>
@@ -60,6 +88,40 @@
                     </li> --}}
 
 
+
+
+
+                    
+                    <li class="text-center" style="color:white;">
+                        <hr>
+                    </li>
+
+                    
+                    <li class="nk-menu-item">
+                        <a href="#" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon fa fa-store"></em></span><span class="nk-menu-text">E-Shop</span>
+                        </a>
+                    </li>
+
+                      
+                    <li class="nk-menu-item">
+                        <a href="#" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon fa fa-hotel"></em></span><span class="nk-menu-text">Hotels</span>
+                        </a>
+                    </li>
+
+                    <li class="nk-menu-item">
+                        <a href="#" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon fa fa-bowl-food"></em></span><span class="nk-menu-text">Restaurants</span>
+                        </a>
+                    </li>
+
+                    <li class="nk-menu-item">
+                        <a href="#" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon fa fa-motorcycle"></em></span><span class="nk-menu-text">Logistics</span>
+                        </a>
+                    </li>
+
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><i class="fa-solid fa-gears"></i></span><span class="nk-menu-text">Settings</span>
@@ -70,35 +132,6 @@
                             </li>
                         </ul>
                     </li> 
-
-
-                    
-
-                    {{-- <li class="nk-menu-item has-sub">
-                        <a href="index.html#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon"><em class="icon ni ni-cart-fill"></em></span><span class="nk-menu-text">Sales</span>
-                        </a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="invoices.html" class="nk-menu-link"><span class="nk-menu-text">Invoices</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="payment.html" class="nk-menu-link"><span class="nk-menu-text">Payment</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="recent-sale.html" class="nk-menu-link"><span class="nk-menu-text">Recent Sale</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="estimates.html" class="nk-menu-link"><span class="nk-menu-text">Estimates</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="expenses.html" class="nk-menu-link"><span class="nk-menu-text">Expenses</span></a>
-                            </li>
-                        </ul>
-                    </li> --}}
-                    
-                    
-
 
                 </ul>
             </div>

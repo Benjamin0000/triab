@@ -27,8 +27,12 @@ return new class extends Migration
             $table->decimal('main_balance', 65, 2)->default(0);
             $table->decimal('reward_balance', 65, 2)->default(0); // in main currency like cashback and the rest. 
             $table->decimal('token_balance', 65, 5)->default(0);
+            $table->decimal('health_token', 65, 2)->default(0); 
+            $table->bigInteger('mpp')->default(0); 
             $table->bigInteger('pv')->default(0);
-            
+            $table->bigInteger('total_referrals')->default(0); 
+
+            $table->integer('rank')->default(0); 
             $table->integer('package_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
