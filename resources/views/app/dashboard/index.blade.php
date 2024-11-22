@@ -54,6 +54,23 @@
     .total_referrals_bal {
         background: linear-gradient(135deg, #34495E, #2C3E50); /* Cool slate tones */
     }
+    .pkg_con{
+        padding:10px; 
+        border:1px solid #ccc; 
+        margin-bottom: 10px; 
+        border-radius: 10px; 
+        min-height: 320px; 
+        
+    }
+    .pkg_title {
+        background: linear-gradient(135deg, #8E44AD, #3498DB); /* Gradient applied */
+        -webkit-background-clip: text; /* Clips the gradient to the text */
+        -webkit-text-fill-color: transparent; /* Makes the background visible through the text */
+        text-align: center;
+    }
+    .services_name{
+        font-size:15px; 
+    }
 </style>
 
 @php 
@@ -113,7 +130,7 @@
             <div class="card card-bordered bal_con health_token_bal">
                 <i class="fas fa-heartbeat"></i>
                 <div class="card-inner text-center">
-                    <h6>{{ number_format($user->health_token_balance, 5) }}</h6>
+                    <h6>{{ number_format($user->health_token_balance, 2) }}</h6>
                     <h6>Health Token</h6>  
                 </div>            
             </div>
@@ -123,7 +140,7 @@
             <div class="card card-bordered bal_con rank_bal">
                 <i class="fas fa-medal"></i>
                 <div class="card-inner text-center">
-                    <h6>{{ number_format($user->rank, 5) }}</h6>
+                    <h6>{{ number_format($user->rank) }}</h6>
                     <h6>Rank</h6>  
                 </div>            
             </div>
@@ -133,7 +150,7 @@
             <div class="card card-bordered bal_con mpp_bal">
                 <i class="fas fa-trophy"></i>
                 <div class="card-inner text-center">
-                    <h6>{{ number_format($user->mpp, 5) }}</h6>
+                    <h6>{{ number_format($user->mpp) }}</h6>
                     <h6 title="Monthly performance point">MPP</h6>  
                 </div>            
             </div>
@@ -143,11 +160,25 @@
             <div class="card card-bordered bal_con total_referrals_bal">
                 <i class="fas fa-users"></i>
                 <div class="card-inner text-center">
-                    <h6>{{ number_format($user->total_referrals, 5) }}</h6>
+                    <h6>{{ number_format($user->total_referrals) }}</h6>
                     <h6>Total Referrals</h6>  
                 </div>            
             </div>
         </div>
     </div>
+
+    <h5>
+        Current Package: 
+        <a href="#" id="up_pkg_btn" data-bs-toggle='modal' data-bs-target='#choose_package'>Upgrade</a>
+    </h5>
+    @include('app.includes.select_package_modal')
 </div>
+
+@if(!$user->package_id)
+    <script>
+        window.onload = ()=>{
+            document.getElementById("up_pkg_btn").click();
+        }
+    </script>
+@endif 
 @stop

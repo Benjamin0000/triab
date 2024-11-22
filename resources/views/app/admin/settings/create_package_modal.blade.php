@@ -34,6 +34,18 @@
                             <input name="level" type="number" class="form-control" required/>                        
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="">Select Services</label>
+                        <p>
+                            @foreach($all_services as $name=>$key)
+                                <label class="btn" style="margin-bottom:10px;background:#eee">
+                                    {{make_readable($name)}} &nbsp;
+                                    <input type="checkbox" name="services[]" value="{{$key}}">
+                                </label>
+                            @endforeach
+                        </p> 
+                    </div>
                    
 
 

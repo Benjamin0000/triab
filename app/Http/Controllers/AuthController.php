@@ -112,14 +112,19 @@ class AuthController extends Controller  implements HasMiddleware
         $user->gnumber = genGnumber(); 
         $user->password = bcrypt($request->input('password')); 
 
-        $sponsor_id = $request->input('sponsor') ? findByGnumber($request->input('sponsor'))->id : null;
+        $sponsor = $request->input('sponsor') ? findByGnumber($request->input('sponsor')) : null;
         $placeUnder_id = $request->input('place_under') ? findByGnumber($request->input('place_under'))->id : null;
 
-        if ($sponsor_id && $placeUnder_id) {
+        if ($sponsor && $placeUnder_id) {
             $user->ref_by = $placeUnder_id; 
-            $user->placed_by = $sponsor_id; 
-        } elseif ($sponsor_id) {
-            $user->ref_by = $sponsor_id;
+            $user->placed_by = $sponsor->id; 
+        } elseif ($sponsor) {
+            $user->ref_by = $sponsor->id;
+        }
+
+        if($sponsor){
+            $sponsor->total_referrals += 1; 
+            $sponsor->save(); 
         }
 
         $user->save();

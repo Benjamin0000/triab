@@ -25,7 +25,7 @@
 
                     <li class="nk-menu-item">
                         <a href="{{route('dashboard.index')}}" class="nk-menu-link">
-                            <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span><span class="nk-menu-text">Fund Account</span>
+                            <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span><span class="nk-menu-text">Funds</span>
                         </a>
                     </li>
 
@@ -37,7 +37,13 @@
 
                     <li class="nk-menu-item">
                         <a href="{{route('dashboard.index')}}" class="nk-menu-link">
-                            <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span><span class="nk-menu-text">Triab Market</span>
+                            <span class="nk-menu-icon"><em class="icon fa fa-store-alt"></em></span><span class="nk-menu-text">Triab Market</span>
+                        </a>
+                    </li>
+
+                    <li class="nk-menu-item">
+                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon fa fa-circle-play"></em></span><span class="nk-menu-text">Triab Wheel</span>
                         </a>
                     </li>
 
@@ -112,7 +118,7 @@
 
                     <li class="nk-menu-item">
                         <a href="#" class="nk-menu-link">
-                            <span class="nk-menu-icon"><em class="icon fa fa-bowl-food"></em></span><span class="nk-menu-text">Restaurants</span>
+                            <span class="nk-menu-icon"><em class="icon fa fa-utensils"></em></span><span class="nk-menu-text">Restaurants</span>
                         </a>
                     </li>
 

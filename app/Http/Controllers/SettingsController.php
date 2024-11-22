@@ -48,18 +48,24 @@ class SettingsController extends Controller implements HasMiddleware
         ]); 
 
         $name = $request->input('name'); 
-        $cost = (float)$request->input('cost'); 
-        $discount = (float)$request->input('discount'); 
-        $level = (int)$request->input('level'); 
-
+        $cost = (float) $request->input('cost'); 
+        $discount = (float) $request->input('discount'); 
+        $level = (int) $request->input('level'); 
+        $services = (array) $request->input('services'); 
+        
+        if (empty($services)) {
+            return ['error' => "Please select a service"]; 
+        }
+        
         Package::create([
-            'name'=>$name,
-            'cost'=>$cost,
-            'discount'=>$discount,
-            'max_gen'=>$level
-        ]); 
-
-        return ['success'=>'Package created']; 
+            'name'      => $name,
+            'cost'      => $cost,
+            'discount'  => $discount,
+            'max_gen'   => $level,
+            'services'  => $services,
+        ]);
+        
+        return ['success' => 'Package created'];
     }
 
     /**
@@ -76,11 +82,14 @@ class SettingsController extends Controller implements HasMiddleware
             'discount'=>['required'], 
             'level'=>['required']
         ]); 
+        $data = $request->only(['name', 'cost', 'discount', 'level', 'services']); 
+        $data['max_gen'] = (int) $data['level'];
 
-        $data = $request->all(); 
-        $data['max_gen'] = $data['level']; 
-        $package->update($data); 
-        return ['success'=>"Package updated"]; 
+        if( !isset($data['services']) || empty($data['services']) )
+            $data['services'] = ""; 
+        
+        $package->update($data);
+        return ['success' => "Package updated"];
     }
 
     /**
@@ -109,7 +118,7 @@ class SettingsController extends Controller implements HasMiddleware
         set_register('pv', $pv); 
         set_register('pv_price', $pv_price); 
         set_register('pv_to_token', $pv_to_token); 
-        
+
         return back()->with('success', 'Updated'); 
     }
 }

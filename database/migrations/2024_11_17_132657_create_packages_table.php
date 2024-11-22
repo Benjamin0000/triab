@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('discount', 65, 2)->default(0);
             $table->integer('max_gen')->default(0); //max reward gen
             $table->integer('total_users')->default(0); 
+            $table->string('services')->nullable(); 
             $table->timestamps();
         });
     }

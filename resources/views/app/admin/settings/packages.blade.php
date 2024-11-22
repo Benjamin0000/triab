@@ -1,5 +1,6 @@
 @extends('app.layout')
 @section('content')
+@php $all_services = all_services(); @endphp 
 <div class="container-fluid">
     <div class="nk-block-head nk-block-head-sm">
         <div class="nk-block-between">
@@ -56,6 +57,7 @@
                     <th>Cost</th>
                     <th>Discount</th>
                     <th>Level</th>
+                    <th>Services</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -68,6 +70,17 @@
                         <td>{{format_with_cur($package->cost)}}</td>
                         <td>{{$package->discount}}%</td>
                         <td>{{$package->max_gen}}</td>
+                        <td>
+                            @if(!empty($package->services))
+                                @foreach($all_services as $name => $key)
+                                    @if(in_array($key, $package->services))
+                                        <span class="badge bg-secondary">{{make_readable($name)}}</span>
+                                    @endif 
+                                @endforeach 
+                            @else  
+                                --
+                            @endif 
+                        </td>
                         <td>
                             <button class="btn btn-info btn-sm" data-bs-target="#update_package{{$package->id}}" data-bs-toggle="modal">Edit</button>
                            

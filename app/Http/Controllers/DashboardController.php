@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth; 
+use App\Models\Package; 
 
 class DashboardController extends Controller implements HasMiddleware
 {
@@ -21,7 +22,8 @@ class DashboardController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return view('app.dashboard.index'); 
+        $packages = Package::orderBy('cost', 'asc')->get(); 
+        return view('app.dashboard.index', compact('packages')); 
     }
 
     public function logout()

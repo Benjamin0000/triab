@@ -4,6 +4,57 @@ use App\Models\Register;
 use App\Models\Token\EmailToken; 
 use App\Models\Token\PasswordToken; 
 
+//package services code. 
+const E_SHOP = 1;
+const HOTEL = 2; 
+const RESTAURANT = 3; 
+const LOGISTICS = 4; 
+const HEALTH = 5; 
+
+function all_services()
+{
+    return [
+        'e-shop'=>E_SHOP, 
+        'hotel'=>HOTEL,
+        'restaurant'=>RESTAURANT, 
+        'logistics'=>LOGISTICS, 
+        'health_insurance'=>HEALTH
+    ]; 
+}
+
+
+function make_readable($text)
+{
+    $text = str_replace('_', ' ', $text);
+    return $text = ucwords($text);
+}
+
+
+function getPositionWithSuffix(int $number): string
+{
+    // Handle special cases for numbers ending in 11, 12, or 13
+    if ($number % 100 >= 11 && $number % 100 <= 13) {
+        return $number . 'th';
+    }
+
+    // Get the last digit of the number
+    $lastDigit = $number % 10;
+
+    // Determine the suffix based on the last digit
+    switch ($lastDigit) {
+        case 1:
+            return $number . 'st';
+        case 2:
+            return $number . 'nd';
+        case 3:
+            return $number . 'rd';
+        default:
+            return $number . 'th';
+    }
+}
+
+
+
 function deleteResetPasswordOldTokens() 
 {
     PasswordToken::where('created_at', '<', now()->subDay())->delete();
