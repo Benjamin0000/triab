@@ -66,6 +66,7 @@
         <script src="/assets/js/demo-settings.js"></script>
         <script src="/assets/js/charts/chart-crm.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
+        <script src="/notify.js"></script>
         @if(session('success'))
             <script>
                 Swal.fire(
@@ -90,5 +91,8 @@
                 }
             });
         </script>
+        <form action="{{route('logout')}}" method="POST" id="logout_form">
+            @csrf 
+        </form>
     </body>
 </html>

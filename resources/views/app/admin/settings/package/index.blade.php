@@ -10,25 +10,21 @@
         </div>
     </div>
 
-    @include('app.admin.settings.create_package_modal')
+    @include('app.admin.settings.package.create_package_modal')
 
     <form class="row" method="POST" action="{{route('admin.package.update_parameters')}}">
         <div class="col-md-3">
-            <label for="">Cashback (%)</label>
+            <label for="">Ref. Commission (%)</label>
             <input value="{{get_register('cashback')}}" type="text" name="cashback" class="form-control" placeholder="eg 1,2,4,5,5">
         </div>
         @csrf 
         <div class="col-md-3">
             <label for="">PV</label>
-            <input value="{{get_register('pv')}}" type="text" name="cashback" class="form-control" placeholder="eg 1,2,4,5,5">
+            <input value="{{get_register('pv')}}" type="text" name="pv" class="form-control" placeholder="eg 1,2,4,5,5">
         </div>
         <div class="col-md-2">
             <label for="">PV Price ({{currency_symbol()}})</label>
             <input value="{{get_register('pv_price')}}" type="number" name="pv_price" class="form-control">
-        </div>
-        <div class="col-md-2">
-            <label for="">PV to TRIAB Token</label>
-            <input value="{{get_register('pv_to_token')}}" type="number" name="pv_to_ken" class="form-control">
         </div>
         <div class="col-md-2">
             <br>
@@ -55,6 +51,7 @@
                     <th>No</th>
                     <th>Name</th>
                     <th>Cost</th>
+                    <th>Cashback</th>
                     <th>Discount</th>
                     <th>Level</th>
                     <th>Services</th>
@@ -68,6 +65,7 @@
                         <td>{{$no++}}</td>
                         <td>{{$package->name}}</td>
                         <td>{{format_with_cur($package->cost)}}</td>
+                        <td>{{format_with_cur($package->cashback)}}</td>
                         <td>{{$package->discount}}%</td>
                         <td>{{$package->max_gen}}</td>
                         <td>
@@ -84,7 +82,7 @@
                         <td>
                             <button class="btn btn-info btn-sm" data-bs-target="#update_package{{$package->id}}" data-bs-toggle="modal">Edit</button>
                            
-                            @include('app.admin.settings.update_package_modal')
+                            @include('app.admin.settings.package.update_package_modal')
                             @if($package->total_users <= 0)
                                 <form action="{{route('admin.package.destroy', $package->id)}}" method="POST" style='display:inline'>
                                     @csrf 

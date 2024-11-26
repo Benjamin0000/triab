@@ -32,7 +32,7 @@ class SettingsController extends Controller implements HasMiddleware
     public function packages()
     {
         $packages = Package::orderBy('cost', 'asc')->paginate(); 
-        return view('app.admin.settings.packages', compact('packages')); 
+        return view('app.admin.settings.package.index', compact('packages')); 
     }
 
     /**
@@ -44,14 +44,17 @@ class SettingsController extends Controller implements HasMiddleware
             'name'=>['required', 'max:100'], 
             'cost'=>['required'],
             'discount'=>['required'], 
-            'level'=>['required']
+            'level'=>['required'], 
+            'cashback'=>['required']
         ]); 
 
-        $name = $request->input('name'); 
-        $cost = (float) $request->input('cost'); 
-        $discount = (float) $request->input('discount'); 
-        $level = (int) $request->input('level'); 
-        $services = (array) $request->input('services'); 
+        $name = $request->input('name');
+        $cost = (float) $request->input('cost');
+        $cashback = (float) $request->input('cashback');
+        $discount = (float) $request->input('discount');
+        $level = (int) $request->input('level');
+        $services = (array) $request->input('services');
+
         
         if (empty($services)) {
             return ['error' => "Please select a service"]; 
@@ -63,6 +66,7 @@ class SettingsController extends Controller implements HasMiddleware
             'discount'  => $discount,
             'max_gen'   => $level,
             'services'  => $services,
+            'cashback'  => $cashback
         ]);
         
         return ['success' => 'Package created'];
@@ -77,12 +81,14 @@ class SettingsController extends Controller implements HasMiddleware
         if(!$package) return ['error'=>"Package not found"]; 
 
         $request->validate([
-            'name'=>['required', 'max:100'], 
+            'name'=>['required', 'max:100'],
             'cost'=>['required'],
-            'discount'=>['required'], 
-            'level'=>['required']
+            'discount'=>['required'],
+            'level'=>['required'],
+            'cashback'=>['required']
         ]); 
-        $data = $request->only(['name', 'cost', 'discount', 'level', 'services']); 
+
+        $data = $request->only(['name', 'cost', 'discount', 'level', 'services', 'cashback']); 
         $data['max_gen'] = (int) $data['level'];
 
         if( !isset($data['services']) || empty($data['services']) )
@@ -120,5 +126,29 @@ class SettingsController extends Controller implements HasMiddleware
         set_register('pv_to_token', $pv_to_token); 
 
         return back()->with('success', 'Updated'); 
+    }
+
+    public function reward_settings()
+    {
+        return view('app.admin.settings.reward.index'); 
+    }
+
+    public function update_reward_data(Request $request)
+    {
+        $pv_to_cash = $request->input('pv_to_cash');
+        $pv_cash = $request->input('pv_cash');
+        $pv_to_health = $request->input('pv_to_health');
+        $pv_to_token = $request->input('pv_to_token');
+        $token_to_coin = $request->input('token_to_coin');
+        $coin_reward = $request->input('coin_reward');
+
+        set_register('pv_to_cash', $pv_to_cash);
+        set_register('pv_cash', $pv_cash);
+        set_register('pv_to_health', $pv_to_health);
+        set_register('pv_to_token', $pv_to_cash);
+        set_register('token_to_coin', $token_to_coin);
+        set_register('coin_reward', $coin_reward);
+
+        return back()->with('success', 'Updated');
     }
 }

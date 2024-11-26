@@ -9,19 +9,24 @@
                         <div class="col-lg-6">
                             <div class="pkg_con">
                                 <h5 class="pkg_title">{{$package->name}}</h5>
-                                <br>
+                                
                                 <h4 class="text-center">{{format_with_cur($package->cost)}}</h4>
-                                <div class="text-center" style="margin-top:-15px">One time</div>
-                                <br>
-                                <div>
+                                <div class="text-center">One time</div>
+                                @if($package->discount > 0)
+                                    <div class="text-center text-primary">Discount {{$package->discount}}%</div>
+                                @endif 
+                                
+                                
+                                <div style="margin-top:5px;">
                                     @if($package->max_gen > 0)
                                         <i class="fa fa-user-alt" style="font-size: 12px"></i> {{getPositionWithSuffix($package->max_gen)}} Gen. Level Earning
                                     @else 
-                                        No commission
+                                        <div class="text-center">No commission</div>
                                     @endif 
                                 </div>
                                 
                                 <div>
+                                    
                                     @foreach($package->services as $service)
                                         @if($service == E_SHOP)
                                             <div class="services_name"><i class="fa fa-store" style="font-size: 12px"></i> E-Shop Space</div>
@@ -45,12 +50,27 @@
                                     @endforeach
                                 </div>
                                 <br>
-                                <form action="" method="POST">
-                                    @csrf 
-                                    <div class="text-center">
-                                        <button class="btn btn-outline-primary btn-block">Select Package</button>
+                                @if($user->package && $user->package->cost >= $package->cost)
+                                    <div class="select_pkg_btn_con">
+                                        <div>
+                                            <i style="font-size: 25px" class="fa-regular fa-circle-check text-success"></i>
+                                        </div>
                                     </div>
-                                </form>
+                                @else 
+                                    <form class="package_selector" method="POST">
+                                        @csrf 
+                                        <input type="hidden" name="id" value="{{$package->id}}">
+                                        <div class="select_pkg_btn_con">
+                                            <button class="btn btn-outline-primary btn-block">
+                                                @if(!$user->package_id)
+                                                    Select Package
+                                                @else 
+                                                    UPGRADE
+                                                @endif 
+                                            </button>
+                                        </div>
+                                    </form>
+                                @endif 
                             </div>
 
                         </div>

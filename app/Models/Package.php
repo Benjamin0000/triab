@@ -11,7 +11,8 @@ class Package extends Model
         'cost',
         'discount',
         'max_gen',
-        'services'
+        'services',
+        'cashback'
     ]; 
 
 

@@ -59,8 +59,9 @@
         border:1px solid #ccc; 
         margin-bottom: 10px; 
         border-radius: 10px; 
-        min-height: 320px; 
-        
+        min-height: 320px;  
+        position: relative;
+        /* overflow: hidden; */
     }
     .pkg_title {
         background: linear-gradient(135deg, #8E44AD, #3498DB); /* Gradient applied */
@@ -70,6 +71,14 @@
     }
     .services_name{
         font-size:15px; 
+    }
+    .select_pkg_btn_con{
+        position: absolute;
+        bottom: 10px; 
+        left: 0;
+        width: 100%;
+        padding-left:10px; 
+        padding-right:10px;
     }
 </style>
 
@@ -97,16 +106,6 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <div class="card card-bordered bal_con reward_bal">
-                <i class="fas fa-gift"></i>
-                <div class="card-inner text-center">
-                    <h6>{{ format_with_cur($user->reward_balance) }}</h6>
-                    <h6>Reward Balance</h6>  
-                </div>            
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
             <div class="card card-bordered bal_con pv_bal">
                 <i class="fas fa-chart-line"></i>
                 <div class="card-inner text-center">
@@ -117,10 +116,20 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
+            <div class="card card-bordered bal_con reward_bal">
+                <i class="fa-regular fa-gem"></i>
+                <div class="card-inner text-center">
+                    <h6>{{ number_format($user->token) }}</h6>
+                    <h6>Token</h6>  
+                </div>            
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
             <div class="card card-bordered bal_con coin_bal">
                 <i class="fas fa-coins"></i>
                 <div class="card-inner text-center">
-                    <h6>{{ number_format($user->token_balance, 5) }}</h6>
+                    <h6>{{ number_format($user->coin, 5) }}</h6>
                     <h6>TRB Coin</h6>  
                 </div>            
             </div>
@@ -130,8 +139,8 @@
             <div class="card card-bordered bal_con health_token_bal">
                 <i class="fas fa-heartbeat"></i>
                 <div class="card-inner text-center">
-                    <h6>{{ number_format($user->health_token_balance, 2) }}</h6>
-                    <h6>Health Token</h6>  
+                    <h6>{{ number_format($user->health_token_balance) }}</h6>
+                    <h6>Health Card</h6>  
                 </div>            
             </div>
         </div>
@@ -167,18 +176,77 @@
         </div>
     </div>
 
-    <h5>
+    <h6>
         Current Package: 
-        <a href="#" id="up_pkg_btn" data-bs-toggle='modal' data-bs-target='#choose_package'>Upgrade</a>
-    </h5>
+        <a href="#" id="up_pkg_btn" data-bs-toggle='modal' data-bs-target='#choose_package'>UPGRADE</a>
+    </h6>
     @include('app.includes.select_package_modal')
+    <br>
+    <h6>Transaction History</h6>
+    @include('app.dashboard.trx_history_table')
 </div>
 
-@if(!$user->package_id)
-    <script>
-        window.onload = ()=>{
-            document.getElementById("up_pkg_btn").click();
-        }
-    </script>
-@endif 
+
+<script>
+window.onload = ()=>{
+
+    @if(!$user->package_id)
+        document.getElementById("up_pkg_btn").click();
+    @endif
+
+
+    
+
+    $(document).on("click", '#trx_pg_links_con .page-link', function(e){
+        e.preventDefault(); 
+        let link = $(e.currentTarget).attr('href');
+        let page = link.split('=')[1]; 
+        let route = '{{route('dashboard.trx_history')}}'
+  
+        $.ajax({
+            type: 'get',
+            url: route+'?page='+page,
+            success: function (res) {
+                let view = res.view; 
+                $("#trx_table_con").html(view); 
+            }
+        });
+    })
+
+    $(document).on("submit", '.package_selector', function(e){
+        e.preventDefault();
+        let form = $(e.currentTarget)
+        let btn = form.find('button')
+
+        let btn_content = btn.text(); 
+        let url = '{{route('dashboard.select_package')}}'; 
+        loadButton(btn)
+
+        $.ajax({
+            type: 'POST',
+            url: url, 
+            data: form.serialize(),
+            success: function (res) {
+                unLoadButton(btn, btn_content)
+                if(res.error){
+                    $(btn).notify(res.error, { position:"top center", className:'error' });
+                }else if(res.success){
+                    $(btn).notify(res.success, { position:"top center", className:'success' });
+                    setTimeout(() => {
+                        window.location.reload(); 
+                    }, 1000);
+                }
+            },
+            error: function (xhr, status, error) {
+                unLoadButton(btn, btn_content);
+                if (xhr.status === 0) {
+                    $(btn).notify('Network error: Please check your internet connection.', { position:"top center", className:'error' });
+                } else {
+                    $(btn).notify('Something went wrong please try again', { position:"top center", className:'error' });
+                }
+            }
+        });
+    }); 
+}
+</script>
 @stop

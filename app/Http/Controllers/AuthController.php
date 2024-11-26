@@ -101,8 +101,7 @@ class AuthController extends Controller  implements HasMiddleware
             'mobile_number.regex' => 'Invalid mobile number',
             'email.unique' => 'The email address is already in use.',
             'mobile_number.unique' => 'The mobile number is already in use.',
-            'sponsor.exists' => 'The sponsor does not exist.',
-            'place_under.exists' => 'The place under reference does not exist.',
+            'sponsor.exists' => 'The sponsor does not exist.'
         ]);
 
         $user = new User; 
@@ -112,23 +111,13 @@ class AuthController extends Controller  implements HasMiddleware
         $user->gnumber = genGnumber(); 
         $user->password = bcrypt($request->input('password')); 
 
-        $sponsor = $request->input('sponsor') ? findByGnumber($request->input('sponsor')) : null;
-        $placeUnder_id = $request->input('place_under') ? findByGnumber($request->input('place_under'))->id : null;
-
-        if ($sponsor && $placeUnder_id) {
-            $user->ref_by = $placeUnder_id; 
-            $user->placed_by = $sponsor->id; 
-        } elseif ($sponsor) {
-            $user->ref_by = $sponsor->id;
-        }
-
-        if($sponsor){
-            $sponsor->total_referrals += 1; 
-            $sponsor->save(); 
-        }
+        $sponsor = $request->input('sponsor') ? findByGnumber($request->input('sponsor')) : default_user();
+        $user->ref_by = $sponsor->id;
+    
+        $sponsor->total_referrals += 1; 
+        $sponsor->save(); 
 
         $user->save();
-
         $token = EmailToken::create(['email' => $user->email]);
         // Send token as email to user.
         return back()->with('success', 'Account created'); 

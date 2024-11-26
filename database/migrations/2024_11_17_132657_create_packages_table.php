@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('cost', 65, 2)->default(0);
+            $table->decimal('cashback', 65, 2)->default(0);
             $table->decimal('discount', 65, 2)->default(0);
             $table->integer('max_gen')->default(0); //max reward gen
             $table->integer('total_users')->default(0); 

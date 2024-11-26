@@ -43,7 +43,7 @@
 
                     <li class="nk-menu-item">
                         <a href="{{route('dashboard.index')}}" class="nk-menu-link">
-                            <span class="nk-menu-icon"><em class="icon fa fa-circle-play"></em></span><span class="nk-menu-text">Triab Wheel</span>
+                            <span class="nk-menu-icon"><em class="icon fa fa-users"></em></span><span class="nk-menu-text">Triab Community</span>
                         </a>
                     </li>
 
@@ -135,6 +135,9 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="{{route('admin.packages.index')}}" class="nk-menu-link"><span class="nk-menu-text">Packages</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('admin.reward.settings')}}" class="nk-menu-link"><span class="nk-menu-text">Rewards</span></a>
                             </li>
                         </ul>
                     </li> 

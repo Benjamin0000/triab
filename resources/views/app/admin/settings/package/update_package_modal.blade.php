@@ -13,10 +13,18 @@
                     </div>
                     @csrf
                     @method('put')
+
                     <div class="form-group">
                         <label class="form-label">Cost</label>
                         <div class="form-control-wrap">
                             <input name="cost" type="number" step="any" class="form-control" value="{{$package->cost}}" required/>                        
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cashback</label>
+                        <div class="form-control-wrap">
+                            <input name="cashback" type="number" step="any" class="form-control" value="{{$package->cashback}}" required/>                        
                         </div>
                     </div>
 

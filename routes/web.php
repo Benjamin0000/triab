@@ -4,6 +4,8 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Middleware\EnsureUserHasPackage; 
+
 
 Route::get('/', [FrontController::class, 'index'])->name('front.welcome');
 
@@ -26,11 +28,8 @@ Route::post('/update-password', [AuthController::class, 'change_password'])->nam
 
 #Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index'); 
-
-Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
-
-
-
+Route::get('/trx-history', [DashboardController::class, 'load_more_transactions'])->name('dashboard.trx_history'); 
+Route::post('/ykMbJXg2QRnlBZvxCZb', [DashboardController::class, 'select_package'])->name('dashboard.select_package');
 
 #main admin
 Route::get('/main/settings',  [SettingsController::class, 'index'])->name('admin.settings');
@@ -39,3 +38,9 @@ Route::post('/main/settings/packages', [SettingsController::class, 'create_packa
 Route::put('/main/settings/package/{id}', [SettingsController::class, 'update_package'])->name('admin.package.update'); 
 Route::delete('/main/settings/package/{id}', [SettingsController::class, 'destroy_package'])->name('admin.package.destroy');
 Route::post('/main/settings/update_parameters', [SettingsController::class, 'update_parameters'])->name('admin.package.update_parameters');
+
+//reward settings
+Route::get('/main/reward', [SettingsController::class, 'reward_settings'])->name('admin.reward.settings'); 
+Route::post('/main/reward', [SettingsController::class, 'update_reward_data'])->name('admin.reward.settings'); 
+
+Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');

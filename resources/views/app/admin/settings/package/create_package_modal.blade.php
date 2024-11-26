@@ -12,12 +12,21 @@
                         </div>
                     </div>
                     @csrf
+
                     <div class="form-group">
                         <label class="form-label">Cost</label>
                         <div class="form-control-wrap">
                             <input name="cost" type="number" step="any" class="form-control" value="" required/>                        
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cashback</label>
+                        <div class="form-control-wrap">
+                            <input name="cashback" type="number" step="any" class="form-control" value="" required/>                        
+                        </div>
+                    </div>
+                    
                     
 
                     <div class="form-group">

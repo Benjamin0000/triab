@@ -70,21 +70,21 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
+                    {{-- <div class="row"> --}}
+                        {{-- <div class="col-md-6"> --}}
                             <div class="form-label-group">
                                 <label class="form-label">Sponsor</label>
                             </div>
                             <div class="form-control-wrap"><input autocomplete="off" value='{{old('sponsor')}}' type="text" name="sponsor" class="form-control form-control-lg" placeholder="Triab ID"></div>        
-                        </div>
-                        <div class="col-md-6">
+                        {{-- </div> --}}
+                        {{-- <div class="col-md-6">
                             <div class="d-lg-none d-md-none d-sm-block"><br></div>
                             <div class="form-label-group">
                                 <label class="form-label">Place under</label>
                             </div>
                             <div class="form-control-wrap"><input autocomplete="off" value='{{old('place_under')}}' type="text" name="place_under" class="form-control form-control-lg" placeholder="Triab ID"></div>
-                        </div>
-                    </div>
+                        </div> --}}
+                    {{-- </div> --}}
                 </div> 
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Sign up</button>

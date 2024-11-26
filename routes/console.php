@@ -8,3 +8,9 @@ Schedule::call(function () {
     deleteResetPasswordOldTokens();
     deleteOldEmailTokens();
 })->daily();
+
+
+Schedule::call(function () {
+    run_placement(); 
+})->everySecond();
+
