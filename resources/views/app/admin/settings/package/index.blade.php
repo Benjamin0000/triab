@@ -12,27 +12,68 @@
 
     @include('app.admin.settings.package.create_package_modal')
 
-    <form class="row" method="POST" action="{{route('admin.package.update_parameters')}}">
-        <div class="col-md-3">
-            <label for="">Ref. Commission (%)</label>
-            <input value="{{get_register('cashback')}}" type="text" name="cashback" class="form-control" placeholder="eg 1,2,4,5,5">
+    <form method="POST" action="{{route('admin.package.update_parameters')}}">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="">Ref. Commission (%)</label>
+                <input value="{{get_register('cashback')}}" type="text" name="cashback" class="form-control" placeholder="eg 1,2,4,5,5">
+            </div>
+            @csrf 
+            <div class="col-md-6">
+                <label for="">PV</label>
+                <input value="{{get_register('pv')}}" type="text" name="pv" class="form-control" placeholder="eg 1,2,4,5,5">
+            </div>
+            <div class="col-md-2">
+                <label for="">PV Price ({{currency_symbol()}})</label>
+                <input value="{{get_register('pv_price')}}" type="number" name="pv_price" class="form-control">
+            </div>
         </div>
-        @csrf 
-        <div class="col-md-3">
-            <label for="">PV</label>
-            <input value="{{get_register('pv')}}" type="text" name="pv" class="form-control" placeholder="eg 1,2,4,5,5">
+        <br>
+        <h5>Triab Community Settings</h5>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Local</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Cost ({{currency_symbol()}})</label>
+                            <input class="form-control" type="number" step="any" name="triab_local_cost" value="{{get_register('triab_local_cost')}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Min Package Cost</label>
+                            <input class="form-control" type="number" step="any" name="min_triab_local_package_cost" value="{{get_register('min_triab_local_package_cost')}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6>Global</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Cost ({{currency_symbol()}})</label>
+                            <input class="form-control" type="number" step="any" name="triab_global_cost" value="{{get_register('triab_global_cost')}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Min Package Cost</label>
+                            <input class="form-control" type="number" step="any" name="min_triab_global_package_cost" value="{{get_register('min_triab_global_package_cost')}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            <label for="">PV Price ({{currency_symbol()}})</label>
-            <input value="{{get_register('pv_price')}}" type="number" name="pv_price" class="form-control">
-        </div>
-        <div class="col-md-2">
+        <div>
             <br>
-            <button class="btn btn-primary btn-block">UPDATE</button>
+            <button class="btn btn-primary">UPDATE</button>
         </div>
     </form>
 
-
+    <br>
     <br>
     <div class="row">
         <div class="col">

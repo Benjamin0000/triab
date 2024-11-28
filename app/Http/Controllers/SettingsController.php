@@ -113,17 +113,26 @@ class SettingsController extends Controller implements HasMiddleware
         return back(); 
     }
 
-    public function update_parameters(Request $request)
+    public function update_package_parameters(Request $request)
     {
         $cashback = $request->input('cashback'); 
         $pv = $request->input('pv'); 
         $pv_price = $request->input('pv_price'); 
         $pv_to_token = $request->input('pv_to_token'); 
+        $triab_local_cost = $request->input('triab_local_cost'); 
+        $min_triab_local_package_cost = $request->input('min_triab_local_package_cost'); 
+        $triab_global_cost = $request->input('triab_global_cost'); 
+        $min_triab_global_package_cost = $request->input('min_triab_global_package_cost'); 
 
         set_register('cashback', $cashback); 
         set_register('pv', $pv); 
         set_register('pv_price', $pv_price); 
         set_register('pv_to_token', $pv_to_token); 
+
+        set_register('triab_local_cost', $triab_local_cost); 
+        set_register('min_triab_local_package_cost', $min_triab_local_package_cost); 
+        set_register('triab_global_cost', $triab_global_cost); 
+        set_register('min_triab_global_package_cost', $min_triab_global_package_cost); 
 
         return back()->with('success', 'Updated'); 
     }

@@ -165,7 +165,7 @@ class AuthController extends Controller  implements HasMiddleware
         $token = PasswordToken::where([
             ['id', $token], 
             ['email', $email]
-        ])->first(); 
+        ])->first();
 
         if ($token) {
             $user = User::where('email', $email)->first();
