@@ -87,7 +87,7 @@
 									<a href="tel:Phone:+2348027755940">
 										<i class="bx bx-phone-call"></i>
 										<span>Hotline:</span>
-										Phone: +2348027755940
+										Phone: +234802 775 5940
 									</a>
 								</li>
 
