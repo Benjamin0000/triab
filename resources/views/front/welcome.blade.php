@@ -129,7 +129,7 @@ Our platform is designed to create wealth for people from all walks of life, off
 					<div class="col-lg-4 col-sm-6 offset-sm-3 offset-lg-0">
 						<div class="single-process">
 							<i class="bx bx-diamond" style="font-size:40px;color:#232350"></i>
-							<h3>Earn Reward</h3>
+							<h3>Earn Rewards</h3>
 							<p>
 								At Triab Global Resources, we believe in rewarding our members for their engagement and participation. With our Earn Reward program, you have the opportunity to earn rewards through various activities, whether it's making transactions, referring others, or engaging with our services. We ensure that your efforts are recognized and compensated, giving you a chance to earn valuable rewards as you use and share our platform.
 							 </p>
