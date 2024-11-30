@@ -37,6 +37,9 @@
 		<title>{{$title}}</title>
 		<style>@media screen and (min-width:992px){.m-auth{display:none;}}</style>
 		<style >
+		.nav-link:hover{
+			color:#ca91ff !important;
+		}
 		.gcon{
 		  border-color:#e6e6e6;
 		  min-height: 100px;
