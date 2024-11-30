@@ -53,13 +53,19 @@ class SettingsController extends Controller implements HasMiddleware
         $cashback = (float) $request->input('cashback');
         $discount = (float) $request->input('discount');
         $level = (int) $request->input('level');
-        $services = (array) $request->input('services');
 
-        
-        if (empty($services)) {
-            return ['error' => "Please select a service"]; 
+
+        $all_services = all_services();
+        $services = []; 
+
+        foreach($all_services as $service){
+            $count = $request->input($service, 0);
+            $services[$service] = (int) $count;
         }
-        
+
+        if(empty($services))
+            return ['error'=>'Please enter a service quantity'];
+
         Package::create([
             'name'      => $name,
             'cost'      => $cost,
@@ -77,7 +83,7 @@ class SettingsController extends Controller implements HasMiddleware
      */
     public function update_package(Request $request, string $id)
     {
-        $package = Package::find($id); 
+        $package = Package::find($id);
         if(!$package) return ['error'=>"Package not found"]; 
 
         $request->validate([
@@ -88,12 +94,21 @@ class SettingsController extends Controller implements HasMiddleware
             'cashback'=>['required']
         ]); 
 
-        $data = $request->only(['name', 'cost', 'discount', 'level', 'services', 'cashback']); 
+        $data = $request->only(['name', 'cost', 'discount', 'level', 'cashback']); 
         $data['max_gen'] = (int) $data['level'];
 
-        if( !isset($data['services']) || empty($data['services']) )
-            $data['services'] = ""; 
-        
+        $all_services = all_services();
+        $services = []; 
+
+        foreach($all_services as $service){
+            $count = $request->input($service, 0);
+            $services[$service] = (int) $count;
+        }
+
+        if(empty($services))
+            return ['error'=>'Please enter a service quantity'];
+
+        $data['services'] = $services; 
         $package->update($data);
         return ['success' => "Package updated"];
     }
@@ -119,20 +134,11 @@ class SettingsController extends Controller implements HasMiddleware
         $pv = $request->input('pv'); 
         $pv_price = $request->input('pv_price'); 
         $pv_to_token = $request->input('pv_to_token'); 
-        $triab_local_cost = $request->input('triab_local_cost'); 
-        $min_triab_local_package_cost = $request->input('min_triab_local_package_cost'); 
-        $triab_global_cost = $request->input('triab_global_cost'); 
-        $min_triab_global_package_cost = $request->input('min_triab_global_package_cost'); 
 
         set_register('cashback', $cashback); 
         set_register('pv', $pv); 
         set_register('pv_price', $pv_price); 
         set_register('pv_to_token', $pv_to_token); 
-
-        set_register('triab_local_cost', $triab_local_cost); 
-        set_register('min_triab_local_package_cost', $min_triab_local_package_cost); 
-        set_register('triab_global_cost', $triab_global_cost); 
-        set_register('min_triab_global_package_cost', $min_triab_global_package_cost); 
 
         return back()->with('success', 'Updated'); 
     }

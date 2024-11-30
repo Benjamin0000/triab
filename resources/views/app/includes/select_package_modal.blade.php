@@ -26,28 +26,25 @@
                                 </div>
                                 
                                 <div>
-                                    
-                                    @foreach($package->services as $service)
-                                        @if($service == E_SHOP)
-                                            <div class="services_name"><i class="fa fa-store" style="font-size: 12px"></i> E-Shop Space</div>
-                                        @endif 
+                                    @if($package->services) 
+                                        @foreach($package->services as $service => $max)
+                                            @if($service == E_SHOP)
+                                                <div class="services_name"><i class="fa fa-store" style="font-size: 12px"></i> {{$max}} E-Shop Space</div>
+                                            @endif 
 
-                                        @if($service == HOTEL)
-                                            <div class="services_name"><i class="fa fa-hotel" style="font-size: 12px"></i> Hotels Space</div>
-                                        @endif 
+                                            @if($service == HOTEL)
+                                                <div class="services_name"><i class="fa fa-hotel" style="font-size: 12px"></i> {{$max}} Hotels Space</div>
+                                            @endif 
 
-                                        @if($service == RESTAURANT)
-                                            <div class="services_name"><i class="fa fa-utensils" style="font-size: 12px"></i> Restaurant Space</div>
-                                        @endif 
+                                            @if($service == RESTAURANT)
+                                                <div class="services_name"><i class="fa fa-utensils" style="font-size: 12px"></i> {{$max}} Restaurant Space</div>
+                                            @endif 
 
-                                        @if($service == LOGISTICS)
-                                            <div class="services_name"><i class="fa fa-motorcycle" style="font-size: 12px"></i> Logistics Space</div>
-                                        @endif 
-
-                                        @if($service == HEALTH)
-                                            <div class="services_name"><i class="fa fa-heartbeat" style="font-size: 12px"></i> Health Insurance</div>
-                                        @endif 
-                                    @endforeach
+                                            @if($service == LOGISTICS)
+                                                <div class="services_name"><i class="fa fa-motorcycle" style="font-size: 12px"></i> {{$max}} Logistics Space</div>
+                                            @endif  
+                                        @endforeach
+                                    @endif 
                                 </div>
                                 <br>
                                 @if($user->package && $user->package->cost >= $package->cost)

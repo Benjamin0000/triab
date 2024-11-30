@@ -79,6 +79,8 @@ class DashboardController extends Controller implements HasMiddleware
         $user->package_id = $package->id;
         $user->save();
         credit_package_and_PV_ref_commission($user, $cost); 
+        //activate gsteam. 
+        
         return ['success'=>"Package selected"];
     }
 

@@ -42,16 +42,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="">Select Services</label>
-                        <p style="max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; white-space: normal;">
-                            @foreach($all_services as $name => $key)
-                                <label class="btn" style="margin-bottom:10px; background:#eee;">
-                                    {{ make_readable($name) }} &nbsp;
-                                    <input type="checkbox" @checked(in_array($key, $package->services)) name="services[]" value="{{ $key }}">
-                                </label>
-                            @endforeach
-                        </p>
+                    <div class="row">
+                        @foreach($all_services as $name)
+                            <div class="col-6">
+                                <label class="form-label">{{make_readable($name)}} (MAX)</label>
+                                <input type="number" name="{{$name}}" value="{{$package->services ? $package->services[$name] : 0}}" placeholder="0" class="form-control">
+                            </div>
+                        @endforeach
                     </div>
                     
                    

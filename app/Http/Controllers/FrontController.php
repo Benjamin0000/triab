@@ -35,9 +35,4 @@ class FrontController extends Controller
     {
         return view('front.about');  
     }
-
-    public function login(Request $request)
-    {
-        return $request->all(); 
-    }
 }

@@ -7,8 +7,6 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TriabWheelController; 
 use App\Http\Middleware\EnsureUserHasPackage; 
 
-
-
 Route::get('/', [FrontController::class, 'index'])->name('front.welcome');
 Route::get('/services', [FrontController::class, 'services'])->name('front.services');
 Route::get('/about', [FrontController::class, 'about'])->name('front.about');
@@ -30,6 +28,9 @@ Route::get('/reset/{token}/{email}', [AuthController::class, 'show_change_passwo
 Route::post('/update-password', [AuthController::class, 'change_password'])->name('change_password'); 
 
 
+
+
+
 #Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index'); 
 Route::get('/trx-history', [DashboardController::class, 'load_more_transactions'])->name('dashboard.trx_history'); 
@@ -45,6 +46,8 @@ Route::post('/main/settings/packages', [SettingsController::class, 'create_packa
 Route::put('/main/settings/package/{id}', [SettingsController::class, 'update_package'])->name('admin.package.update'); 
 Route::delete('/main/settings/package/{id}', [SettingsController::class, 'destroy_package'])->name('admin.package.destroy');
 Route::post('/main/settings/update_parameters', [SettingsController::class, 'update_package_parameters'])->name('admin.package.update_parameters');
+
+
 
 //reward settings
 Route::get('/main/reward', [SettingsController::class, 'reward_settings'])->name('admin.reward.settings'); 

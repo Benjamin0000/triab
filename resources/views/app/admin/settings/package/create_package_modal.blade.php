@@ -35,7 +35,6 @@
                             <input name="discount" type="number" step="any" class="form-control" required/>                        
                         </div>
                     </div>
-                   
                     
                     <div class="form-group">
                         <label class="form-label">Earning Level</label>
@@ -44,19 +43,14 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="">Select Services</label>
-                        <p>
-                            @foreach($all_services as $name=>$key)
-                                <label class="btn" style="margin-bottom:10px;background:#eee">
-                                    {{make_readable($name)}} &nbsp;
-                                    <input type="checkbox" name="services[]" value="{{$key}}">
-                                </label>
-                            @endforeach
-                        </p> 
+                    <div class="row">
+                        @foreach($all_services as $name)
+                            <div class="col-6">
+                                <label class="form-label">{{make_readable($name)}} (MAX)</label>
+                                <input type="number" name="{{$name}}" value="0" placeholder="0" class="form-control">
+                            </div>
+                        @endforeach
                     </div>
-                   
-
 
                     <div class="msg"></div>
                     <div class="form-group">

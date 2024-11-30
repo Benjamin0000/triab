@@ -5,18 +5,25 @@ use App\Models\TrxHistory;
 use App\Models\Token\EmailToken;
 use App\Models\Token\PasswordToken;
 use App\Models\WheelGlobal;
-use App\Models\WheelLocal;
 
 //package services code. 
-const E_SHOP = 1;
-const HOTEL = 2; 
-const RESTAURANT = 3; 
-const LOGISTICS = 4; 
-const HEALTH = 5; 
+const E_SHOP = 'e-shop';
+const HOTEL = 'hotel';
+const RESTAURANT = 'restaurant';
+const LOGISTICS = 'logistics';
 
 const CREDIT = 1;
 const DEBIT = 0;
 
+function all_services()
+{
+    return [
+        E_SHOP,
+        HOTEL,
+        RESTAURANT,
+        LOGISTICS
+    ]; 
+}
 
 function default_user()
 {
@@ -24,24 +31,11 @@ function default_user()
     return $user = User::where('email', $email)->first(); 
 }
 
-function all_services()
-{
-    return [
-        'e-shop'=>E_SHOP, 
-        'hotel'=>HOTEL,
-        'restaurant'=>RESTAURANT, 
-        'logistics'=>LOGISTICS, 
-        'health_insurance'=>HEALTH
-    ]; 
-}
-
-
 function make_readable($text)
 {
     $text = str_replace('_', ' ', $text);
     return $text = ucwords($text);
 }
-
 
 function getPositionWithSuffix(int $number): string
 {
@@ -185,7 +179,7 @@ function credit_package_and_PV_ref_commission(User $user, float $amt, int $step=
 function placeUserInMatrix(User $user, User $referrer)
 {
     // Find placement within the referrer's tree
-    $placement = $this->findPlacementUser($referrer);
+    $placement = findPlacementUser($referrer);
 
     if ($placement) {
         // Update the user's placed_under column
@@ -208,7 +202,7 @@ function findPlacementUser(User $referrer)
         // Check if the current user has fewer than 3 children
         $childCount = User::where('placed_under', $current->id)->count();
 
-        if ($childCount < 3) {
+        if ($childCount < 2) {
             return $current; // Found a valid placement
         }
 
@@ -237,6 +231,7 @@ function run_wheel_global()
     $stages = 2;
     $max_times = 6;
     $last_stage_level_times = 2; 
+    
     $stage1 = [2000, 8000, 30000];
     $stages2 = [3500, 15000, 50000];
 
@@ -305,5 +300,3 @@ function run_wheel_global()
         }
     }
 }
-
-

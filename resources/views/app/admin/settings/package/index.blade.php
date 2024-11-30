@@ -9,9 +9,7 @@
             </div>
         </div>
     </div>
-
     @include('app.admin.settings.package.create_package_modal')
-
     <form method="POST" action="{{route('admin.package.update_parameters')}}">
         <div class="row">
             <div class="col-md-4">
@@ -28,56 +26,17 @@
                 <input value="{{get_register('pv_price')}}" type="number" name="pv_price" class="form-control">
             </div>
         </div>
-        <br>
-        <h5>Triab Community Settings</h5>
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <h6>Local</h6>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="">Cost ({{currency_symbol()}})</label>
-                            <input class="form-control" type="number" step="any" name="triab_local_cost" value="{{get_register('triab_local_cost')}}">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="">Min Package Cost</label>
-                            <input class="form-control" type="number" step="any" name="min_triab_local_package_cost" value="{{get_register('min_triab_local_package_cost')}}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h6>Global</h6>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="">Cost ({{currency_symbol()}})</label>
-                            <input class="form-control" type="number" step="any" name="triab_global_cost" value="{{get_register('triab_global_cost')}}">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="">Min Package Cost</label>
-                            <input class="form-control" type="number" step="any" name="min_triab_global_package_cost" value="{{get_register('min_triab_global_package_cost')}}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <div>
             <br>
             <button class="btn btn-primary">UPDATE</button>
         </div>
     </form>
-
     <br>
     <br>
     <div class="row">
         <div class="col">
-            <h6>All Packages </h6>
+            <h6>All Packages</h6>
         </div>
         <div class="col text-end">
             <a style="margin-bottom:10px" data-bs-toggle='modal' data-bs-target='#create_package' href="#" class="badge bg-primary">Create Package</a>
@@ -111,10 +70,8 @@
                         <td>{{$package->max_gen}}</td>
                         <td>
                             @if(!empty($package->services))
-                                @foreach($all_services as $name => $key)
-                                    @if(in_array($key, $package->services))
-                                        <span class="badge bg-secondary">{{make_readable($name)}}</span>
-                                    @endif 
+                                @foreach($package->services as $name => $max)
+                                    <span class="badge bg-secondary">{{make_readable($name)."($max)"}}</span>
                                 @endforeach 
                             @else  
                                 --
