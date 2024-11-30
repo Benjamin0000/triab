@@ -148,13 +148,13 @@ Our platform is designed to create wealth for people from all walks of life, off
 		</section>
 
 	
-		<section class="process-area bg-color pt-100 pb-70" id="partners">
+		{{-- <section class="process-area bg-color pt-100 pb-70" id="partners">
 			<div class="container">
 				<div class="section-title">
 					<h2>Our Partners</h2>
 				</div>
 			</div>
-		</section>
+		</section> --}}
 
 		<!-- Start Prevent Area Area -->
 		<section class="prevent-area-two pt-100 pb-100">
