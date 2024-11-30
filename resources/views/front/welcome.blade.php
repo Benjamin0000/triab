@@ -49,11 +49,11 @@
 								</li>
 								<li>
 									<i class="flaticon-checked-1"></i>
-									(VTU) services
+									(VTU) Services
 								</li>
 								<li>
 									<i class="flaticon-checked-1"></i>
-									E-shop services
+									E-shop Services
 								</li>
                                 <li>
 									<i class="flaticon-checked-1"></i>
