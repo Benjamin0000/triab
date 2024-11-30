@@ -299,3 +299,7 @@
         display: none !important;
     }
 }
+
+.nav-link:hover{
+    color:#ca91ff !important;
+}
