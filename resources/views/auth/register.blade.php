@@ -6,7 +6,7 @@
             <img class="logo-img logo-img-lg" src="/assets/frontpage/img/logo.png" alt="logo">
         </a>
     </div>
-    <div class="row justify-content-center" style="margin:20px">
+    <div class="row justify-content-center" >
         <div class="col-lg-5 col-md-6 bg-white p-3" style="border-radius: 10px">
         @if(session('success'))
             <div>
@@ -76,7 +76,8 @@
                                 <label class="form-label">Sponsor</label>
                             </div>
                             <div class="form-control-wrap"><input autocomplete="off" value='{{old('sponsor')}}' type="text" name="sponsor" class="form-control form-control-lg" placeholder="Triab ID"></div>        
-                        {{-- </div> --}}
+                            
+                            {{-- </div> --}}
                         {{-- <div class="col-md-6">
                             <div class="d-lg-none d-md-none d-sm-block"><br></div>
                             <div class="form-label-group">
@@ -86,6 +87,14 @@
                         </div> --}}
                     {{-- </div> --}}
                 </div> 
+                <div class="form-group">
+                    <label for="">
+                        <input type="checkbox" value="0" name="terms" style="height: 14px; width:14px"  required>
+                        <span style="margin-top:-20px;">Accept Our Terms & Condition.</span>
+                    </label>
+                    <a href="/terms" target="_blank"> &nbsp; Read</a>
+                </div>
+
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Sign up</button>
                 </div>

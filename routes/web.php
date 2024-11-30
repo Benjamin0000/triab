@@ -12,6 +12,8 @@ use App\Http\Middleware\EnsureUserHasPackage;
 Route::get('/', [FrontController::class, 'index'])->name('front.welcome');
 Route::get('/services', [FrontController::class, 'services'])->name('front.services');
 Route::get('/about', [FrontController::class, 'about'])->name('front.about');
+Route::get('/terms', [FrontController::class, 'terms'])->name('front.terms');
+Route::get('/privacy', [FrontController::class, 'privacy'])->name('front.privacy'); 
 
 #authentication 
 Route::get('/login', [AuthController::class, 'login_form'])->name('login');

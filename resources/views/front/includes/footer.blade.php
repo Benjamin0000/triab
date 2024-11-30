@@ -74,6 +74,18 @@
 										About Us
 									</a>
 								</li>
+								<li>
+									<a href="{{route('front.terms')}}">
+										<i class="bx bx-chevrons-right"></i>
+										Terms & Condition
+									</a>
+								</li>
+								<li>
+									<a href="{{route('front.privacy')}}">
+										<i class="bx bx-chevrons-right"></i>
+										Privacy Policy
+									</a>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -87,12 +99,12 @@
 									<a href="tel:Phone:+2348027755940">
 										<i class="bx bx-phone-call"></i>
 										<span>Hotline:</span>
-										Phone: +234802 775 5940
+										Phone: +234 802 775 5940
 									</a>
 								</li>
 
 								<li class="pl-0">
-									<a href="mailto:hello@surety.com">
+									<a href="mailto:support@triab.online">
 										<i class="bx bx-envelope"></i>
 										<span>Email:</span>
 										support@triab.online

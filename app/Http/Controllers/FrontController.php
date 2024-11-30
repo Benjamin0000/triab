@@ -21,6 +21,16 @@ class FrontController extends Controller
         return view('front.services'); 
     }
 
+    public function terms()
+    {
+        return view('front.terms'); 
+    }
+
+    public function privacy()
+    {
+        return view('front.privacy'); 
+    }
+
     public function about()
     {
         return view('front.about');  

@@ -1,9 +1,9 @@
-@include('front.includes.header', ['title'=>'Triab Global Resources | Services'])
+@include('front.includes.header', ['title'=>'About Triab Global Resources'])
 <!-- Start Page Title Area -->
 <div class="page-title-area bg-14">
     <div class="container">
         <div class="page-title-content">
-            <h2>Our Services</h2>
+            <h2>About Us</h2>
             <ul>
                 <li>
                     <a href="/">

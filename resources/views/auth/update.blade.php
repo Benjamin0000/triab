@@ -6,7 +6,7 @@
             <img class="logo-img logo-img-lg" src="/assets/frontpage/img/logo.png" alt="logo">
         </a>
     </div>
-    <div class="row justify-content-center" style="margin:20px">
+    <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 bg-white p-3" style="border-radius: 10px">
             <br>
             <h4 class="text-center">Change Password</h4>
