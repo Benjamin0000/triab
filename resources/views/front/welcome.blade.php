@@ -53,19 +53,19 @@
 								</li>
 								<li>
 									<i class="flaticon-checked-1"></i>
-									 Restaurants
-								</li>
-								<li>
-									<i class="flaticon-checked-1"></i>
-									E-commerce services
+									E-shop services
 								</li>
                                 <li>
 									<i class="flaticon-checked-1"></i>
-									Hotels
+									POS Services
 								</li>
                                 <li>
 									<i class="flaticon-checked-1"></i>
 									Logistics
+								</li>
+								<li>
+									<i class="flaticon-checked-1"></i>
+									Education
 								</li>
 							</ul>
 
