@@ -77,7 +77,7 @@
 								<li>
 									<a href="tel:+2348027755940">
 										<i class="bx bx-phone-call"></i>
-										Call Us: +2348027755940
+										Call Us: +234 802 775 5940
 									</a>
 								</li>
 							</ul>
@@ -122,19 +122,19 @@
 										</li>
 
 										<li class="nav-item">
-											<a href="" class="nav-link">
+											<a href="{{route('front.services')}}" class="nav-link">
 												Our Services
 											</a>
 										</li>
 
 										<li class="nav-item">
-											<a href="#how_it_works" class="nav-link">
+											<a href="/#how_it_works" class="nav-link">
 												How It Works
 											</a>
 										</li>
 
 										<li class="nav-item">
-											<a href="" class="nav-link">About Us</a>
+											<a href="{{route('front.about')}}" class="nav-link">About Us</a>
 										</li>
 
 

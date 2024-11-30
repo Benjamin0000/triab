@@ -57,19 +57,19 @@
 									</a>
 								</li>
 								<li>
-									<a href="">
+									<a href="{{route('front.services')}}">
 										<i class="bx bx-chevrons-right"></i>
 										Our Services
 									</a>
 								</li>
 								<li>
-									<a href="">
+									<a href="/#how_it_works">
 										<i class="bx bx-chevrons-right"></i>
 										How It Works
 									</a>
 								</li>
 								<li>
-									<a href="">
+									<a href="{{route('front.about')}}">
 										<i class="bx bx-chevrons-right"></i>
 										About Us
 									</a>

@@ -3,15 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class TriabWheelController extends Controller
+class TriabWheelController extends Controller implements HasMiddleware
 {
+     /**
+     * Get the middleware that should be assigned to the controller.
+     */
+    public static function middleware(): array
+    {
+        return [
+           'auth'
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('app.community.index'); 
     }
 
     /**

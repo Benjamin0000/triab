@@ -42,7 +42,7 @@
                     </li>
 
                     <li class="nk-menu-item">
-                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                        <a href="{{route('community.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon fa fa-users"></em></span><span class="nk-menu-text">Triab Community</span>
                         </a>
                     </li>

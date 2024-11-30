@@ -4,12 +4,14 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\TriabWheelController; 
 use App\Http\Middleware\EnsureUserHasPackage; 
 
 
+
 Route::get('/', [FrontController::class, 'index'])->name('front.welcome');
-
-
+Route::get('/services', [FrontController::class, 'services'])->name('front.services');
+Route::get('/about', [FrontController::class, 'about'])->name('front.about');
 
 #authentication 
 Route::get('/login', [AuthController::class, 'login_form'])->name('login');
@@ -30,6 +32,9 @@ Route::post('/update-password', [AuthController::class, 'change_password'])->nam
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index'); 
 Route::get('/trx-history', [DashboardController::class, 'load_more_transactions'])->name('dashboard.trx_history'); 
 Route::post('/ykMbJXg2QRnlBZvxCZb', [DashboardController::class, 'select_package'])->name('dashboard.select_package');
+
+#community
+Route::get('/community', [TriabWheelController::class, 'index'])->name('community.index');
 
 #main admin
 Route::get('/main/settings',  [SettingsController::class, 'index'])->name('admin.settings');

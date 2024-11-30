@@ -234,158 +234,76 @@ function run_placement()
 
 function run_wheel_global()
 {
-    $stages = 5;
-    $stage_amts = [2000, 7000, 22000, 57000, 192000];
-    $max_times = 5;
+    $stages = 2;
+    $max_times = 6;
+    $last_stage_level_times = 2; 
+    $stage1 = [2000, 8000, 30000];
+    $stages2 = [3500, 15000, 50000];
+
+    $levels = 3;  
+    $refs_per_level = 2; 
+
 
     for ($stage = 1; $stage <= $stages; $stage++) {
-        $giver = WheelGlobal::where([
-            ['stage', $stage],
-            ['giving', 1],
-            ['status', 0]
-        ])->oldest()->first();
 
-        if (!$giver) {
-            continue; // No giver available, skip to the next stage
-        }
+        for ($level = 1; $level <= $levels; $level++){
 
-        $receiver = WheelGlobal::where([
-            ['stage', $stage],
-            ['giving', 0],
-            ['status', 0]
-        ])->oldest()->first();
+            $giver = WheelGlobal::where([
+                ['stage', $stage],
+                ['level', $level], 
+                ['giving', 1],
+                ['status', 0],
+            ])->oldest()->first();
 
-        if (!$receiver) {
-            continue; // No receiver available, skip to the next stage
-        }
-
-        $amount = $stage_amts[$stage - 1];
-
-        // Process giver
-        $giver->pending_balance -= $amount;
-        $giver->giving = 0;
-        $giver->save();
-
-        // Process receiver
-        $receiver->pending_balance += $amount;
-        $receiver->times_received++;
-
-        if ($receiver->times_received >= $max_times) {
-            $next_stage = $stage + 1;
-
-            if ($next_stage > $stages) {
-                // Final stage: Transfer all pending balance to main balance
-                $receiver->main_balance += $receiver->pending_balance;
-                $receiver->pending_balance = 0;
-                $receiver->status = 1; // Mark as completed
-            } else {
-                // Advance to the next stage
-                $receiver->main_balance += $receiver->pending_balance - $stage_amts[$stage];
-                $receiver->pending_balance = $stage_amts[$stage];
-                $receiver->stage = $next_stage;
-                $receiver->giving = 1; // Become a giver in the next stage
+            if (!$giver) {
+                continue; // No giver available, skip to the next stage
             }
-        }
 
-        $receiver->save();
-    }
-}
+            $required_refs = $stage+$level * $refs_per_level;
 
+            $receiver = WheelGlobal::where([
+                ['stage', $stage],
+                ['level', $level],
+                ['giving', 0],
+                ['status', 0], 
+                ['total_refs', '>=', $required_refs]
+            ])->oldest()->first();
 
+            if (!$receiver) {
+                continue; // No receiver available, skip to the next stage
+            }
 
+            $amount = $stage_amts[$stage - 1];
 
+            // Process giver
+            $giver->pending_balance -= $amount;
+            $giver->giving = 0;
+            $giver->save();
 
-function run_wheel_local()
-{
-    $stages = 5;
-    $stage_amts = [2000, 7000, 22000, 57000, 192000];
-    $max_times = 5;
+            // Process receiver
+            $receiver->pending_balance += $amount;
+            $receiver->times_received++;
 
-    for ($stage = 1; $stage <= $stages; $stage++) {
-        $givers = WheelLocal::where([
-            ['stage', $stage],
-            ['giving', 1],
-            ['status', 0]
-        ])->oldest()->get();
+            if ($receiver->times_received >= $max_times) {
+                $next_stage = $stage + 1;
 
-        foreach ($givers as $giver) {
-            // Traverse the 3x3 matrix to find the eligible receiver
-            $receiver = find_eligible_receiver($giver, $stage);
-
-            if ($receiver) {
-                $amount = $stage_amts[$stage - 1];
-
-                // Process giver
-                $giver->pending_balance -= $amount;
-                $giver->giving = 0;
-                $giver->save();
-
-                // Process receiver
-                $receiver->pending_balance += $amount;
-                $receiver->times_received++;
-
-                if ($receiver->times_received >= $max_times) {
-                    $next_stage = $stage + 1;
-
-                    if ($next_stage > $stages) {
-                        // Final stage: Transfer all pending balance to main balance
-                        $receiver->main_balance += $receiver->pending_balance;
-                        $receiver->pending_balance = 0;
-                        $receiver->status = 1; // Mark as completed
-                    } else {
-                        // Advance to the next stage
-                        $receiver->main_balance += $receiver->pending_balance - $stage_amts[$stage];
-                        $receiver->pending_balance = $stage_amts[$stage];
-                        $receiver->stage = $next_stage;
-                        $receiver->giving = 1; // Become a giver in the next stage
-                    }
+                if ($next_stage > $stages) {
+                    // Final stage: Transfer all pending balance to main balance
+                    $receiver->main_balance += $receiver->pending_balance;
+                    $receiver->pending_balance = 0;
+                    $receiver->status = 1; // Mark as completed
+                } else {
+                    // Advance to the next stage
+                    $receiver->main_balance += $receiver->pending_balance - $stage_amts[$stage];
+                    $receiver->pending_balance = $stage_amts[$stage];
+                    $receiver->stage = $next_stage;
+                    $receiver->giving = 1; // Become a giver in the next stage
                 }
-
-                $receiver->save();
             }
+
+            $receiver->save();
         }
     }
 }
 
-/**
- * Finds the most eligible receiver within the 3x3 matrix.
- *
- * @param WheelLocal $giver
- * @param int $stage
- * @return WheelLocal|null
- */
-function find_eligible_receiver(WheelLocal $giver, int $stage)
-{
-    // Start with the `placed_under` value to find receivers in the same matrix
-    $queue = collect([$giver->placed_under]);
-    $visited = collect(); // To avoid re-checking the same users
-
-    while ($queue->isNotEmpty()) {
-        $current_id = $queue->shift();
-
-        if ($visited->contains($current_id)) {
-            continue;
-        }
-        $visited->push($current_id);
-
-        // Find eligible receiver directly placed under this user
-        $receiver = WheelLocal::where([
-            ['placed_under', $current_id],
-            ['stage', $stage],
-            ['giving', 0],
-            ['status', 0]
-        ])->oldest()->first();
-
-        if ($receiver) {
-            return $receiver; // Found the most eligible receiver
-        }
-
-        // Add all users placed under the current user to the queue for further traversal
-        $queue = $queue->merge(
-            WheelLocal::where('placed_under', $current_id)->pluck('id')->toArray()
-        );
-    }
-
-    return null; // No eligible receiver found
-}
 

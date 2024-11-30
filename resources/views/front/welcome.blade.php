@@ -45,7 +45,7 @@
 							<ul>
                                 <li>
 									<i class="flaticon-checked-1"></i>
-									Financial services
+									Bills payments
 								</li>
 								<li>
 									<i class="flaticon-checked-1"></i>
@@ -90,157 +90,68 @@
 		<section class="process-area bg-color pt-100 pb-70" id="how_it_works">
 			<div class="container">
 				<div class="section-title">
-					<h2>Triab is best for you</h2>
+					<h2>How it works</h2>
+				</div>
+				<div>
 					<p>
-						Our system is designed with a 4 by 15 compensation plan
-						partern with different reward
-						partern that keeps you earning all the way but
-						you must ensure no one leg generates more than 40%
-						of your total activity.
+						You earn rewards for paying for everyday products and services such as airtime, data, utility bills, and cable TV subscriptions. Additionally, you can earn by referring others to use or purchase these same essential products and services. The profits are no longer exclusive to merchants—you get to share in them.
+
+We leverage referral systems, multi-level structures, and affiliate marketing to empower our members with financial freedom, allowing them to benefit from the billions spent daily on airtime and other virtual products in Nigeria and the other countries where we operate.
+
+Our platform is designed to create wealth for people from all walks of life, offering a safe and secure environment to build life-changing income opportunities.
 					 </p>
 				</div>
+				<br>
 
 				<div class="row">
 					<div class="col-lg-4 col-sm-6">
 						<div class="single-process">
-
-							<i class="flaticon-couch" style="font-size:45px"></i>
-							<h3>Personal peformance point (PPP) / 50k Club</h3>
+							<i class="bx bx-rocket" style="font-size:40px;color:#232350;"></i>
+							<h3>Swift Services</h3>
 							<p>
-								When the number of people you sponsor directly equals
-								or greater than 50 persons in 90days you earn an instant
-								reward of 20k and join the 50k Club where you earn
-								50k at every circle. If you don't make it within the 90days you can reactivate
-								with a grace period of 3months.
+								At Triab Global Resources, we prioritize speed and efficiency in every transaction. Our Swift Services ensure that all your transactions are processed quickly and seamlessly, using the latest technologies to guarantee a smooth experience. Whether it's payments, transfers, or any other service, we leverage cutting-edge tools to deliver fast, reliable results. With our advanced infrastructure, we make sure you can perform your transactions with ease, anytime, anywhere, without any delays.
 							</p>
-							{{-- <a class="read-more">
-								<i class="bx bx-plus"></i>
-							</a> --}}
+							
 						</div>
 					</div>
 
 					<div class="col-lg-4 col-sm-6">
 						<div class="single-process">
 
-							<i class="flaticon-couch" style="font-size:40px"></i>
-							<h3>Super associate</h3>
+							<i class="bx bxs-lock-alt" style="font-size:40px;color:#232350"></i>
+							<h3>Secure Transactions</h3>
 							<p>
-								You achieve your no point loss reward if you achieve your Super Associate rank (15,000 GPV)
-								 in 90days. If you're unable to meet up you can reactivate and get
-								a grace period of 90days.
+								At Triab Global Resources, we prioritize your security. Our Secure Transactions ensure that all your financial activities are protected with state-of-the-art encryption and security measures. We use the latest technologies to safeguard your data, providing you with a safe and trustworthy environment to perform your transactions confidently. Whether you're making payments, transfers, or any other transaction, you can rest assured that your information is fully protected at every step.
 							</p>
-							<br>
-							<br>
-							<br>
-							<br>
-							{{-- <a class="read-more">
-								<i class="bx bx-plus"></i>
-							</a> --}}
 						</div>
 					</div>
 
 					<div class="col-lg-4 col-sm-6 offset-sm-3 offset-lg-0">
 						<div class="single-process">
-							<i class="flaticon-couch" style="font-size:40px"></i>
-							<h3>GSTeam Wheel</h3>
+							<i class="bx bx-diamond" style="font-size:40px;color:#232350"></i>
+							<h3>Earn Reward</h3>
 							<p>
-								This is where members support each other to circle out a project fund.
+								At Triab Global Resources, we believe in rewarding our members for their engagement and participation. With our Earn Reward program, you have the opportunity to earn rewards through various activities, whether it's making transactions, referring others, or engaging with our services. We ensure that your efforts are recognized and compensated, giving you a chance to earn valuable rewards as you use and share our platform.
 							 </p>
-							 <br>
- 							<br>
- 							<br>
- 							<br>
-							<br>
-							<br>
-							<br>
-							{{-- <a class="read-more">
-								<i class="bx bx-plus"></i>
-							</a> --}}
+							 
+							
 						</div>
 					</div>
 				</div>
+
+				<p class="text-center">
+					<a class="default-btn" href="/register">
+						Get started now
+					</a>
+				 </p>
 			</div>
 		</section>
 
-		<section class="process-area bg-color pt-100 pb-70">
+	
+		<section class="process-area bg-color pt-100 pb-70" id="partners">
 			<div class="container">
 				<div class="section-title">
-					<h2>Grow More, Get More</h2>
-					<p>
-						Attain the diffirent levels of membership and
-			      enjoy instant rewards, Leadership monthly payment and
-						no collateral interest free loan. Please note you must
-						be on the VIP package to enjoy all your rewards.
-					</p>
-				</div>
-
-				<div class="row">
-					<div class="col-lg-4 col-sm-6">
-						<div class="single-process" style="background-color:#232350; color: white">
-
-							<i class="flaticon-windows" style="font-size:45px"></i>
-							<h3 style="color:white">SUPER ASSOCIATE</h3>
-							<p>Whenever an associate's cumulative point value (CPV) equals or greater than 15,000 points he/she attains the super associate level.</p>
-
-							<span>01</span>
-						</div>
-					</div>
-
-					<div class="col-lg-4 col-sm-6">
-						<div class="single-process" style="background-color:#232350; color: white">
-
-							<i class="flaticon-windows" style="font-size:40px"></i>
-							<h3 style="color:white">SENIOR ASSOCIATE</h3>
-							<p> When a super associate's cumulative point value (CPV) equals or greater than 70,000 points he/she attains the senior associate level</p>
-
-							<span>02</span>
-						</div>
-					</div>
-
-					<div class="col-lg-4 col-sm-6 offset-sm-3 offset-lg-0">
-						<div class="single-process" style="background-color:#232350; color: white">
-
-							<i class="flaticon-windows" style="font-size:40px"></i>
-							<h3 style="color:white">ASSISTANT MANAGER</h3>
-							<p>When a senior associate's cumulative point value (CPV) equals or greater than 100,000 points he/she attains the assistant manager level</p>
-
-							<span>03</span>
-						</div>
-					</div>
-					<div class="col-lg-4 col-sm-6 offset-sm-3 offset-lg-0">
-						<div class="single-process" style="background-color:#232350; color: white">
-
-							<i class="flaticon-windows" style="font-size:40px"></i>
-							<h3 style="color:white"> MANAGER</h3>
-							<p>When an assistant manager's cumulative point value (CPV) equals or greater than 250,000 point he/she attains the manager level. </p>
-							<br><br>
-							<span>04</span>
-						</div>
-					</div>
-					<div class="col-lg-4 col-sm-6 offset-sm-3 offset-lg-0">
-						<div class="single-process" style="background-color:#232350; color: white">
-
-							<i class="flaticon-windows" style="font-size:40px"></i>
-							<h3 style="color:white">1 STAR MANAGER</h3>
-							<p>When a manager's cumulative point value (CPV) equals or greater than 500,000 he/she attains a 1 STAR MANAGER</p>
-							<br><br><br>
-							<span>05</span>
-						</div>
-					</div>
-					<div class="col-lg-4 col-sm-6 offset-sm-3 offset-lg-0">
-						<div class="single-process" style="background-color:#232350; color: white">
-
-							<i class="flaticon-windows" style="font-size:40px"></i>
-							<h3 style="color:white"> 2 STAR MANAGER</h3>
-							<h3 style="color:white"> 3 STAR MANAGER</h3>
-							<h3 style="color:white"> 4 STAR MANAGER</h3>
-							<h3 style="color:white"> 5 STAR MANAGER</h3>
-							<h3 style="color:white"> DIRECTOR</h3>
-							{{-- <p>When a director cumulative point value (CPV) equals or greater than 1,200,000. They become executive director and their account upgraded to achievers circle account where they earn ₦1000,000 and an international trip for every 60,000pv.</p> --}}
-
-							<span>06</span>
-						</div>
-					</div>
+					<h2>Our Partners</h2>
 				</div>
 			</div>
 		</section>

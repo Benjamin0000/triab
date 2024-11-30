@@ -2188,12 +2188,12 @@ About Area Two Style
   background-color: #f0f0fe;
   padding: 10px 20px;
   padding-left: 45px;
-  cursor: pointer;
+  /* cursor: pointer; */
   border-radius: 4px;
   z-index: 1;
   color: #232350;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
+  /* -webkit-transition: all 0.5s;
+  transition: all 0.5s; */
 }
 
 .about-area-two .about-content-two ul li::before {
@@ -2203,11 +2203,11 @@ About Area Two Style
   right: 0;
   width: 0;
   height: 100%;
-  background-color: #ca91ff;
+  /* background-color: #ca91ff; */
   z-index: -1;
   border-radius: 4px;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
+  /* -webkit-transition: all 0.5s;
+  transition: all 0.5s; */
 }
 
 .about-area-two .about-content-two ul li:last-child {
@@ -2219,17 +2219,17 @@ About Area Two Style
   position: absolute;
   top: 10px;
   left: 20px;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
+  /* -webkit-transition: all 0.5s;
+  transition: all 0.5s; */
 }
 
-.about-area-two .about-content-two ul li:hover {
+/* .about-area-two .about-content-two ul li:hover {
   color: #ffffff;
 }
 
 .about-area-two .about-content-two ul li:hover i {
   color: #ffffff;
-}
+} */
 
 .about-area-two .about-content-two ul li:hover::before {
   width: 100%;
