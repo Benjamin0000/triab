@@ -14,15 +14,14 @@ return new class extends Migration
         Schema::create('wheel_globals', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->indexed();
-            $table->uuid('ref_by')->nullable()->indexed();
             $table->decimal('main_balance')->default(0);
             $table->decimal('pending_balance')->default(0);
-            $table->integer('level')->default(1);
             $table->integer('stage')->default(1);
+            $table->integer('level')->default(1);
             $table->integer('times_received')->default(0);
             $table->integer('total_refs')->default(0);
             $table->boolean('giving');
-            $table->tinyInteger('status')->default(0);
+            $table->boolean('default')->default(0); 
             $table->timestamps();
         });
     }

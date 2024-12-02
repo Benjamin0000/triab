@@ -226,77 +226,157 @@ function run_placement()
     }
 }
 
-function run_wheel_global()
+function set_stage_left_funds($amt)
 {
-    $stages = 2;
+    $total = (float)get_register('level_left_funds');
+    $total += $amt; 
+    set_register('level_left_funds', $total); 
+}
+
+
+function run_wheel_funding(array $levels, int $stage, float $next_stage_amt, float $exit_amt)
+{
     $max_times = 6;
-    $last_stage_level_times = 2; 
-    
-    $stage1 = [2000, 8000, 30000];
-    $stages2 = [3500, 15000, 50000];
+    $total_levels = 4;
+    for($level = 1; $level <= $total_levels; $level++){
 
-    $levels = 3;  
-    $refs_per_level = 2; 
+        $data = $levels[$level - 1];
+        $amount = $data['amt']; 
+        $total_refs = $data['total_refs']; 
 
+        $giver = WheelGlobal::where([
+            ['stage', $stage],
+            ['level', $level],
+            ['giving', 1]
+        ])->oldest()->first();
 
-    for ($stage = 1; $stage <= $stages; $stage++) {
+        if (!$giver) 
+            continue; // No giver available, skip to the next level
 
-        for ($level = 1; $level <= $levels; $level++){
+        $receiver = WheelGlobal::where([
+            ['stage', $stage],
+            ['level', $level],
+            ['giving', 0],
+            ['total_refs', '>=', $total_refs],
+            ['times_received', '<', $max_times]
+        ])->oldest()->first();
 
-            $giver = WheelGlobal::where([
-                ['stage', $stage],
-                ['level', $level], 
-                ['giving', 1],
-                ['status', 0],
-            ])->oldest()->first();
+        if (!$receiver) 
+            continue; // No receiver available, skip to the next level
 
-            if (!$giver) {
-                continue; // No giver available, skip to the next stage
+        // Process giver
+        $giver->pending_balance -= $amount;
+        $giver->giving = 0;
+        $giver->save();
+
+        // Process receiver
+        $receiver->pending_balance += $amount;
+        $receiver->times_received++;
+
+        if ($receiver->times_received >= $max_times) {
+            $next_level = $level + 1;
+
+            if ($next_level > $total_levels) {
+                $receiver->stage += 1; //Advance to the next stage.
+                $receiver->level = 1;
+                $receiver->main_balance += $exit_amt;
+                $amt_left = $receiver->pending_balance - $exit_amt - $next_stage_amt; 
+                $receiver->pending_balance = $next_stage_amt;
+                set_stage_left_funds($amt_left);
+            } else {
+                // Advance to the next level
+                $next_level_amt = $levels[$level]['amt'];
+                $receiver->main_balance += $receiver->pending_balance - $next_level_amt;
+                $receiver->pending_balance = $next_level_amt;
+                $receiver->level = $next_level;
             }
-
-            $required_refs = $stage+$level * $refs_per_level;
-
-            $receiver = WheelGlobal::where([
-                ['stage', $stage],
-                ['level', $level],
-                ['giving', 0],
-                ['status', 0], 
-                ['total_refs', '>=', $required_refs]
-            ])->oldest()->first();
-
-            if (!$receiver) {
-                continue; // No receiver available, skip to the next stage
-            }
-
-            $amount = $stage_amts[$stage - 1];
-
-            // Process giver
-            $giver->pending_balance -= $amount;
-            $giver->giving = 0;
-            $giver->save();
-
-            // Process receiver
-            $receiver->pending_balance += $amount;
-            $receiver->times_received++;
-
-            if ($receiver->times_received >= $max_times) {
-                $next_stage = $stage + 1;
-
-                if ($next_stage > $stages) {
-                    // Final stage: Transfer all pending balance to main balance
-                    $receiver->main_balance += $receiver->pending_balance;
-                    $receiver->pending_balance = 0;
-                    $receiver->status = 1; // Mark as completed
-                } else {
-                    // Advance to the next stage
-                    $receiver->main_balance += $receiver->pending_balance - $stage_amts[$stage];
-                    $receiver->pending_balance = $stage_amts[$stage];
-                    $receiver->stage = $next_stage;
-                    $receiver->giving = 1; // Become a giver in the next stage
-                }
-            }
-
-            $receiver->save();
+            $receiver->times_received = 0;
+            // Become a giver in the next level // if default user don't make a giver.
+            if(!$receiver->default)
+                $receiver->giving = 1;
         }
+        $receiver->save();
     }
+}
+
+function run_wheel_stage_one()
+{
+    $levels = [
+        [
+            'amt'=>2000,
+            'total_refs'=>2
+        ], 
+        [
+            'amt'=>7000,
+            'total_refs'=>6
+        ],
+        [
+            'amt'=>17_000,
+            'total_refs'=>14
+        ], 
+        [
+            'amt'=>47_000, 
+            'total_refs'=>16
+        ]
+    ]; 
+
+    $stage = 1; 
+    $next_stage_amt = 5000; 
+    $exit_amt = 125_000; 
+    run_wheel_funding($levels, $stage, $next_stage_amt, $exit_amt); 
+}
+
+
+function run_wheel_stage_two()
+{
+    $levels = [
+        [
+            'amt'=>5000,
+            'total_refs'=>20
+        ], 
+        [
+            'amt'=>18_000,
+            'total_refs'=>28
+        ],
+        [
+            'amt'=>50_000,
+            'total_refs'=>30
+        ], 
+        [
+            'amt'=>130_000, 
+            'total_refs'=>34
+        ]
+    ];
+
+    $stage = 2; 
+    $next_stage_amt = 10_000; 
+    $exit_amt = 500_000; 
+    run_wheel_funding($levels, $stage, $next_stage_amt, $exit_amt); 
+}
+
+function run_wheel_stage_three()
+{
+    $levels = [
+        [
+            'amt'=>10_000,
+            'total_refs'=>42
+        ], 
+        [
+            'amt'=>35_000,
+            'total_refs'=>44
+        ],
+        [
+            'amt'=>85_000,
+            'total_refs'=>48
+        ], 
+        [
+            'amt'=>260_000, 
+            'total_refs'=>56
+        ]
+    ];
+
+    $stage = 3; 
+    $next_stage_amt = 0; 
+    $exit_amt = 1_100_000; 
+    run_wheel_funding($levels, $stage, $next_stage_amt, $exit_amt); 
 }
