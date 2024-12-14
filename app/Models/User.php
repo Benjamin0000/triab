@@ -174,7 +174,7 @@ class User extends Authenticatable
         $check = WheelGlobal::where('user_id', $this->id)->exists();
         if(!$check){
             WheelGlobal::create([
-                'user_id'=>$user->id,
+                'user_id'=>$this->id,
                 'giving'=>1,
                 'pending_balance'=>1500,
                 'total_refs'=>$this->total_referrals

@@ -27,7 +27,7 @@
         background: linear-gradient(135deg, #1F4037, #99F2C8); /* Dark forest green to soft mint */
     }
     .rank_bal {
-        background: linear-gradient(135deg, #F39C12, #D35400); /* Warm orange tones */
+        background: linear-gradient(135deg, #6d4403, #D35400); /* Warm orange tones */
     }
     .total_referrals_bal {
         background: linear-gradient(135deg, #34495E, #2C3E50); /* Cool slate tones */
@@ -44,6 +44,19 @@
         display: inline-block;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+    }
+    .active_level{
+        color:white !important; 
+        background: #1F4037 !important;
+    }
+    .blinking_status{
+        animation: blink-animation 1.1s steps(5, start) infinite; /* Blink animation */
+    }
+    /* Keyframes for Blinking Effect */
+    @keyframes blink-animation {
+        50% {
+            opacity: 0; /* Invisible at 50% of the animation cycle */
+        }
     }
 </style>
 <div class="container-fluid">
@@ -64,6 +77,10 @@
                 <div class="card-inner text-center">
                     <h6>{{format_with_cur($available_funds)}}</h6>
                     <h6>Available Funds</h6>  
+                    <form action="{{route('community.move_to_main')}}" method="POST">
+                        @csrf
+                        <button class="btn btn-info btn-sm">Move to main balance</button>
+                    </form>
                 </div>            
             </div>
         </div>
@@ -101,7 +118,7 @@
                 <i class="fas fa-users"></i>
                 <div class="card-inner text-center">
                     <h6>{{number_format($total_referrals)}}</h6>
-                    <h6>Your Team</h6>  
+                    <h6>Your Downlines</h6>  
                 </div>            
             </div>
         </div>
@@ -110,6 +127,7 @@
  
     <h4>Stages</h4>
     <div class="row">
+
         @for($i = 1; $i <= 3; $i++)
             @switch($i)
                 @case(1)
@@ -120,36 +138,64 @@
                     @break
                 @default
                     @php $levels = wheel_three @endphp
-            @endswitch()
-
+            @endswitch
             <div class="col-md-4">
-                <h4 class="text-center">Stage {{$i}}</h4>
-                <div class="table-responsive table-nowrap">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>LEVEL</th>
-                                <th>INCOME</th>
-                                <th>TEAM</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $no = 1; @endphp 
-                            @foreach ($levels as $level)
-                                
-                                <tr>
-                                    <th>Level {{$no++}}</th>
-                                    <td>{{format_with_cur($level['amt'])}} x {{$level['times']}}</td>
-                                    <td>
-                                        <span class="text-danger" title="Required Team Members">{{$level['total_refs']}}</span> | <span title="Your Team Members" class="text-success">{{$total_referrals}}</span>
-                                    </td>
+                <div style="background: #fff;"> 
+                    <br>
+                    <h5 class="text-center">Stage {{$i}}</h5>
+                    <br>
+                    <div class="table-responsive table-nowrap">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Level</th>
+                                    <th>Income</th>
+                                    <th>Downlines</th>
+                                    <th>Status</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php $no = 0; @endphp 
+                                @foreach ($levels as $level)
+                                    @php $no++; @endphp 
+                                    <tr class="text-center">
+                                        <td style="vertical-align: middle;" class="@if($stage == $i && $no == $Level ) active_level @endif"><b>{{$no}}</b></td>
+                                        <td style="vertical-align: middle;" class="@if($stage == $i && $no == $Level ) active_level @endif">
+                                            {{format_with_cur($level['amt'], 0)}} x {{$level['times']}}
+                                            <div class="text-center"><small>Received</small></div>
+                                            <div>
+                                                {{format_with_cur($level['amt'], 0)}} x 
+                                                @if($stage > $i || ($stage == $i && $Level > $no) )
+                                                    {{$level['times']}}
+                                                @elseif($stage == $i && $no == $Level)
+                                                    {{$times}}
+                                                @else 
+                                                    0
+                                                @endif 
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align: middle;" class="@if($stage == $i && $no == $Level ) active_level @endif">
+                                            <span title="Your Team Members" class="text-success">{{$total_referrals}}</span> of
+                                            <span class="text-danger" title="Required Team Members">{{$level['total_refs']}}</span> 
+                                        </td>
+                                        <td style="vertical-align: middle;" class="@if($stage == $i && $no == $Level ) active_level @endif">
+                                            @if($stage > $i || ($stage == $i && $Level > $no) )
+                                                <em class="text-success fas fa-check-circle"></em>
+                                            @elseif($stage == $i && $no == $Level)    
+                                                <em class="blinking_status text-warning fas fa-dot-circle"></em>
+                                            @else 
+                                                <em class="fas fa-dot-circle"></em>
+                                            @endif 
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         @endfor
+
     </div>
 </div>
 @stop 

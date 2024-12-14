@@ -56,7 +56,7 @@ class DashboardController extends Controller implements HasMiddleware
         if($current_package){  //user already have a package  
             if($current_package->cost >= $cost)
                 return ['error'=>"Invalid package"]; 
-            $cost -= $current_package->cost; 
+            $cost -= $current_package->cost;
         }else{
             if($discount)
                 $cost -= calculate_pct($cost, $discount);    
@@ -71,7 +71,7 @@ class DashboardController extends Controller implements HasMiddleware
             $user->debit_main_balance($cost, $source, $desc);
 
             $cashback = $package->cashback;
-            if($cashback > 0) {
+            if($cashback > 0 && !$current_package) {
                 $desc .= " Cashback"; 
                 $user->credit_main_balance($cashback, $source, $desc); 
             }
@@ -81,7 +81,7 @@ class DashboardController extends Controller implements HasMiddleware
         $user->save();
         credit_package_and_PV_ref_commission($user, $cost); 
         //activate gsteam. 
-        if($cost > 0){
+        if($package->cost > 0){
             $user->enter_gsteam_wheel();
         }
         return ['success'=>"Package selected"];

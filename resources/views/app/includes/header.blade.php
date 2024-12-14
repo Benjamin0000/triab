@@ -32,7 +32,7 @@
                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                 <div class="user-card">
                                     <div class="user-avatar"><span><em class="icon ni ni-user-alt"></em></span></div>
-                                    <div class="user-info"><span class="lead-text">{{$user->username}}</span>
+                                    <div class="user-info"><span class="lead-text">{{$user->name}}</span>
                                         {{-- <span class="sub-text">info@softnio.com</span> --}}
                                     </div>
                                 </div>

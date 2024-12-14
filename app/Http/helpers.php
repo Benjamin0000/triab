@@ -141,10 +141,11 @@ function deleteOldEmailTokens()
     EmailToken::where('created_at', '<', now()->subDay())->delete();
 }
 
-function format_with_cur($amt)
+function format_with_cur($amt, $dp=2)
 {
-    return currency_symbol().number_format($amt, 2); 
+    return currency_symbol().number_format($amt, $dp); 
 }
+
 
 function currency_symbol()
 {

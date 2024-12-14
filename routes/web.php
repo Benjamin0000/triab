@@ -38,6 +38,7 @@ Route::post('/ykMbJXg2QRnlBZvxCZb', [DashboardController::class, 'select_package
 
 #community
 Route::get('/community', [TriabWheelController::class, 'index'])->name('community.index');
+Route::post('/move-to-main', [TriabWheelController::class, 'move_to_main'])->name('community.move_to_main');
 
 #main admin
 Route::get('/main/settings',  [AdminSettings::class, 'index'])->name('admin.settings');
