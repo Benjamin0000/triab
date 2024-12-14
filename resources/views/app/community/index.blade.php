@@ -165,17 +165,19 @@
                                             <div class="text-center"><small>Received</small></div>
                                             <div>
                                                 {{format_with_cur($level['amt'], 0)}} x 
-                                                @if($stage > $i || ($stage == $i && $Level > $no) )
-                                                    {{$level['times']}}
-                                                @elseif($stage == $i && $no == $Level)
-                                                    {{$times}}
-                                                @else 
-                                                    0
-                                                @endif 
+                                                <b class="text-info">
+                                                    @if($stage > $i || ($stage == $i && $Level > $no) )
+                                                        {{$level['times']}}
+                                                    @elseif($stage == $i && $no == $Level)
+                                                        {{$times}}
+                                                    @else 
+                                                        0
+                                                    @endif 
+                                                </b>
                                             </div>
                                         </td>
                                         <td style="vertical-align: middle;" class="@if($stage == $i && $no == $Level ) active_level @endif">
-                                            <span title="Your Team Members" class="text-success">{{$total_referrals}}</span> of
+                                            <b title="Your Team Members" class="text-success">{{$total_referrals}}</b> of
                                             <span class="text-danger" title="Required Team Members">{{$level['total_refs']}}</span> 
                                         </td>
                                         <td style="vertical-align: middle;" class="@if($stage == $i && $no == $Level ) active_level @endif">
