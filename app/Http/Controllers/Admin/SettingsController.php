@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth; 
@@ -151,18 +152,28 @@ class SettingsController extends Controller implements HasMiddleware
     public function update_reward_data(Request $request)
     {
         $pv_to_cash = $request->input('pv_to_cash');
-        $pv_cash = $request->input('pv_cash');
-        $pv_to_health = $request->input('pv_to_health');
-        $pv_to_token = $request->input('pv_to_token');
-        $token_to_coin = $request->input('token_to_coin');
-        $coin_reward = $request->input('coin_reward');
+        $pv_cash_reward = $request->input('pv_cash_reward');
+
+
+
+        // $pv_cash = $request->input('pv_cash');
+        // $pv_to_health = $request->input('pv_to_health');
+
+
+        // $pv_to_token = $request->input('pv_to_token');
+
+
+        // $token_to_coin = $request->input('token_to_coin');
+        // $coin_reward = $request->input('coin_reward');
 
         set_register('pv_to_cash', $pv_to_cash);
-        set_register('pv_cash', $pv_cash);
-        set_register('pv_to_health', $pv_to_health);
-        set_register('pv_to_token', $pv_to_cash);
-        set_register('token_to_coin', $token_to_coin);
-        set_register('coin_reward', $coin_reward);
+        set_register('pv_cash_reward', $pv_cash_reward);
+
+
+        // set_register('pv_to_health', $pv_to_health);
+        // set_register('pv_to_token', $pv_to_cash);
+        // set_register('token_to_coin', $token_to_coin);
+        // set_register('coin_reward', $coin_reward);
 
         return back()->with('success', 'Updated');
     }

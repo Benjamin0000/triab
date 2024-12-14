@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB; 
 use Laravel\Sanctum\HasApiTokens; 
 use App\Traits\Uuids;
 
@@ -46,12 +47,17 @@ class User extends Authenticatable
     {
         $this->main_balance += $amt;
         TrxHistory::create([
-            'user_id'=>$this->id, 
+            'user_id'=>$this->id,
             'name'=>$source,
             'type'=>CREDIT,
             'desc'=>$desc,
             'amt'=>$amt
         ]);
+
+        if( strtolower($source) != 'deposit' ){
+            $this->total_income += $amt;
+        }
+
         $this->save();
     }
 
@@ -68,52 +74,127 @@ class User extends Authenticatable
         $this->save();
     }
 
-    public function credit_pv($amt)
+    public function creditPV($amt)
     {
+        // Validate inputs
+        if ($amt <= 0) {
+            return false;
+        }
+
         // Get configuration values
-        $pv_cash = (float) get_register('pv_cash'); // Cash reward for one token
-        $pv_to_cash = (int) get_register('pv_to_cash'); // PV required to earn one token and cash
-        $pv_to_health = (int) get_register('pv_to_health'); // PV required to earn one health token
-        $token_to_coin = (int) get_register('token_to_coin'); // Tokens required to convert to one coin
-        $coin_reward = (float) get_register('coin_reward'); // Cash reward for one coin
+        $cashReward = 1200; //cash
+        $requiredPV = 750; //PV
 
-        // Update total PV
-        $this->pv += $amt;
-        $this->save(); // Save PV increment immediately
-
-        // Reward tokens and main balance based on PV
-        $new_rewardable_pv = $this->pv - ($this->rewarded_token * $pv_to_cash);
-        $new_tokens = floor($new_rewardable_pv / $pv_to_cash); // New tokens to reward
-
-        if ($new_tokens > 0) {
-            $cash_reward = $new_tokens * $pv_cash;
-            $this->credit_main_balance($cash_reward, 'token', "$new_tokens Token Reward");
-            $this->rewarded_token += $new_tokens;
-            $this->token += $new_tokens;
+        if ($cashReward <= 0 || $requiredPV <= 0) {
+            return false;
         }
 
-        // Reward health tokens based on PV
-        $new_health_pv = $this->pv - ($this->rewarded_health_token * $pv_to_health);
-        $new_health_tokens = floor($new_health_pv / $pv_to_health);
+        // Use a transaction to ensure atomicity
+        return DB::transaction(function () use ($amt, $cashReward, $requiredPV) {
+            // Update total PV
+            $this->pv += $amt;
 
-        if ($new_health_tokens > 0) {
-            $this->health_token += $new_health_tokens;
-            $this->rewarded_health_token += $new_health_tokens;
+            // Calculate new rewardable PV
+            $newRewardablePv = $this->pv - $this->rewarded_pv;
+            $newPvTimes = floor($newRewardablePv / $requiredPV);
+
+            if ($newPvTimes > 0) {
+                // Calculate and credit rewards
+                $cashReward = $newPvTimes * $cashReward;
+                $rewardedPV = $newPvTimes * $requiredPV;
+                $this->rewarded_pv += $rewardedPV;
+
+                $this->credit_main_balance($cashReward, 'PV Reward', "$rewardedPV PV Reward");
+                $this->creditPVCommission([100, 50, 30, 20, 10], $newPvTimes, "PV Reward");
+            }
+
+            // Save updated values and trigger token rewards
+            $this->save();
+            $this->handleRewards('token', 3000, 5000, [500, 300, 200, 100]);
+            return true;
+        });
+    }
+
+    public function handleRewards($type, $requiredUnit, $cashReward, $commissionRewards)
+    {
+        $currentUnits = $this->$type; // e.g., token or coin
+        $totalUnits = $this->{$type === 'token' ? 'pv' : 'token'}; // Related total units
+
+        $rewardedUnits = $currentUnits * $requiredUnit;
+        $newRewardableUnits = $totalUnits - $rewardedUnits;
+
+        $newUnits = floor($newRewardableUnits / $requiredUnit);
+
+        if ($newUnits <= 0) {
+            return;
         }
 
-        // Reward coins and main balance based on tokens
-        $new_rewardable_tokens = $this->token - $this->rewarded_coin * $token_to_coin;
-        $new_coins = floor($new_rewardable_tokens / $token_to_coin);
-
-        if ($new_coins > 0) {
-            $coin_cash_reward = $new_coins * $coin_reward;
-            $this->credit_main_balance($coin_cash_reward, 'coin', "$new_coins Coin Reward");
-            $this->rewarded_coin += $new_coins;
-            $this->coin += $new_coins;
-        }
-
-        // Save updated values
+        $this->$type += $newUnits;
         $this->save();
+
+        $totalCashReward = $cashReward * $newUnits;
+        $this->credit_main_balance($totalCashReward, ucfirst($type) . " Reward", "$newUnits $type Reward");
+        // Credit commissions
+        $this->creditPVCommission($commissionRewards, $newUnits, ucfirst($type) . " Reward");
+
+        // Handle cascading rewards
+        if ($type === 'token') {
+            $this->handleRewards('coin', 10, 25000, [2000, 1000, 600, 200]);
+        }
+    }
+
+    public function creditPVCommission($rewards, $times, $title, $step = 1)
+    {
+        // Validate inputs
+        if (!is_array($rewards) || $times <= 0 || $step > 15) {
+            return;
+        }
+
+        // Check for a referrer
+        if ($this->ref_by) {
+            $referrer = self::find($this->ref_by);
+
+            if ($referrer) {
+                $reward = $rewards[$step - 1] ?? end($rewards);
+                $totalReward = $reward * $times;
+
+                $referrer->credit_main_balance(
+                    $totalReward,
+                    $title,
+                    getPositionWithSuffix($step) . " Gen. $title"
+                );
+                // Recursive call for next generation
+                $referrer->creditPVCommission($rewards, $times, $title, $step + 1);
+            }
+        }
+    }
+
+    public function enter_gsteam_wheel()
+    {
+        $check = WheelGlobal::where('user_id', $this->id)->exists();
+        if(!$check){
+            WheelGlobal::create([
+                'user_id'=>$user->id,
+                'giving'=>1,
+                'pending_balance'=>1500,
+                'total_refs'=>$this->total_referrals
+            ]);
+        }
+    }
+
+    public function update_gsteam_wheel_referrals()
+    {
+        $wheel =  WheelGlobal::where('user_id', $this->id)->first();
+        if($wheel){
+            $wheel->total_refs = $this->total_referrals; 
+            $wheel->save(); 
+        }
+    }
+
+    public function save_total_income($amt)
+    {
+        $this->total_income += $amt;
+        $this->save(); 
     }
 
 }

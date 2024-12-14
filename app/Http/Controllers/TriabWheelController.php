@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Auth; 
+use App\Models\WheelGlobal; 
 
 class TriabWheelController extends Controller implements HasMiddleware
 {
@@ -21,7 +23,21 @@ class TriabWheelController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return view('app.community.index'); 
+        $wheel = WheelGlobal::where('user_id', Auth::id())->first();
+        $available_funds = $wheel ? $wheel->main_balance : 0;
+        $total_received = $wheel ? $wheel->total_received: 0;
+        $stage = $wheel ? $wheel->stage : 0;
+        $level = $wheel ? $wheel->level : 0;
+        $total_referrals = $wheel ? $wheel->total_refs : 0;
+
+        return view('app.community.index', compact(
+            'wheel', 
+            'available_funds', 
+            'total_received', 
+            'stage',
+            'level', 
+            'total_referrals'
+        )); 
     }
 
     /**

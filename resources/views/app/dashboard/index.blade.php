@@ -44,7 +44,7 @@
     }
 
     .rank_bal {
-        background: linear-gradient(135deg, #F39C12, #D35400); /* Warm orange tones */
+        background: linear-gradient(135deg, #d48c19, #3498DB); /* Warm orange tones */
     }
 
     .mpp_bal {
@@ -79,6 +79,18 @@
         width: 100%;
         padding-left:10px; 
         padding-right:10px;
+    }
+    .active_rank_color{
+        background: linear-gradient(45deg, #FFD700, #FF8C00, #FFA500);
+    }
+    .default_rank_color{
+        background: #272626; 
+    }
+    .rank_bal em{
+        font-size: 25px;
+        display: inline-block;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 </style>
 
@@ -149,18 +161,14 @@
             <div class="card card-bordered bal_con rank_bal">
                 <i class="fas fa-medal"></i>
                 <div class="card-inner text-center">
-                    <h6>{{ number_format($user->rank) }}</h6>
+                    <h6>
+                        <em class='fas fa-star  @if($user->coin >= 3)  active_rank_color @else default_rank_color @endif'></em> 
+                        <em class='fas fa-star  @if($user->coin >= 10) active_rank_color @else default_rank_color @endif'></em> 
+                        <em class='fas fa-star  @if($user->coin >= 20) active_rank_color @else default_rank_color @endif'></em> 
+                        <em class='fas fa-star  @if($user->coin >= 25) active_rank_color @else default_rank_color @endif'></em> 
+                        <em class='fas fa-star  @if($user->coin >= 50) active_rank_color @else default_rank_color @endif'></em> 
+                    </h6>
                     <h6>Rank</h6>  
-                </div>            
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card card-bordered bal_con mpp_bal">
-                <i class="fas fa-trophy"></i>
-                <div class="card-inner text-center">
-                    <h6>{{ number_format($user->mpp) }}</h6>
-                    <h6 title="Monthly performance point">MPP</h6>  
                 </div>            
             </div>
         </div>
@@ -171,6 +179,16 @@
                 <div class="card-inner text-center">
                     <h6>{{ number_format($user->total_referrals) }}</h6>
                     <h6>Total Referrals</h6>  
+                </div>            
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card card-bordered bal_con mpp_bal">
+                <i class="fas fa-wallet"></i>
+                <div class="card-inner text-center">
+                    <h6>{{ format_with_cur($user->total_income) }}</h6>
+                    <h6 title="Total Income">Total Income</h6>  
                 </div>            
             </div>
         </div>

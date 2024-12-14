@@ -29,16 +29,13 @@ return new class extends Migration
             $table->decimal('token', 65, 2)->default(0); // in main currency like cashback and the rest. 
             $table->decimal('coin', 65, 5)->default(0);
             $table->decimal('health_token', 65, 2)->default(0);
-            $table->bigInteger('pv')->default(0);
-
-            $table->decimal('rewarded_token', 65, 2)->default(0); // in main currency like cashback and the rest. 
-            $table->decimal('rewarded_coin', 65, 5)->default(0);
-            $table->decimal('rewarded_health_token', 65, 2)->default(0); 
-
-            $table->bigInteger('mpp')->default(0);
+            $table->decimal('pv', 65, 5)->default(0);
+            $table->decimal('rewarded_pv', 65, 5)->default(0); 
+            $table->decimal('total_income', 65, 2)->default(0);
             $table->bigInteger('total_referrals')->default(0); 
             $table->integer('rank')->default(0); 
             $table->integer('package_id')->nullable();
+            $table->boolean('origin')->default(0); 
             $table->rememberToken();
             $table->timestamps();
         });

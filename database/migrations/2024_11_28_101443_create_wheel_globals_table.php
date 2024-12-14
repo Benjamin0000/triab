@@ -16,13 +16,14 @@ return new class extends Migration
             $table->uuid('user_id')->indexed();
             $table->decimal('main_balance')->default(0);
             $table->decimal('pending_balance')->default(0);
+            $table->decimal('total_received')->default(0);
             $table->integer('stage')->default(1);
             $table->integer('level')->default(1);
             $table->integer('times_received')->default(0);
             $table->integer('total_refs')->default(0);
             $table->boolean('giving');
-            $table->boolean('default')->default(0); 
-            $table->timestamps();
+            $table->boolean('origin')->default(0); 
+            $table->timestamps(); 
         });
     }
 

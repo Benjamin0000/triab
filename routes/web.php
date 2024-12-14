@@ -1,9 +1,9 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\SettingsController as AdminSettings;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TriabWheelController; 
 use App\Http\Middleware\EnsureUserHasPackage; 
 
@@ -40,17 +40,17 @@ Route::post('/ykMbJXg2QRnlBZvxCZb', [DashboardController::class, 'select_package
 Route::get('/community', [TriabWheelController::class, 'index'])->name('community.index');
 
 #main admin
-Route::get('/main/settings',  [SettingsController::class, 'index'])->name('admin.settings');
-Route::get('/main/settings/packages', [SettingsController::class, 'packages'])->name('admin.packages.index'); 
-Route::post('/main/settings/packages', [SettingsController::class, 'create_package'])->name('admin.packages.create_package'); 
-Route::put('/main/settings/package/{id}', [SettingsController::class, 'update_package'])->name('admin.package.update'); 
-Route::delete('/main/settings/package/{id}', [SettingsController::class, 'destroy_package'])->name('admin.package.destroy');
-Route::post('/main/settings/update_parameters', [SettingsController::class, 'update_package_parameters'])->name('admin.package.update_parameters');
+Route::get('/main/settings',  [AdminSettings::class, 'index'])->name('admin.settings');
+Route::get('/main/settings/packages', [AdminSettings::class, 'packages'])->name('admin.packages.index'); 
+Route::post('/main/settings/packages', [AdminSettings::class, 'create_package'])->name('admin.packages.create_package'); 
+Route::put('/main/settings/package/{id}', [AdminSettings::class, 'update_package'])->name('admin.package.update'); 
+Route::delete('/main/settings/package/{id}', [AdminSettings::class, 'destroy_package'])->name('admin.package.destroy');
+Route::post('/main/settings/update_parameters', [AdminSettings::class, 'update_package_parameters'])->name('admin.package.update_parameters');
 
 
 
 //reward settings
-Route::get('/main/reward', [SettingsController::class, 'reward_settings'])->name('admin.reward.settings'); 
-Route::post('/main/reward', [SettingsController::class, 'update_reward_data'])->name('admin.reward.settings'); 
+Route::get('/main/reward', [AdminSettings::class, 'reward_settings'])->name('admin.reward.settings'); 
+Route::post('/main/reward', [AdminSettings::class, 'update_reward_data'])->name('admin.reward.settings'); 
 
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');

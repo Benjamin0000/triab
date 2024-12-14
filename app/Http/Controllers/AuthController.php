@@ -116,10 +116,14 @@ class AuthController extends Controller  implements HasMiddleware
     
         $sponsor->total_referrals += 1; 
         $sponsor->save(); 
+        
+        if(!$sponsor->origin)
+            $sponsor->update_gsteam_wheel_referrals();
 
         $user->save();
         $token = EmailToken::create(['email' => $user->email]);
         // Send token as email to user.
+
         return back()->with('success', 'Account created'); 
     }
 

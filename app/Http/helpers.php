@@ -5,6 +5,7 @@ use App\Models\TrxHistory;
 use App\Models\Token\EmailToken;
 use App\Models\Token\PasswordToken;
 use App\Models\WheelGlobal;
+use Illuminate\Support\Facades\DB;
 
 //package services code. 
 const E_SHOP = 'e-shop';
@@ -14,6 +15,75 @@ const LOGISTICS = 'logistics';
 
 const CREDIT = 1;
 const DEBIT = 0;
+const wheel_one = [
+    [
+        'amt'=>1500,
+        'total_refs'=>2, 
+        'times'=>6
+    ], 
+    [
+        'amt'=>5000,
+        'total_refs'=>6,
+        'times'=>6
+    ],
+    [
+        'amt'=>14_000,
+        'total_refs'=>14,
+        'times'=>6 
+    ], 
+    [
+        'amt'=>54_000, 
+        'total_refs'=>16, 
+        'times'=>2 
+    ]
+]; 
+
+const wheel_two = [
+    [
+        'amt'=>2500,
+        'total_refs'=>20,
+        'times'=>6
+    ], 
+    [
+        'amt'=>8_000,
+        'total_refs'=>28,
+        'times'=>6
+    ],
+    [
+        'amt'=>25_000,
+        'total_refs'=>30, 
+        'times'=>6
+    ], 
+    [
+        'amt'=>100_000, 
+        'total_refs'=>34,
+        'times'=>2
+    ]
+];
+
+const wheel_three = [
+    [
+        'amt'=>4500,
+        'total_refs'=>42,
+        'times'=>6
+    ], 
+    [
+        'amt'=>15_000,
+        'total_refs'=>44,
+        'times'=>6
+    ],
+    [
+        'amt'=>42_000,
+        'total_refs'=>48, 
+        'times'=>6
+    ], 
+    [
+        'amt'=>162_000, 
+        'total_refs'=>56, 
+        'times'=>2
+    ]
+];
+
 
 function all_services()
 {
@@ -170,7 +240,7 @@ function credit_package_and_PV_ref_commission(User $user, float $amt, int $step=
         $desc = getPositionWithSuffix($step).' Gen. commission'; 
 
         $user->credit_main_balance($reward, 'referral_com', $desc); 
-        $user->credit_pv($pv);
+        $user->creditPV($pv);
     }
     return credit_package_and_PV_ref_commission($user, $amt, $step + 1);   
 }
@@ -229,154 +299,124 @@ function run_placement()
 function set_stage_left_funds($amt)
 {
     $total = (float)get_register('level_left_funds');
-    $total += $amt; 
-    set_register('level_left_funds', $total); 
+    $total += $amt;
+    set_register('level_left_funds', $total);
 }
 
 
 function run_wheel_funding(array $levels, int $stage, float $next_stage_amt, float $exit_amt)
 {
-    $max_times = 6;
     $total_levels = 4;
-    for($level = 1; $level <= $total_levels; $level++){
+    for ($level = 1; $level <= $total_levels; $level++) {
 
         $data = $levels[$level - 1];
-        $amount = $data['amt']; 
-        $total_refs = $data['total_refs']; 
+        $amount = $data['amt'];
+        $total_refs = $data['total_refs'];
+        $max_times = $data['times'];
 
+        // Fetch giver
         $giver = WheelGlobal::where([
             ['stage', $stage],
             ['level', $level],
-            ['giving', 1]
+            ['giving', 1],
         ])->oldest()->first();
 
-        if (!$giver) 
-            continue; // No giver available, skip to the next level
+        if (!$giver) {
+            // No giver available, skip to the next level
+            continue;
+        }
 
+        // Fetch receiver
         $receiver = WheelGlobal::where([
             ['stage', $stage],
             ['level', $level],
             ['giving', 0],
             ['total_refs', '>=', $total_refs],
-            ['times_received', '<', $max_times]
-        ])->oldest()->first();
+            ['times_received', '<', $max_times],
+        ])->oldest()->first();  //====>use updated for ordering
 
-        if (!$receiver) 
-            continue; // No receiver available, skip to the next level
-
-        // Process giver
-        $giver->pending_balance -= $amount;
-        $giver->giving = 0;
-        $giver->save();
-
-        // Process receiver
-        $receiver->pending_balance += $amount;
-        $receiver->times_received++;
-
-        if ($receiver->times_received >= $max_times) {
-            $next_level = $level + 1;
-
-            if ($next_level > $total_levels) {
-                $receiver->stage += 1; //Advance to the next stage.
-                $receiver->level = 1;
-                $receiver->main_balance += $exit_amt;
-                $amt_left = $receiver->pending_balance - $exit_amt - $next_stage_amt; 
-                $receiver->pending_balance = $next_stage_amt;
-                set_stage_left_funds($amt_left);
-            } else {
-                // Advance to the next level
-                $next_level_amt = $levels[$level]['amt'];
-                $receiver->main_balance += $receiver->pending_balance - $next_level_amt;
-                $receiver->pending_balance = $next_level_amt;
-                $receiver->level = $next_level;
-            }
-            $receiver->times_received = 0;
-            // Become a giver in the next level // if default user don't make a giver.
-            if(!$receiver->default)
-                $receiver->giving = 1;
+        if (!$receiver) {
+            // No receiver available, skip to the next level
+            continue;
         }
-        $receiver->save();
+
+        // Use database transactions to ensure atomicity
+        DB::transaction(function () use (
+            $giver,
+            $receiver,
+            $amount,
+            $level,
+            $total_levels,
+            $next_stage_amt,
+            $exit_amt
+        ) {
+            // Process giver
+            $giver->pending_balance -= $amount;
+            $giver->giving = 0;
+            $giver->save();
+
+            // Process receiver
+            $receiver->pending_balance += $amount;
+            $receiver->times_received++;
+
+            if ($receiver->times_received >= $max_times) {
+                $next_level = $level + 1;
+
+                if ($next_level > $total_levels) {
+                    // Advance to the next stage
+                    $receiver->stage++;
+                    $receiver->level = 1;
+                    $amt_left = $receiver->pending_balance - $exit_amt - $next_stage_amt;
+                    $receiver->main_balance += $amt_left;
+                    $receiver->total_received += $amt_left;
+                    $receiver->pending_balance = $next_stage_amt;
+                    set_stage_left_funds($exit_amt);
+                    $receiver->credit_sponsor_commission($amt_left); //credit the sponsor commission
+                } else {
+                    // Advance to the next level
+                    $next_level_amt = $levels[$level]['amt'];
+                    $amt_left = $receiver->pending_balance - $next_level_amt;
+                    $receiver->main_balance += $amt_left;
+                    $receiver->total_received += $amt_left; 
+                    $receiver->pending_balance = $next_level_amt;
+                    $receiver->level = $next_level;
+                    $receiver->credit_sponsor_commission($amt_left);
+                }
+                $receiver->times_received = 0;
+                if (!$receiver->origin) {
+                    $receiver->giving = 1; // Become a giver in the next level
+                }
+            }
+
+            $receiver->save();
+        });
     }
 }
 
 function run_wheel_stage_one()
 {
-    $levels = [
-        [
-            'amt'=>2000,
-            'total_refs'=>2
-        ], 
-        [
-            'amt'=>7000,
-            'total_refs'=>6
-        ],
-        [
-            'amt'=>17_000,
-            'total_refs'=>14
-        ], 
-        [
-            'amt'=>47_000, 
-            'total_refs'=>16
-        ]
-    ]; 
-
+    $levels = wheel_one; 
     $stage = 1; 
-    $next_stage_amt = 5000; 
-    $exit_amt = 125_000; 
+    $next_stage_amt = 2500;
+    $exit_amt = 50_000; //amount to subtract in the last stage
     run_wheel_funding($levels, $stage, $next_stage_amt, $exit_amt); 
 }
 
 
 function run_wheel_stage_two()
 {
-    $levels = [
-        [
-            'amt'=>5000,
-            'total_refs'=>20
-        ], 
-        [
-            'amt'=>18_000,
-            'total_refs'=>28
-        ],
-        [
-            'amt'=>50_000,
-            'total_refs'=>30
-        ], 
-        [
-            'amt'=>130_000, 
-            'total_refs'=>34
-        ]
-    ];
-
+    $levels = wheel_two; 
     $stage = 2; 
-    $next_stage_amt = 10_000; 
-    $exit_amt = 500_000; 
+    $next_stage_amt = 4500;
+    $exit_amt = 120_000;
     run_wheel_funding($levels, $stage, $next_stage_amt, $exit_amt); 
 }
 
 function run_wheel_stage_three()
 {
-    $levels = [
-        [
-            'amt'=>10_000,
-            'total_refs'=>42
-        ], 
-        [
-            'amt'=>35_000,
-            'total_refs'=>44
-        ],
-        [
-            'amt'=>85_000,
-            'total_refs'=>48
-        ], 
-        [
-            'amt'=>260_000, 
-            'total_refs'=>56
-        ]
-    ];
-
+    $levels = wheel_three; 
     $stage = 3; 
     $next_stage_amt = 0; 
-    $exit_amt = 1_100_000; 
+    $exit_amt = 200_000; 
     run_wheel_funding($levels, $stage, $next_stage_amt, $exit_amt); 
 }

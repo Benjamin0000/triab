@@ -5,7 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth; 
 use App\Models\Package;
-use App\Models\TrxHistory; 
+use App\Models\TrxHistory;
+use App\Models\WheelGlobal;
 
 
 class DashboardController extends Controller implements HasMiddleware
@@ -80,7 +81,9 @@ class DashboardController extends Controller implements HasMiddleware
         $user->save();
         credit_package_and_PV_ref_commission($user, $cost); 
         //activate gsteam. 
-        
+        if($cost > 0){
+            $user->enter_gsteam_wheel();
+        }
         return ['success'=>"Package selected"];
     }
 
