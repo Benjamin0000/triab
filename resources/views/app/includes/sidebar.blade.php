@@ -104,29 +104,29 @@
 
                     
                     <li class="nk-menu-item">
-                        <a href="#" class="nk-menu-link">
+                        <a href="{{route('eshop')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon fa fa-store"></em></span><span class="nk-menu-text">E-Shop</span>
                         </a>
                     </li>
 
                       
-                    <li class="nk-menu-item">
+                    {{-- <li class="nk-menu-item">
                         <a href="#" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon fa fa-hotel"></em></span><span class="nk-menu-text">Hotels</span>
                         </a>
-                    </li>
+                    </li> --}}
 
-                    <li class="nk-menu-item">
+                    {{-- <li class="nk-menu-item">
                         <a href="#" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon fa fa-utensils"></em></span><span class="nk-menu-text">Restaurants</span>
                         </a>
-                    </li>
+                    </li> --}}
 
-                    <li class="nk-menu-item">
+                    {{-- <li class="nk-menu-item">
                         <a href="#" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon fa fa-motorcycle"></em></span><span class="nk-menu-text">Logistics</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -138,6 +138,9 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('admin.reward.settings')}}" class="nk-menu-link"><span class="nk-menu-text">Rewards</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('admin.eshop.settings')}}" class="nk-menu-link"><span class="nk-menu-text">Eshop</span></a>
                             </li>
                         </ul>
                     </li> 

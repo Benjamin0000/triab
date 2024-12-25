@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Package;
 use App\Models\TrxHistory;
 use App\Models\WheelGlobal;
@@ -24,7 +24,7 @@ class DashboardController extends Controller implements HasMiddleware
      * Display a listing of the resource.
      */
     public function index()
-    {; 
+    {
         $packages = Package::orderBy('cost', 'asc')->get(); 
         $transactions = TrxHistory::where('user_id', Auth::id())->latest()->paginate(10);
         return view('app.dashboard.index', compact('packages', 'transactions')); 

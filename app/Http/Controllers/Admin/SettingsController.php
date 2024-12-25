@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth; 
-use App\Models\Package; 
+use Illuminate\Support\Facades\Storage; 
+use App\Models\Package;
+use App\Models\ShopCategory;  
 
 class SettingsController extends Controller implements HasMiddleware
 {
@@ -148,6 +150,77 @@ class SettingsController extends Controller implements HasMiddleware
     {
         return view('app.admin.settings.reward.index'); 
     }
+
+    public function eshop_settings()
+    {
+        $categories = ShopCategory::all(); 
+        return view('app.admin.settings.eshop.index', compact('categories')); 
+    }
+
+    public function create_eshop_category(Request $request)
+    {
+        $request->validate([
+            'name'=>['required', 'max:100'], 
+            'logo'=>['required', 'mimes:jpeg,png,jpg,gif,webp']
+        ]); 
+        
+        $logo = $request->file('logo');
+        $upload = upload_poster($logo, 100);
+
+        if(isset($upload['error'])) 
+            return back()->with('error', $upload['error']);
+
+        $logo = $upload['path'];
+        $data = $request->all(); 
+
+        $data['icon'] = $logo; 
+        ShopCategory::create($data); 
+        return back()->with('success', 'Category created'); 
+    }
+
+    public function update_eshop_category(Request $request, $id)
+    {
+        $request->validate([
+            'name'=>['required', 'max:100'], 
+            'logo'=>['nullable', 'mimes:jpeg,png,jpg,gif,webp']
+        ]); 
+        $category = ShopCategory::findOrFail($id);
+
+        $data = $request->all();
+        $logo = $request->file('logo');
+
+        if($logo){
+            $upload = upload_poster($logo, 100);
+
+            if(isset($upload['error'])) 
+                return back()->with('error', $upload['error']);
+
+            $logo = $upload['path'];
+            $data['icon'] = $logo; 
+
+            if(Storage::disk('public')->exists($category->icon))
+                Storage::disk('public')->delete($category->icon);
+        }
+
+        $category->update($data);
+        return back()->with('success', 'Category updated'); 
+    }
+
+    public function delete_eshop_category($id)
+    {
+        $category = ShopCategory::findOrFail($id);
+
+        if($category->total_shops() > 0)
+            return back()->with('error', 'This category already has shops');
+        
+        if(Storage::disk('public')->exists($category->icon))
+            Storage::disk('public')->delete($category->icon);
+
+        $category->delete(); 
+
+        return back()->with('success', 'category deleted'); 
+    }
+
 
     public function update_reward_data(Request $request)
     {

@@ -1,7 +1,7 @@
 <?php 
  return [
     [
-        'name'=>'Abuja (FCT) State',
+        'name'=>'Abuja (FCT)',
         'cities'=>[
             'Central Business Dis',
             'Gwarinpa',

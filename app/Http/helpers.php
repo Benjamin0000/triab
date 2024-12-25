@@ -5,7 +5,14 @@ use App\Models\TrxHistory;
 use App\Models\Token\EmailToken;
 use App\Models\Token\PasswordToken;
 use App\Models\WheelGlobal;
+use App\Models\State; 
+use App\Models\Shop; 
+use App\Models\Product; 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
+CONST CATEGORY = 0;
+CONST PRODUCT = 1;
 
 //package services code. 
 const E_SHOP = 'e-shop';
@@ -171,6 +178,16 @@ function genGnumber()
         return $id;
     return genGnumber();
 } 
+
+
+function genStoreID()
+{
+    $id = 'Trbshop-'.mt_rand(10000000,99999999);
+    if(!Shop::where('storeID', $id)->exists())
+        return $id;
+    return genGnumber();
+}
+
 
 function findByGnumber($gnumber)
 {
@@ -420,4 +437,79 @@ function run_wheel_stage_three()
     $next_stage_amt = 0; 
     $exit_amt = 200_000; 
     run_wheel_funding($levels, $stage, $next_stage_amt, $exit_amt); 
+}
+
+function upload_poster($file, $maxSizeInKB)
+{
+    $fileSize = $file->getSize(); // size in bytes
+    $fileSizeInKB = $fileSize / 1024;
+
+    if ($fileSizeInKB > $maxSizeInKB) 
+        return ['error'=>"The image must not exceed $maxSizeInKB Kb in size."];
+
+    $path = $file->storePublicly('images', 'public');
+    return ['path'=>$path];
+}
+
+function delete_poster($images)
+{
+    foreach($images as $image){
+        if(Storage::disk('public')->exists($image))
+            Storage::disk('public')->delete($image);
+    }
+}
+
+function validateStateWithCity(string $state, string $city) : bool
+{
+    $state = State::where('name', $state)->first();
+
+    if($state){
+        $city = State::where([ 
+            ['name', $city],
+            ['parent_id', $state->id]
+        ])->first();
+
+        if($city)
+            return true; 
+    }
+
+    return false; 
+}
+
+
+function truncateText($text, $maxLength, $appendEllipsis = true) {
+    // Check if text length exceeds the maximum length
+    if (strlen($text) > $maxLength) {
+        // Truncate the text to the maximum length
+        $truncated = substr($text, 0, $maxLength);
+        
+        // Ensure it doesn't cut a word in half
+        $truncated = substr($truncated, 0, strrpos($truncated, ' '));
+        
+        // Append ellipsis if required
+        if ($appendEllipsis) {
+            $truncated .= '...';
+        }
+        
+        return $truncated;
+    }
+    
+    // Return original text if it's within the limit
+    return $text;
+}
+
+
+
+function get_product_category_gen(string $parent_id): array
+{
+    $categories = [];
+    $product = Product::find($parent_id);
+
+    while ($product) {
+        $categories[] = $product->name;
+        $parent_id = $product->parent_id;
+        $product = $parent_id ? Product::find($parent_id) : null;
+    }
+
+    return array_reverse($categories);
 }

@@ -14,4 +14,5 @@ class State extends Model
         'name',
         'parent_id',
     ];
+
 }

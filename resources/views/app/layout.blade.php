@@ -35,6 +35,15 @@
             white-space: nowrap;
         }
     </style>
+
+@php
+    $page_url = url()->current();
+@endphp
+
+@if( Str::contains($page_url, 'add-product') || Str::contains($page_url, 'e-shop/edit-product') )
+    <script src="https://cdn.tiny.cloud/1/1gn0mphq7v6nblk4a2g5wolaokaod8bkor2vv3m3vt2zdlaj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+@endif 
+
 </head>
     <body class="nk-body bg-lighter npc-general has-sidebar">
         <div class="nk-app-root">
@@ -92,6 +101,17 @@
                 }
             });
         </script>
+
+
+        @if( Str::contains($page_url, 'add-product') || Str::contains($page_url, 'e-shop/edit-product') )
+            <script>
+                tinymce.init({
+                    selector: '.desc',
+                    plugins: 'anchor autolink charmap codesample emoticons image link lists  searchreplace table visualblocks wordcount',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                });
+            </script>
+        @endif 
         <form action="{{route('logout')}}" method="POST" id="logout_form">
             @csrf 
         </form>

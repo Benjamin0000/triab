@@ -8,7 +8,7 @@
         border-radius: 10px; /* Rounded edges for better aesthetics */
         position: relative;
     }
-
+    
     .bal_con h6 {
         color: #ffffff;
         font-weight: bolder;
