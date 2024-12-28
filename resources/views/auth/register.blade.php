@@ -47,6 +47,7 @@
                                 <label class="form-label">Email address <span class="text-danger">*</span></label>
                             </div>
                             <div class="form-control-wrap"><input autocomplete="off" value='{{old('email')}}' type="email" name="email" class="form-control form-control-lg" required placeholder="Enter email address"></div>
+                            <div class="d-block d-md-none"><br></div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-label-group">
