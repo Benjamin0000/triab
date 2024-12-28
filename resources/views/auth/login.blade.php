@@ -1,6 +1,6 @@
 @include('auth.includes.header', ['title'=>'Sign in | Triab'])
 <body style="background-color: #25245e" class="container-fluid">
-<div class="container">
+<div class="container p-2">
     <div class="text-center" style="margin-top: 20px;margin-bottom:20px">
         <a href="/" class="logo-link">
             <img class="logo-img logo-img-lg" src="/assets/frontpage/img/logo.png" alt="logo">

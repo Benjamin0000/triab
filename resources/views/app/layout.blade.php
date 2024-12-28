@@ -8,6 +8,8 @@
     <link id="skin-default" rel="stylesheet" href="/assets/css/theme.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" href="/assets/frontpage/img/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         function loadButton(btn){
             $(btn).html("<i class='fa-solid fa-arrows-spin fa-spin'></i>");
@@ -63,7 +65,7 @@
                     <div class="nk-footer">
                         <div class="container-fluid">
                             <div class="nk-footer-wrap">
-                                <div class="nk-footer-copyright">&copy; 2024 Triab Global Resources.</div>
+                                <div class="nk-footer-copyright">&copy; {{date('Y')}} Triab Global Resources.</div>
                             </div>
                         </div>
                     </div>

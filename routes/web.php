@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TriabWheelController;
 use App\Http\Controllers\EshopController;
 use App\Http\Middleware\EnsureUserHasPackage;
+use App\Http\Controllers\TriabMarketController;
 
 Route::get('/', [FrontController::class, 'index'])->name('front.welcome');
 Route::get('/services', [FrontController::class, 'services'])->name('front.services');
@@ -28,6 +29,8 @@ Route::get('/verify/{token}/{email}', [AuthController::class, 'verify_email_addr
 Route::get('/reset/{token}/{email}', [AuthController::class, 'show_change_password_form'])->name('update_password'); 
 Route::post('/update-password', [AuthController::class, 'change_password'])->name('change_password'); 
 
+
+
 #Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index'); 
 Route::get('/trx-history', [DashboardController::class, 'load_more_transactions'])->name('dashboard.trx_history'); 
@@ -37,18 +40,15 @@ Route::post('/ykMbJXg2QRnlBZvxCZb', [DashboardController::class, 'select_package
 Route::get('/community', [TriabWheelController::class, 'index'])->name('community.index');
 Route::post('/move-to-main', [TriabWheelController::class, 'move_to_main'])->name('community.move_to_main');
 
-
-
-//reward settings
-Route::get('/main/reward', [AdminSettings::class, 'reward_settings'])->name('admin.reward.settings'); 
-Route::post('/main/reward', [AdminSettings::class, 'update_reward_data'])->name('admin.reward.settings'); 
-
+#triab market
+Route::get('/triab-market', [TriabMarketController::class, 'index'])->name('triab_market.index');
+Route::get('/triab-market/{id}/shops', [TriabMarketController::class, 'show_shops'])->name('triab_market.show_shops');
 
 
 //Eshop
 Route::get('/e-shop', [EshopController::class, 'index'])->name('eshop'); 
-Route::get('/e-shop/{id}', [EshopController::class, 'show'])->name('eshop.dashboard'); 
-Route::get('/e-shop/create', [EshopController::class, 'create'])->name('eshop.create');
+Route::get('/e-shop/{id}/show', [EshopController::class, 'show'])->name('eshop.dashboard'); 
+Route::get('/e-shop/create-shop', [EshopController::class, 'create'])->name('eshop.create');
 Route::post('/e-shop/create', [EshopController::class, 'store'])->name('eshop.save');
 Route::get('/e-shop/{id}/edit', [EshopController::class, 'edit'])->name('eshop.edit');
 Route::put('/e-shop/{id}', [EshopController::class, 'update'])->name('eshop.update');
@@ -62,6 +62,10 @@ Route::get('/e-shop/edit-product/{id}', [EshopController::class, 'show_edit_prod
 Route::post('/e-shop/create-product/{shop_id}', [EshopController::class, 'add_product'])->name('eshop.product.create');
 Route::post('/e-shop/update-product/{id}', [EshopController::class, 'update_product'])->name('eshop.product.update');
 Route::delete('/e-shop/product/{id}', [EshopController::class, 'delete_product'])->name('eshop.product.delete_product'); 
+
+Route::post('/e-shop/add-stock/{id}', [EshopController::class, 'add_stock'])->name('eshop.product.add_stock'); 
+Route::post('/e-shop/remove-stock/{id}', [EshopController::class, 'remove_stock'])->name('eshop.product.remove_stock'); 
+Route::get('/e-shop/stock-history/{id}', [EshopController::class, 'stock_history'])->name('eshop.stock.history'); 
 
 
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
@@ -87,3 +91,7 @@ Route::get('/main/settings/eshop', [AdminSettings::class, 'eshop_settings'])->na
 Route::post('/main/settings/create-eshop-category', [AdminSettings::class, 'create_eshop_category'])->name('admin.create_eshop_category');
 Route::put('/main/settings/update-eshop-category/{id}', [AdminSettings::class, 'update_eshop_category'])->name('admin.update_eshop_category'); 
 Route::delete('/main/settings/delete-eshop-category/{id}', [AdminSettings::class, 'delete_eshop_category'])->name('admin.delete_eshop_category'); 
+
+//reward settings
+Route::get('/main/reward', [AdminSettings::class, 'reward_settings'])->name('admin.reward.settings'); 
+Route::post('/main/reward', [AdminSettings::class, 'update_reward_data'])->name('admin.reward.settings'); 

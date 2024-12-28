@@ -11,6 +11,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+
 CONST CATEGORY = 0;
 CONST PRODUCT = 1;
 

@@ -36,8 +36,8 @@
                     </li>
 
                     <li class="nk-menu-item">
-                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
-                            <span class="nk-menu-icon"><em class="icon fa fa-store-alt"></em></span><span class="nk-menu-text">Triab Market</span>
+                        <a href="{{route('triab_market.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-cart"></em></span><span class="nk-menu-text">Triab Market</span>
                         </a>
                     </li>
 

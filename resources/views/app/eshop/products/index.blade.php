@@ -72,13 +72,16 @@
                                 </td>
                                 <td>
                                     @if($product->type == PRODUCT)
-                                        <b>{{number_format($product->total - $product->sold)}}</b>
+                                        <b>{{number_format($product->total)}}</b>
                                         <div>
-                                            <a href="" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i></a>
-                                            <a href="" class="btn btn-danger btn-sm"><i class="fa-solid fa-minus"></i></a>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#add_stock{{$product->id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i></a>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#remove_stock{{$product->id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-minus"></i></a>
                                         </div>
 
-                                        <a href="">History</a>
+                                        <a href="{{route('eshop.stock.history', $product->id)}}">History</a>
+
+                                        @include('app.eshop.products.stock.add_modal')
+                                        @include('app.eshop.products.stock.remove_modal')
                                     @else 
                                         --
                                     @endif 

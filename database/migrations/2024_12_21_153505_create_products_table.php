@@ -21,7 +21,6 @@ return new class extends Migration
             $table->decimal('cost_price', 65, 2)->default(0);
             $table->decimal('selling_price', 65, 2)->default(0);
             $table->integer('total')->default(0);
-            $table->integer('sold')->default(0);
             $table->boolean('type')->default(0);  //either a category or an item
             $table->text('description')->nullable();
             $table->timestamps();

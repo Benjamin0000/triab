@@ -10,6 +10,9 @@ use App\Models\ShopCategory;
 use App\Models\State;
 use App\Models\Shop;
 use App\Models\Product; 
+use App\Models\StockHistory; 
+use Illuminate\Validation\Rule;
+
 
 class EshopController extends Controller implements HasMiddleware
 {
@@ -242,8 +245,9 @@ class EshopController extends Controller implements HasMiddleware
     public function delete_product(string $id)
     {
         $product = Product::findOrFail($id);
+
         if($product->shop->user_id != Auth::id())
-            return ['error'=>'Unauthorized']; 
+            return back()->with('error', 'Unauthorized');
 
         if($product->type == CATEGORY){
             if($product->has_children())
@@ -256,6 +260,128 @@ class EshopController extends Controller implements HasMiddleware
         $product->delete();
         return back()->with('success', 'Product Deleted'); 
     }
+
+    public function add_stock(Request $request, $product_id)
+    {
+        $request->validate([
+            'qty' => ['required', 'numeric', 'min:1'],
+            'reason' => ['required', 'string', Rule::in(['New Stock', 'Stock Increase'])],
+        ]);
+    
+        $product = Product::find($product_id);
+    
+        if (!$product) {
+            return back()->with('error', 'Product not found'); 
+        }
+    
+        $qty = (int)$request->qty;
+        $reason = $request->reason;
+
+        if($qty <= 0)
+            return back();
+    
+        // Update product total stock
+        $product->total += $qty;
+        $product->save();
+    
+        // Record stock history
+        StockHistory::create([
+            'product_id' => $product->id,
+            'amt' => $qty,
+            'type' => 1, // 1 for credit/addition
+            'desc' => $reason,
+        ]);
+
+        return back()->with('success', 'Stock added successfully'); 
+    }
+    
+    public function remove_stock(Request $request, $product_id)
+    {
+        $request->validate([
+            'qty' => ['required', 'numeric', 'min:1'],
+            'reason' => ['required', 'string', Rule::in(['Damage', 'For Use', 'Excess'])],
+        ]);
+    
+        $product = Product::find($product_id);
+    
+        if (!$product) {
+            return back()->with('error', 'Product not found');
+        }
+    
+        $qty = (int)$request->qty;
+        $reason = $request->reason;
+
+        if($qty <= 0)
+            return back();
+    
+        if ($qty > $product->total) {
+            return back()->with('error', 'Insufficient stock');
+        }
+    
+        // Update product total stock
+        $product->total -= $qty;
+        $product->save();
+    
+        // Record stock history
+        StockHistory::create([
+            'product_id' => $product->id,
+            'amt' => $qty,
+            'type' => 0, // 0 for debit/subtraction
+            'desc' => $reason,
+        ]);
+
+        return back()->with('success', 'Stock removed successfully');
+    }
+    
+    public function stock_history(string $id)
+    {
+        $product = Product::findOrFail($id);
+    
+        // Ensure the authenticated user owns the shop
+        if ($product->shop->user_id != Auth::id()) {
+            return back()->with('error', 'Unauthorized');
+        }
+    
+        // Default date as today
+        $defaultDate = date('Y-m-d');
+    
+        // Get dates from the request, defaulting to today if not provided
+        $from_date = request()->input('from_date', $defaultDate);
+        $to_date = request()->input('to_date', $defaultDate);
+    
+        // Validate date order
+        if ($from_date > $to_date) {
+            return back()->with('error', "The 'From Date' cannot be higher than the 'To Date'");
+        }
+    
+
+        // Fetch stock histories within the date range
+        $histories = StockHistory::where('product_id', $id)
+            ->whereDate('created_at', '>=', $from_date)
+            ->whereDate('created_at', '<=', $to_date)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+    
+        // Calculate stock_in (credit) and stock_out (debit) within the date range
+        $stock_in = StockHistory::where('product_id', $id)
+            ->where('type', 1) // Credit
+            ->whereDate('created_at', '>=', $from_date)
+            ->whereDate('created_at', '<=', $to_date)
+            ->sum('amt');
+    
+        $stock_out = StockHistory::where('product_id', $id)
+            ->where('type', 0) // Debit
+            ->whereDate('created_at', '>=', $from_date)
+            ->whereDate('created_at', '<=', $to_date)
+            ->sum('amt');
+    
+        // Calculate stocks_left
+        $stocks_left = $stock_in - $stock_out;
+    
+        // Pass data to the view
+        return view('app.eshop.products.stock.history', compact('histories', 'product', 'from_date', 'to_date', 'stock_in', 'stock_out', 'stocks_left'));
+    }
+    
     
 
     public function show(string $id)
