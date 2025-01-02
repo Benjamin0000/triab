@@ -50,7 +50,7 @@
         <div>{{$shop->storeID}}</div>
         <a href="{{route('eshop.products', $shop->id)}}" class="btn btn-sm btn-primary mt-2">Products</a>
         <a href="#" class="btn btn-sm btn-primary mt-2">Sales Report</a>
-        <a href="#" class="btn btn-sm btn-primary mt-2">POS</a>
+        <a href="{{route('eshop.pos', $shop->id)}}" class="btn btn-sm btn-primary mt-2">POS</a>
     </div>
     <br>
     <div class="row">

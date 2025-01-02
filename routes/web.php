@@ -5,9 +5,11 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TriabWheelController;
-use App\Http\Controllers\EshopController;
+use App\Http\Controllers\Eshop\EshopController;
+use App\Http\Controllers\Eshop\PosController as EshopPos;
 use App\Http\Middleware\EnsureUserHasPackage;
 use App\Http\Controllers\TriabMarketController;
+use App\Http\Controllers\PosController;
 
 Route::get('/', [FrontController::class, 'index'])->name('front.welcome');
 Route::get('/services', [FrontController::class, 'services'])->name('front.services');
@@ -54,6 +56,10 @@ Route::get('/e-shop/{id}/edit', [EshopController::class, 'edit'])->name('eshop.e
 Route::put('/e-shop/{id}', [EshopController::class, 'update'])->name('eshop.update');
 Route::delete('/e-shop/{id}', [EshopController::class, 'destroy'])->name('eshop.delete'); 
 
+Route::get('/e-shop/pos/{id}', [EshopPos::class, 'index'])->name('eshop.pos'); //POS settings for front desk. 
+Route::post('/e-shop/create_staff', [EshopPos::class, 'create_staff'])->name('eshop.create_staff'); 
+
+
 Route::get('/e-shop/products/{shop_id}/{parent_id?}', [EshopController::class, 'products'])->name('eshop.products');
 Route::get('/e-shop/add-product/{shop_id}/{parent_id?}', [EshopController::class, 'show_create_product_page'])->name('eshop.add_product');
 Route::post('/e-shop/create-product-category/{shop_id}', [EshopController::class, 'add_product_category'])->name('eshop.product.create_category');
@@ -95,3 +101,12 @@ Route::delete('/main/settings/delete-eshop-category/{id}', [AdminSettings::class
 //reward settings
 Route::get('/main/reward', [AdminSettings::class, 'reward_settings'])->name('admin.reward.settings'); 
 Route::post('/main/reward', [AdminSettings::class, 'update_reward_data'])->name('admin.reward.settings'); 
+
+
+
+
+
+
+//POS
+Route::get('/pos/{id}', [PosController::class, 'index'])->name('pos.index'); 
+Route::get('/pos-login', [PosController::class, 'login_page'])->name('pos.login'); 

@@ -36,8 +36,19 @@ class TriabMarketController extends Controller implements HasMiddleware
      */
     public function show_shops(string $id)
     {
+        $state = request()->input('state'); 
+        $city = request()->input('city'); 
+
         $category = ShopCategory::findOrFail($id);
-        $shops = Shop::where('category_id', $id)->paginate(10);
+        $shops = Shop::where('category_id', $id); 
+        
+        if($state)
+            $shops->where('state', $state);
+
+        if($city)
+            $shops->where('city', $city);
+
+        $shops = $shops->paginate(20);
         return view('app.triab_market.shops.index', compact('shops', 'category'));
     }
 
