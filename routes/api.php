@@ -13,3 +13,4 @@ Route::get('/user', function (Request $request) {
 Route::get('/get-data/{shop_id}/{id?}', [PosController::class, 'get_data']);
 Route::post('/save-order', [PosController::class, 'save_order']);
 Route::get('/check-auth/{shop_id}', [PosController::class, 'check_auth']);
+Route::get('/search-item/{shop_id}/{name?}', [PosController::class, 'search_product']); 

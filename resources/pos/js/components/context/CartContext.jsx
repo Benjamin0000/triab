@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { errorMessage } from '../Alert';
 
 export const CartContext = createContext();
 
@@ -38,10 +39,22 @@ export const CartProvider = ({ children }) => {
     let updatedCart;
 
     if (itemIndex !== -1) {
+
+      console.log(currentCart[itemIndex])
+        
+      if(currentCart[itemIndex].qty + 1 > Item.total){
+        errorMessage(`Only ${Item.total} of ${Item.name} left in stock`, "");
+        return; 
+      }
+
       updatedCart = currentCart.map((item, index) =>
         index === itemIndex ? { ...item, qty: item.qty + 1 } : item
       );
     } else {
+      if(Item.total <= 0){
+        errorMessage(Item.name+" is out of stock", "");
+        return; 
+      }
       updatedCart = [
         ...currentCart,
         {
@@ -50,6 +63,7 @@ export const CartProvider = ({ children }) => {
           qty: 1,
           price: Item.selling_price,
           logo: Item.logo,
+          total: Item.total
         },
       ];
     }
@@ -82,11 +96,21 @@ export const CartProvider = ({ children }) => {
   // New setQty method
   const putQty = (itemId, qty) => {
     if (qty < 1) return; // Ensure qty is at least 1
-    const updatedCart = carts.map((item) =>
-      item.id === itemId ? { ...item, qty } : item
-    );
-    setCarts(updatedCart);
+    
+    const item = carts.find((item) => item.id === itemId);
+
+    if (item) {
+        if (qty > item.total) {
+            errorMessage(`Only ${item.total} of ${item.name} left in stock`, "");
+            qty = item.total;
+        }
+        const updatedCart = carts.map((cartItem) =>
+            cartItem.id === itemId ? { ...cartItem, qty } : cartItem
+        );
+        setCarts(updatedCart);
+    }
   };
+
 
   const getItem = (itemId) => {
     const currentCart = carts || [];

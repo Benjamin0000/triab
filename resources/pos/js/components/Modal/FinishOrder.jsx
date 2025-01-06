@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect} from "react";
 import { Modal, Button } from "react-bootstrap";
-import {AuthContext} from "../context/AuthContext"; 
-import {CartContext} from "../context/CartContext"; 
+import { AuthContext } from "../context/AuthContext"; 
+import { CartContext } from "../context/CartContext"; 
 import { postData } from '../custom_request'; 
-import {successMessage, errorMessage} from '../Alert';
+import { successMessage, errorMessage } from '../Alert';
 
 export default function FinishOrder({show, handleClose, total_cost}) {
     const {authToken} = useContext(AuthContext);
@@ -14,9 +14,8 @@ export default function FinishOrder({show, handleClose, total_cost}) {
     const [vat, setVat] = useState(Number(window.vat)); // %
     const [fee, setFee] = useState(Number(window.service_fee)); // Fixed value
     const [payMethod, setPayMethod] = useState('');
-    const [loading, setLoading] = useState(false); 
-    
-
+    const [loading, setLoading] = useState(false);
+    const [stocksAlert, setStocksAlert] = useState([]);
     const paymentType = ["Cash", "POS", "Bank Transfer", "Debt"];
 
     function calculate_total_cost()
@@ -38,7 +37,7 @@ export default function FinishOrder({show, handleClose, total_cost}) {
             cart:cart, 
             pay_method:payMethod
         }
-
+        setStocksAlert([]);
         setLoading(true)
         let response = await postData('/api/save-order', data, authToken); 
         if (response.data) {
@@ -46,9 +45,11 @@ export default function FinishOrder({show, handleClose, total_cost}) {
             if(data.receipt){
                 emptyCart();
                 setReceiptHtml(data.receipt);
-                successMessage("Order completed", "Completed"); 
+                successMessage("", "Order completed"); 
                 setPayMethod(''); 
                 setCanPrint(true)
+            }else if(data.stocks){
+                setStocksAlert(data.stocks);
             }
         }else if(response.error){
             let error = response.error; 
@@ -124,6 +125,11 @@ export default function FinishOrder({show, handleClose, total_cost}) {
                         ))}
                     </select>
                 </div>
+                {
+                    stocksAlert.map((msg) =>
+                        <div className="text-danger">{msg}</div>
+                    )
+                }
                 </Modal.Body>
                 <Modal.Footer className="bg-dark text-light">
                     { canPrint ? 

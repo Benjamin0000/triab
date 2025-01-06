@@ -538,3 +538,27 @@ function sum_total($items)
     }
     return $total; 
 }
+
+function validate_products_in_cart(array $items)
+{
+    $error = [];
+
+    foreach ($items as $item) {
+        if (!isset($item['id'], $item['qty'])) {
+            $error[] = "Invalid item structure.";
+            continue;
+        }
+
+        $product = Product::find($item['id']);
+
+        if ($product) {
+            if ($product->total < $item['qty']) {
+                $error[] = "Only {$product->total} of {$product->name} left in stock.";
+            }
+        } else {
+            $error[] = "Product with ID {$item['id']} not found.";
+        }
+    }
+
+    return $error;
+}

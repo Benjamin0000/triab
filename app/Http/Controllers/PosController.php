@@ -37,11 +37,16 @@ class PosController extends Controller
     }
 
     public function save_order(Request $request)
-    {
+    { 
         $token = $request->bearerToken();
         $shop_id = $request->input('shop_id');
         $pay_method = $request->input('pay_method');
         $cart = $request->input('cart'); 
+
+        $stockCheck = validate_products_in_cart($cart); 
+        if(!empty($stockCheck)){
+            return ['stocks'=>$stockCheck]; 
+        }
 
         $shop = Shop::find($shop_id);
         if(!$shop)
@@ -90,6 +95,18 @@ class PosController extends Controller
         ]; 
     }
 
+    public function search_product(string $shop_id, string $name='')
+    {
+        if(empty($name) || $name == "null"){
+            $products = Product::where('shop_id', $shop_id)->whereNull('parent_id')->get();
+        }else{
+            $products = Product::where('shop_id', $shop_id)
+            ->where('name', 'like', '%' . $name . '%')
+            ->get();
+        }
+        return $products->all(); 
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -132,6 +149,7 @@ class PosController extends Controller
             'id'=>$shop->id, 
             'shop_id'=>$shop->storeID,
             'token'=>$token,
+            'admin_name'=>$staff->name 
         ]; 
     }
 
@@ -143,7 +161,7 @@ class PosController extends Controller
                 ['shop_id', $shop_id], 
                 ['token', $token], 
                 ['status', 1]
-            ])->exists();
+            ])->first();
 
             if($exists)
                 return ['signdIn'=>true];

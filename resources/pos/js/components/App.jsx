@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import SigndInChecker from "./SigndInChecker";
 import FullscreenToggle from "./Fullscreen";
+import User from "./sideIcons/User"; 
 
 export default function App() {
     return (
@@ -18,10 +19,10 @@ export default function App() {
                             <SalesContainer/>
                         </div>
                         <div className="col-9 p-0">
-                            
                             <ProductContainer/>
                         </div>
                     </div>
+                    <User/>
                 </div>
             </CartProvider>
         </AuthProvider>

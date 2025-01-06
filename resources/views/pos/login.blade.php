@@ -111,6 +111,7 @@ document.addEventListener('submit', function (e) {
             } else if (res.token) {
                 localStorage.setItem('authToken', res.token);
                 localStorage.setItem('old_shop', res.shop_id); 
+                localStorage.setItem('admin_name', res.admin_name); 
                 msg.innerHTML = `<p class="alert alert-success"><i class="fa-solid fa-circle-check"></i> Successful</p>`;
                 window.location.href = `/pos/${res.id}`;
             }

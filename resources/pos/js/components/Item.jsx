@@ -1,18 +1,18 @@
 import { useState, useContext, useEffect } from "react";
 import {CartContext} from "./context/CartContext";
 
+
 const Item = ({ item, index }) => {
     const {cart, addToCart, removeFromCart, deleteFromCart,  putQty} = useContext(CartContext);
     const [qty, setQty] = useState(item.qty);
 
-    const handleQtyChange = (e, index)=>{
+    const handleQtyChange = (e, index) => {
         let new_qty = Number(e.target.value); 
         if(new_qty <= 0){
             setQty(''); 
         }else{
             setQty(new_qty);
         }
-
         if(new_qty > 0)
             putQty(item.id, new_qty); 
     }
@@ -26,9 +26,6 @@ const Item = ({ item, index }) => {
     useEffect(()=>{
         setQty(item.qty);
     }, [cart])
-
-
-
 
     return (
         <div className="cart_item_con">
@@ -56,6 +53,7 @@ const Item = ({ item, index }) => {
                         onKeyDown={handleKeyDown}
                         onChange={(e) => handleQtyChange(e, index)}
                         className="quantity-input"
+                        onBlur={() =>setQty(item.qty)}
                     />
                     <button
                         className="btn btn-sm btn-outline-light"
