@@ -129,12 +129,16 @@ class EshopController extends Controller implements HasMiddleware
             'name' => 'required|string',
             'cost_price' => 'required|numeric',
             'selling_price' => 'required|numeric',
-            'description' =>'required|max:30000', 
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:100', // Validate each image
         ]);
 
         $cost_price = (float)$request->cost_price; 
         $selling_price = (float)$request->selling_price; 
+
+        // $description = $request->input('description'); 
+
+        // if(strlen($description) <= 0)
+        //     return ['error'=>"Please Enter some description"];
 
         $shop_id = $request->shop_id; 
 
@@ -570,5 +574,32 @@ class EshopController extends Controller implements HasMiddleware
 
         $shop->delete(); 
         return back()->with('success', 'Shop deleted');
+    }
+
+    public function set_fee(Request $request)
+    {
+        $request->validate([
+            'shop_id'=>['required'],
+            'vat'=>['required'],
+            'service_fee'=>['required']
+        ]);
+
+        $shop_id = $request->input('shop_id');
+        $vat = (float)$request->input('vat');
+        $service_fee = (float)$request->input('service_fee');
+
+        $shop = Shop::where([
+            ['id', $shop_id], 
+            ['user_id', Auth::id()]
+        ])->first(); 
+
+        if(!$shop)
+            return back(); 
+        
+        $shop->vat = $vat;
+        $shop->service_fee = $service_fee; 
+        $shop->save();
+
+        return back()->with('success', 'Fees Set');
     }
 }

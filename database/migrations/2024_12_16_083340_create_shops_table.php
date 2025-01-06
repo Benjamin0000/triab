@@ -27,6 +27,8 @@ return new class extends Migration
             $table->decimal('total_rewards', 65, 5)->default(0); //reward from the platform
             $table->decimal('total_sales', 65, 5)->default(0);
             $table->decimal('total_profit', 65, 5)->default(0);
+            $table->decimal('vat', 65, 2)->default(0); 
+            $table->decimal('service_fee', 65, 2)->default(0); 
             $table->timestamps();
         });
     }

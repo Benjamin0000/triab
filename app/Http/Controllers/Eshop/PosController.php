@@ -45,7 +45,7 @@ class PosController extends Controller implements HasMiddleware
         $request->validate([
             'id'=>['required', 'max:100'],
             'name'=>['required', 'max:100'],
-            'pass_code'=>['required'],
+            'pass_code'=>['required', 'max:100'],
             'role'=>['required']
         ]); 
 
@@ -83,40 +83,65 @@ class PosController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function update_staff(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'id'=>['required', 'max:100'],
+            'name'=>['required', 'max:100'],
+            'pass_code'=>['required', 'max:100'],
+            'role'=>['required'], 
+            'shop_id'=>['required']
+        ]); 
+        $id = $request->input('id');
+        $shop_id = $request->input('shop_id');
+        $name = $request->input('name');
+        $pass_code = $request->input('pass_code'); 
+        $role = (int)$request->input('role');
+        $status = (int)$request->input('status'); 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $staff = Staff::where([
+            ['id', $id], 
+            ['shop_id', $shop_id]
+        ])->first(); 
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        if(!$staff)
+            return ['error'=>"Invalid staff"]; 
+
+        if($staff->shop->user_id != Auth::id())
+            return ['error'=>"Invalid Operation"];
+
+        $exists = Staff::where([
+            ['id', '<>', $id], 
+            ['shop_id', $shop_id],
+            ['pass_code', $pass_code]
+        ])->exists();
+
+        if($exists)
+            return ['error'=>"Pass code already exists"];
+
+        $staff->update([
+            'shop_id'=>$shop_id, 
+            'name'=>$name,
+            'admin'=>$role, 
+            'pass_code'=>$pass_code, 
+            'status'=>$status
+        ]);
+
+        return ['success'=>"Staff updated"]; 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete_staff(string $id)
     {
-        //
+        $staff = Staff::findOrFail($id);
+
+        if($staff->shop->user_id != Auth::id())
+            return back()->with('error', 'Invalid Operation');
+
+        $staff->delete(); 
+        return back()->with('success', 'Staff deleted'); 
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Eshop\PosController as EshopPos;
 use App\Http\Middleware\EnsureUserHasPackage;
 use App\Http\Controllers\TriabMarketController;
 use App\Http\Controllers\PosController;
+use App\Models\Order; 
 
 Route::get('/', [FrontController::class, 'index'])->name('front.welcome');
 Route::get('/services', [FrontController::class, 'services'])->name('front.services');
@@ -55,9 +56,12 @@ Route::post('/e-shop/create', [EshopController::class, 'store'])->name('eshop.sa
 Route::get('/e-shop/{id}/edit', [EshopController::class, 'edit'])->name('eshop.edit');
 Route::put('/e-shop/{id}', [EshopController::class, 'update'])->name('eshop.update');
 Route::delete('/e-shop/{id}', [EshopController::class, 'destroy'])->name('eshop.delete'); 
+Route::post('/set-eshop-fee/{id}', [EshopController::class, 'set_fee'])->name('eshop.set_fee'); 
 
 Route::get('/e-shop/pos/{id}', [EshopPos::class, 'index'])->name('eshop.pos'); //POS settings for front desk. 
 Route::post('/e-shop/create_staff', [EshopPos::class, 'create_staff'])->name('eshop.create_staff'); 
+Route::post('/e-shop/update-staff', [EshopPos::class, 'update_staff'])->name('eshop.update_staff'); 
+Route::delete('/e-shop/delete-staff/{id}', [EshopPos::class, 'delete_staff'])->name('eshop.delete_staff'); 
 
 
 Route::get('/e-shop/products/{shop_id}/{parent_id?}', [EshopController::class, 'products'])->name('eshop.products');
@@ -108,5 +112,15 @@ Route::post('/main/reward', [AdminSettings::class, 'update_reward_data'])->name(
 
 
 //POS
-Route::get('/pos/{id}', [PosController::class, 'index'])->name('pos.index'); 
-Route::get('/pos-login', [PosController::class, 'login_page'])->name('pos.login'); 
+Route::get('/pos/{any}', [PosController::class, 'index'])
+    ->where('any', '.*') // Match anything (including slashes) after /pos/
+    ->name('pos.index');
+
+
+
+Route::get('/pos-login', [PosController::class, 'login_page'])->name('pos.login');
+Route::post('pos-login-logger', [PosController::class, 'login'])->name('pos.logger');
+
+Route::get('/receipt', function(){
+
+}); 

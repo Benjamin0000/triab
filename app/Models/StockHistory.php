@@ -14,6 +14,7 @@ class StockHistory extends Model
         'amt',
         'type', 
         'desc', 
-        'price'
+        'cost_price', 
+        'selling_price'
     ]; 
 }

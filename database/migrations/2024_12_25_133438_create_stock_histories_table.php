@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('amt'); 
             $table->boolean('type')->default(0); 
             $table->string('desc'); 
-            $table->decimal('price', 65, 2)->default(0); 
+            $table->decimal('cost_price', 65, 2)->default(0); 
+            $table->decimal('selling_price', 65, 2)->default(0); 
             $table->timestamps();
         });
     }

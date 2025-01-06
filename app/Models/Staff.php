@@ -13,6 +13,13 @@ class Staff extends Model
         'shop_id',
         'name',
         'pass_code',
-        'admin'
+        'admin', 
+        'token', 
+        'status'
     ];
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class); 
+    }
 }

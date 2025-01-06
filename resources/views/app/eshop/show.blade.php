@@ -50,7 +50,9 @@
         <div>{{$shop->storeID}}</div>
         <a href="{{route('eshop.products', $shop->id)}}" class="btn btn-sm btn-primary mt-2">Products</a>
         <a href="#" class="btn btn-sm btn-primary mt-2">Sales Report</a>
-        <a href="{{route('eshop.pos', $shop->id)}}" class="btn btn-sm btn-primary mt-2">POS</a>
+        <a href="{{route('eshop.pos', $shop->id)}}" class="btn btn-sm btn-primary mt-2">POS Staffs</a>
+        <a href="#" class="btn btn-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target='#set_fee'>Set Fees</a>
+        @include('app.eshop.modals.set_fee')
     </div>
     <br>
     <div class="row">

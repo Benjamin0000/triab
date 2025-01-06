@@ -32,7 +32,7 @@
             <br>
             <h5>Add Product</h5>
 
-            <form id="add_item_form" method="POST" action="{{route('eshop.product.create', $shop->id)}}" enctype="multipart/form-data">    
+            <form id="add_item_form" method="POST" enctype="multipart/form-data">    
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -168,31 +168,35 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append(`images[${index}]`, file);
         });
 
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-        })
-        .then((response) => response.json())
-        .then((res) => {
-            unLoadButton(btn, btnContent);
+        $.ajax({
+            url: "{{route('eshop.product.create', $shop->id)}}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                unLoadButton(btn, btnContent);
 
-            if (res.error) {
-                msg.innerHTML = `<p class="alert alert-danger">&#9432; ${res.error}</p>`;
-            } else if (res.success) {
-                msg.innerHTML = `<p class="alert alert-success">${res.success}</p>`;
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            }
-        })
-        .catch((error) => {
-            unLoadButton(btn, btnContent);
-            if (!navigator.onLine) {
-                msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-info"></i> Network error: Please check your internet connection.</div>`;
-            } else {
-                msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-info"></i> Something went wrong, please try again</div>`;
+                if (res.error) {
+                    msg.innerHTML = `<p class="alert alert-danger">&#9432; ${res.error}</p>`;
+                } else if (res.success) {
+                    msg.innerHTML = `<p class="alert alert-success">${res.success}</p>`;
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+                unLoadButton(btn, btnContent);
+                if (!navigator.onLine) {
+                    msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-info"></i> Network error: Please check your internet connection.</div>`;
+                } else {
+                    msg.innerHTML = `<div class="alert alert-danger"><i class="fa-solid fa-circle-info"></i> Something went wrong, please try again</div>`;
+                }
             }
         });
+
     });
 
 });

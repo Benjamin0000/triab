@@ -13,6 +13,10 @@ class Product extends Model
         'images' => 'string', // Store images as a comma-separated string
     ];
 
+    protected $hidden = [
+        'cost_price'
+    ]; 
+
     protected $fillable = [
         'shop_id',
         'productID',
@@ -83,5 +87,30 @@ class Product extends Model
     {
         return $this->images[0] ?? null;
     }
+
+    public function setPosSalesHistory($amt)
+    {
+        // Ensure the amount is valid and sufficient stock is available
+        if ($amt > $this->total) {
+            throw new \Exception('Insufficient stock available to complete the sale.');
+        }
+    
+        // Deduct the sold amount from the total stock
+        $this->total -= $amt;
+    
+        // Create a new stock history record
+        StockHistory::create([
+            'product_id'    => $this->id,
+            'amt'           => $amt,
+            'type'          => DEBIT, // Use self::DEBIT if DEBIT is a class constant
+            'desc'          => 'Sold (POS)',
+            'cost_price'    => $this->cost_price, // Assuming cost_price is a property of this class
+            'selling_price' => $this->selling_price, // Assuming selling_price is a property of this class
+        ]);
+    
+        // Save the updated total to the database
+        $this->save();
+    }
+    
 
 }

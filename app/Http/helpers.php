@@ -8,6 +8,7 @@ use App\Models\WheelGlobal;
 use App\Models\State; 
 use App\Models\Shop; 
 use App\Models\Product; 
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -91,6 +92,20 @@ const wheel_three = [
         'times'=>2
     ]
 ];
+
+function generateReceiptNumber($prefix = 'RCPT', $length = 8) {
+    // Generate a random unique ID based on the current time
+    $uniqueId = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, $length - strlen($prefix)));
+
+    // Combine prefix and unique ID
+    $no = $prefix . $uniqueId;
+
+    $exists = Order::where('orderID', $no)->exists();
+
+    if($exists)
+        return generateReceiptNumber(); 
+    return $no; 
+}
 
 
 function all_services()
@@ -513,4 +528,13 @@ function get_product_category_gen(string $parent_id): array
     }
 
     return array_reverse($categories);
+}
+
+function sum_total($items)
+{
+    $total = 0;
+    foreach ($items as $item) {
+        $total += $item['price'] * $item['qty'];
+    }
+    return $total; 
 }
