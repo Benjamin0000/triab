@@ -83,8 +83,7 @@ class AuthController extends Controller  implements HasMiddleware
      * Handle user registration
      */
     public function register(Request $request)
-    {
-        return back()->with('error', "Cannot register at this moment"); 
+    { 
         $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:100', 'unique:users,email'],
