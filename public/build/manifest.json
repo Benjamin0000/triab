@@ -1,0 +1,16 @@
+{
+  "resources/pos/css/app.css": {
+    "file": "assets/app-B1rgmFDT.css",
+    "src": "resources/pos/css/app.css",
+    "isEntry": true
+  },
+  "resources/pos/js/app.jsx": {
+    "file": "assets/app-_mCtB6Ae.js",
+    "name": "app",
+    "src": "resources/pos/js/app.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/app-BEzrRqYo.css"
+    ]
+  }
+}

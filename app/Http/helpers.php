@@ -533,10 +533,15 @@ function get_product_category_gen(string $parent_id): array
 function sum_total($items)
 {
     $total = 0;
+    $cp_total = 0; 
     foreach ($items as $item) {
         $total += $item['price'] * $item['qty'];
+        $cp_total += $item['c_price'] * $item['qty'];
     }
-    return $total; 
+    return [
+        'total'=>$total,
+        'cp_total'=>$cp_total
+    ]; 
 }
 
 function validate_products_in_cart(array $items)

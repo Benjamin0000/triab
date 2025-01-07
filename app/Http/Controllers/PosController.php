@@ -60,7 +60,11 @@ class PosController extends Controller
         if(!$staff)
             return ['error'=>"Unauthorized operation"];
 
-        $sub_total = sum_total($cart);
+        $Total = sum_total($cart);
+
+        $sub_total = $Total['total'];
+        $sub_total_cp = $Total['cp_total'];
+
         $total = $sub_total + $shop->service_fee + calculate_pct($sub_total, $shop->vat);
 
         $order = Order::create([
@@ -68,6 +72,7 @@ class PosController extends Controller
             'orderID'=>generateReceiptNumber(), 
             'staff'=>$staff->name, 
             'sub_total'=>$sub_total,
+            'sub_total_cp'=>$sub_total_cp,
             'vat'=>$shop->vat, 
             'fee'=>$shop->service_fee,
             'total'=>$total,

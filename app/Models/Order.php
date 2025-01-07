@@ -14,6 +14,7 @@ class Order extends Model
         'orderID', 
         'staff', 
         'sub_total', 
+        'sub_total_cp',
         'vat',
         'fee', 
         'total', 

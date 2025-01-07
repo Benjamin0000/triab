@@ -127,7 +127,7 @@
                             <span class="nk-menu-icon"><em class="icon fa fa-motorcycle"></em></span><span class="nk-menu-text">Logistics</span>
                         </a>
                     </li> --}}
-
+                    @if(Auth::user()->type)
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><i class="fa-solid fa-gears"></i></span><span class="nk-menu-text">Settings</span>
@@ -144,7 +144,7 @@
                             </li>
                         </ul>
                     </li> 
-
+                    @endif 
                 </ul>
             </div>
         </div>

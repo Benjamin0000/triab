@@ -59,6 +59,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card card-bordered balance-card sales-today">
                 <i class="fas fa-wallet"></i>
+                <h6>{{format_with_cur($sales['todays_sales'])}}</h6>
                 <h6>Today's Sales</h6>
             </div>
         </div>
@@ -66,6 +67,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card card-bordered balance-card total-sales">
                 <i class="fas fa-chart-bar"></i>
+                <h6>{{format_with_cur($sales['total_sales'])}}</h6>
                 <h6>Total Sales</h6>
             </div>
         </div>
@@ -73,6 +75,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card card-bordered balance-card profit-today">
                 <i class="fas fa-chart-line"></i>
+                <h6>{{format_with_cur($sales['todays_profit'])}}</h6>
                 <h6>Today's Profit</h6>
             </div>
         </div>
@@ -80,6 +83,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card card-bordered balance-card total-profit">
                 <i class="fas fa-money-bill-wave"></i>
+                <h6>{{format_with_cur($sales['total_profit'])}}</h6>
                 <h6>Total Profit</h6>
             </div>
         </div>
@@ -87,6 +91,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card card-bordered balance-card total-products">
                 <i class="fas fa-box"></i>
+                <h6>{{number_format($totalProduct)}}</h6>
                 <h6>Total Products</h6>
             </div>
         </div>
@@ -104,10 +109,41 @@
                 <h6>Total Reward</h6>
             </div>
         </div>
-
-
     </div>
 
     <div class="section-header">Sales</div>
+    <div class="table-responsive table-nowrap">
+        <table class="table table-hover table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>OrderID</th>
+                    <th>Staff</th>
+                    <th>Sub Total</th>
+                    <th>Total</th>
+                    <th>Pay Method</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php $no = tableNumber(10) @endphp
+                @foreach($orders as $order)
+                    <tr>
+                        <td>{{$no++}}</td>
+                        <td>{{$order->orderID}}</td>
+                        <td>{{$order->staff}}</td>
+                        <td>{{format_with_cur($order->sub_total)}}</td>
+                        <td>{{format_with_cur($order->total)}}</td>
+                        <td>{{$order->pay_method}}</td>
+                        <td>
+                            {{$order->created_at->isoFormat('lll')}}
+                            <div>{{$order->created_at->diffForHumans()}}</div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    {{$orders->links()}}
 </div>
 @stop

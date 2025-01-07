@@ -12,7 +12,10 @@ use App\Models\State;
 use App\Models\Shop;
 use App\Models\Product; 
 use App\Models\StockHistory; 
+use App\Models\Order; 
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class EshopController extends Controller implements HasMiddleware
@@ -396,7 +399,19 @@ class EshopController extends Controller implements HasMiddleware
             ['id', $id],
             ['user_id', $user->id]
         ])->first(); 
-        return view('app.eshop.show', compact('shop')); 
+
+        $sales = Order::selectRaw('
+            SUM(CASE WHEN DATE(created_at) = CURDATE() THEN sub_total ELSE 0 END) AS todays_sales,
+            SUM(sub_total) AS total_sales,
+            SUM(CASE WHEN DATE(created_at) = CURDATE() THEN (sub_total - sub_total_cp) ELSE 0 END) AS todays_profit,
+            SUM(sub_total - sub_total_cp) AS total_profit
+        ')
+        ->where('shop_id', $shop->id) // Apply the constraint
+        ->first();
+        $totalProduct = Product::where('shop_id', $shop->id)->sum('total');
+
+        $orders = Order::where('shop_id', $shop->id)->latest()->paginate(10);
+        return view('app.eshop.show', compact('shop', 'sales', 'totalProduct', 'orders'));
     }
 
     /**
