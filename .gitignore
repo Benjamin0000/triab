@@ -6,6 +6,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+.psysh.php
 .env
 .env.backup
 .env.production
