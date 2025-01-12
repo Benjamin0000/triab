@@ -1,11 +1,13 @@
-import SalesContainer from "./SalesContainer";
-import ProductContainer from "./ProductContainer";
+import { Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext"; 
 import { ToastContainer } from "react-toastify";
 import SigndInChecker from "./SigndInChecker";
 import FullscreenToggle from "./Fullscreen";
 import User from "./sideIcons/User"; 
+import Sales from '../Pages/Sales'
+import Orders from '../Pages/Orders'
+import { Loader } from './custom_request';
 
 export default function App() {
     return (
@@ -13,15 +15,12 @@ export default function App() {
             <CartProvider>
                 <ToastContainer/>
                 <SigndInChecker/>
+                <Loader/>
                 <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-3 p-0">
-                            <SalesContainer/>
-                        </div>
-                        <div className="col-9 p-0">
-                            <ProductContainer/>
-                        </div>
-                    </div>
+                    <Routes>
+                        <Route path="/" element={<Sales />} />
+                        <Route path="/orders" element={<Orders />} />
+                    </Routes>
                     <User/>
                 </div>
             </CartProvider>

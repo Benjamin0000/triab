@@ -257,9 +257,9 @@ body {
 /* Loader Container */
 .loader-container {
     position: fixed;
-    left: 0;
     transform: translateY(-50%);
     z-index: 9999;
+    margin-top: 20px;
 }
 
 .loader-container.right {
@@ -360,5 +360,21 @@ body {
     z-index: 9999;
     right: 0; /* Position it to the right */
     bottom: 0; /* Position it at the bottom */
+    border-radius: 0;
+}
+
+.record_btn {
+    position: absolute;
+    z-index: 9999;
+    right: 0; /* Position it to the right */
+    bottom: 50px; /* Position it at the bottom */
+    border-radius: 0;
+}
+
+.cart_btn{
+    position: absolute;
+    z-index: 9999;
+    right: 0; /* Position it to the right */
+    bottom: 100px; /* Position it at the bottom */
     border-radius: 0;
 }

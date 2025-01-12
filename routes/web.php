@@ -112,15 +112,11 @@ Route::post('/main/reward', [AdminSettings::class, 'update_reward_data'])->name(
 
 
 //POS
-Route::get('/pos/{any}', [PosController::class, 'index'])
-    ->where('any', '.*') // Match anything (including slashes) after /pos/
+Route::get('/pos/{id}/{any?}', [PosController::class, 'index'])
+    ->where(['id' => '[0-9a-fA-F\-]+', 'any' => '.*'])
     ->name('pos.index');
 
 
 
 Route::get('/pos-login', [PosController::class, 'login_page'])->name('pos.login');
-Route::post('pos-login-logger', [PosController::class, 'login'])->name('pos.logger');
-
-Route::get('/receipt', function(){
-
-}); 
+Route::post('/pos-login-logger', [PosController::class, 'login'])->name('pos.logger');

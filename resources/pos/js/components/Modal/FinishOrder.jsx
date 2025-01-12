@@ -2,7 +2,7 @@ import { useState, useContext, useEffect} from "react";
 import { Modal, Button } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext"; 
 import { CartContext } from "../context/CartContext"; 
-import { postData } from '../custom_request'; 
+import { postData, handlePrint } from '../custom_request'; 
 import { successMessage, errorMessage } from '../Alert';
 
 export default function FinishOrder({show, handleClose, total_cost}) {
@@ -16,7 +16,7 @@ export default function FinishOrder({show, handleClose, total_cost}) {
     const [payMethod, setPayMethod] = useState('');
     const [loading, setLoading] = useState(false);
     const [stocksAlert, setStocksAlert] = useState([]);
-    const paymentType = ["Cash", "POS", "Bank Transfer", "Debt"];
+    const paymentType = ["Cash", "POS", "Bank Transfer"];
 
     function calculate_total_cost()
     {
@@ -58,29 +58,7 @@ export default function FinishOrder({show, handleClose, total_cost}) {
         setLoading(false)
     }
 
-    const handlePrint = (html) => {
-        const printWindow = window.open("", "", "width=800,height=600");
-        printWindow.document.write(`
-            <html>
-            <head>
-                <title>Receipt</title>
-                <style>
-                    @media print {
-                        body { margin: 0; }
-                        .no-print { display: none; }
-                    }
-                </style>
-            </head>
-            <body>
-                ${html}
-            </body>
-            </html>
-        `);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-        printWindow.close();
-    };
+
 
     useEffect(()=>{
         if(cart.length > 0){

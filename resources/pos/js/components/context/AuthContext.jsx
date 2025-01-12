@@ -9,6 +9,7 @@ export const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [pageLoading, setPageLoading] = useState(false); 
 
     useEffect(() => {
         const savedToken = localStorage.getItem('authToken');
@@ -36,8 +37,10 @@ export const AuthProvider = ({ children }) => {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
+
+
     return (
-        <AuthContext.Provider value={{ authToken, setAuthToken, loading }}>
+        <AuthContext.Provider value={{ authToken, setAuthToken, loading, pageLoading, setPageLoading}}>
             {children}
         </AuthContext.Provider>
     );

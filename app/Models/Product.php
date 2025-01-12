@@ -14,7 +14,7 @@ class Product extends Model
     ];
 
     protected $hidden = [
-        'cost_price'
+       
     ]; 
 
     protected $fillable = [

@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 const Index = ReactDOM.createRoot(document.getElementById('app'));
 Index.render(
-    <BrowserRouter>
+    <BrowserRouter basename={`/pos/${window.shop_id}`}>
         <React.StrictMode>
             <App />
         </React.StrictMode>

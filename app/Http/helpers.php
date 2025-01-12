@@ -5,9 +5,9 @@ use App\Models\TrxHistory;
 use App\Models\Token\EmailToken;
 use App\Models\Token\PasswordToken;
 use App\Models\WheelGlobal;
-use App\Models\State; 
-use App\Models\Shop; 
-use App\Models\Product; 
+use App\Models\State;
+use App\Models\Shop;
+use App\Models\Product;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -93,7 +93,7 @@ const wheel_three = [
     ]
 ];
 
-function generateReceiptNumber($prefix = 'RCPT', $length = 8) {
+function generateReceiptNumber($prefix = 'RCPT', $length = 12) {
     // Generate a random unique ID based on the current time
     $uniqueId = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, $length - strlen($prefix)));
 

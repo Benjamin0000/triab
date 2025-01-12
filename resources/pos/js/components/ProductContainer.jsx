@@ -3,15 +3,15 @@ import { getData, Loader } from './custom_request';
 import { successMessage, errorMessage } from './Alert';
 import { CartContext } from "./context/CartContext";
 import { AuthContext } from "./context/AuthContext";
+import AddStock from "./Modal/AddStock"; 
 
 export default function ProductContainer() {
-    const { authToken } = useContext(AuthContext);
+    const { authToken, setPageLoading } = useContext(AuthContext);
     const { cart, addToCart, itemExists } = useContext(CartContext);
     const [products, setProducts] = useState(window.products || []);
     const [lastCategory, setLastCategory] = useState([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    const [loading, setLoading] = useState(false);
     const [searching, setSearching] = useState(false); // New state for search loading
 
     function get_first_image(images) {
@@ -43,7 +43,7 @@ export default function ProductContainer() {
     }
 
     const openCategory = async (product_id = null) => {
-        setLoading(true);
+        setPageLoading(true);
         const result = await getData('/api/get-data/' + window.shop_id + '/' + product_id + '/?page=' + page, authToken);
         if (result.data) {
             let data = result.data;
@@ -51,7 +51,7 @@ export default function ProductContainer() {
         } else if (result.error) {
             errorMessage(`${result.error.message}`, `${result.error.title}`);
         }
-        setLoading(false);
+        setPageLoading(false);
     };
 
     const fetchSearchResults = async (query) => {
@@ -88,7 +88,6 @@ export default function ProductContainer() {
 
     return (
         <div className="product-container">
-            {loading ? <Loader /> : ''}
             <div className="search-bar">
                 <input
                     type="text"
@@ -113,8 +112,8 @@ export default function ProductContainer() {
                 <div className="row the_row">
                     {products.map((product, index) => (
                         <div key={index} className="col-md-3">
-                            <div className="product-card" onClick={() => open_category(product)}>
-                                <div className="product-details">
+                            <div className="product-card">
+                                <div className="product-details" onClick={() => open_category(product)}>
                                     <h6 className="product-name">{product.name}</h6>
                                     <p className="product-price">
                                         {product.type ?
@@ -126,6 +125,15 @@ export default function ProductContainer() {
                                 {cart.some(item => item.id === product.id) && (
                                     <div className="check-icon"><i className='fas fa-check-circle'></i></div>
                                 )}
+
+                                { product.type ? 
+                                    <>
+                                        <h6>{product.total}</h6>
+                                        <button onClick={()=>alert('yeah')} className='btn btn-primary btn-sm'>Stock</button>
+                                        <div><br /></div>
+                                    </>
+                                    : <div style={{minHeight: '80px'}}></div>
+                                }
                             </div>
                         </div>
                     ))}

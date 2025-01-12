@@ -11,7 +11,7 @@ export default function SignInChecker() {
             if (!authToken) {
                 // No auth token, redirect to login immediately
                 console.warn("No auth token found. Redirecting to login...");
-                // window.location.href = '/pos-login';
+                window.location.href = '/pos-login';
             } else {
                 check_authentication();
             }

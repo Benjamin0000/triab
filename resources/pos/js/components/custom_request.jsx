@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 export const getData = async (url , token="") => {
 
@@ -126,12 +128,43 @@ export const postData = async (url, payload, token) => {
     }
 };
 
+export const Loader = ({ position = "left" }) => {
+  const { pageLoading } = useContext(AuthContext);
 
-
-export const Loader = ({ position = "right" }) => {
     return (
-        <div className={`loader-container ${position}`}>
+      <>
+        {
+          pageLoading ? 
+          <div className={`loader-container ${position}`}>
             <div className="spinner"></div>
-        </div>
+          </div> : ''
+        }
+      </>
     );
 };
+
+
+export const handlePrint = (html) => {
+  const printWindow = window.open("", "", "width=800,height=600");
+  printWindow.document.write(`
+      <html>
+      <head>
+          <title>Receipt</title>
+          <style>
+              @media print {
+                  body { margin: 0; }
+                  .no-print { display: none; }
+              }
+          </style>
+      </head>
+      <body>
+          ${html}
+      </body>
+      </html>
+  `);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+  printWindow.close();
+};
+

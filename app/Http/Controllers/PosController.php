@@ -71,8 +71,8 @@ class PosController extends Controller
             'shop_id'=>$shop_id, 
             'orderID'=>generateReceiptNumber(), 
             'staff'=>$staff->name, 
-            'sub_total'=>$sub_total,
-            'sub_total_cp'=>$sub_total_cp,
+            'sub_total'=>$sub_total, //total with selling price
+            'sub_total_cp'=>$sub_total_cp, //total with just cost price
             'vat'=>$shop->vat, 
             'fee'=>$shop->service_fee,
             'total'=>$total,
@@ -154,7 +154,7 @@ class PosController extends Controller
             'id'=>$shop->id, 
             'shop_id'=>$shop->storeID,
             'token'=>$token,
-            'admin_name'=>$staff->name 
+            'admin'=>['name'=>$staff->name, 'admin'=>$staff->admin] 
         ]; 
     }
 
@@ -172,6 +172,44 @@ class PosController extends Controller
                 return ['signdIn'=>true];
         }
         return ['signdIn'=>false]; 
+    }
+
+
+    public function get_orders(string $shop_id)
+    {
+        $token = request()->bearerToken();
+        if ($token) {
+            $exists = Staff::where([
+                ['shop_id', $shop_id], 
+                ['token', $token], 
+                ['status', 1]
+            ])->first();
+
+            if($exists){
+                $orders = Order::where('shop_id', $shop_id)->latest()->paginate(20)->all(); 
+                $no = tableNumber(20);
+                foreach($orders as $order){
+                    $order['no'] = $no++ ; 
+                }
+                return ['orders'=>$orders]; 
+            }
+        }
+    }
+
+    public function get_order(string $order_id)
+    {
+        $order = Order::where('orderID', $order_id)->get();
+        return ['order'=>$order]; 
+    }
+
+    public function get_receipt(string $order_id)
+    {
+        $order = Order::find($order_id); 
+
+        $receipt = view('pos.order_receipt', compact('order'))->render();
+        return [
+            'receipt' => $receipt
+        ]; 
     }
 
 }
