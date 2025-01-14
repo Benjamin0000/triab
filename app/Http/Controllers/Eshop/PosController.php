@@ -74,7 +74,8 @@ class PosController extends Controller implements HasMiddleware
             'shop_id'=>$shop_id, 
             'name'=>$name,
             'admin'=>$role, 
-            'pass_code'=>$pass_code
+            'pass_code'=>$pass_code,
+            'status'=>1
         ]); 
 
         return ['success'=>"Staff created"]; 
@@ -125,7 +126,7 @@ class PosController extends Controller implements HasMiddleware
             'name'=>$name,
             'admin'=>$role, 
             'pass_code'=>$pass_code, 
-            'status'=>$status
+            'status'=>!$status
         ]);
 
         return ['success'=>"Staff updated"]; 

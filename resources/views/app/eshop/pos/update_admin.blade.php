@@ -26,7 +26,7 @@
                     @csrf 
                     <div class="msg"></div>
                     <div class="form-group">
-                        <label for="">Suspend <input name="status" @checked($staff->status) value="1" type="checkbox"></label>
+                        <label for="">Suspend <input name="status" @checked(!$staff->status) value="1" type="checkbox"></label>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary">Update</button>
