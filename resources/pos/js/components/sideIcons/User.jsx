@@ -28,11 +28,11 @@ export default function UserIcon(){
                     <table className="table">
                         <tr>
                             <td>Staff</td>
-                            <td>{user.name}</td>
+                            <td>{user?.name}</td>
                         </tr>
                         <tr>
                             <td>Role</td>
-                            <td>{ user.admin ? 'Admin' : 'Sales Rep.'  }</td>
+                            <td>{ user?.admin ? 'Admin' : 'Sales Rep.'  }</td>
                         </tr>
                     </table>
                     <Button onClick={handleLogout} variant="primary">
