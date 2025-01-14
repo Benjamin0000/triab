@@ -17,4 +17,5 @@ Route::get('/search-item/{shop_id}/{name?}', [PosController::class, 'search_prod
 
 Route::get('/get-orders/{shop_id}', [PosController::class, 'get_orders']);
 Route::get('/get-order/{order_id}', [PosController::class, 'get_order']);
-Route::get('/get-receipt/{id}', [PosController::class, 'get_receipt']); 
+Route::get('/get-receipt/{id}', [PosController::class, 'get_receipt']);
+Route::post('/stocking', [PosController::class, 'stocking']); 

@@ -1,13 +1,13 @@
 import { useState, useContext, useCallback } from 'react';
-import { getData, Loader } from './custom_request';
+import { getData } from './custom_request';
 import { successMessage, errorMessage } from './Alert';
 import { CartContext } from "./context/CartContext";
 import { AuthContext } from "./context/AuthContext";
-import AddStock from "./Modal/AddStock"; 
+import Product from './Product';
 
 export default function ProductContainer() {
     const { authToken, setPageLoading } = useContext(AuthContext);
-    const { cart, addToCart, itemExists } = useContext(CartContext);
+    const { addToCart, itemExists } = useContext(CartContext);
     const [products, setProducts] = useState(window.products || []);
     const [lastCategory, setLastCategory] = useState([]);
     const [page, setPage] = useState(1);
@@ -110,33 +110,14 @@ export default function ProductContainer() {
 
             <div className='product_list_con container-fluid'>
                 <div className="row the_row">
-                    {products.map((product, index) => (
-                        <div key={index} className="col-md-3">
-                            <div className="product-card">
-                                <div className="product-details" onClick={() => open_category(product)}>
-                                    <h6 className="product-name">{product.name}</h6>
-                                    <p className="product-price">
-                                        {product.type ?
-                                            '₦' + Number(product.selling_price).toLocaleString()
-                                            : 'Category'}
-                                    </p>
-                                </div>
-
-                                {cart.some(item => item.id === product.id) && (
-                                    <div className="check-icon"><i className='fas fa-check-circle'></i></div>
-                                )}
-
-                                { product.type ? 
-                                    <>
-                                        <h6>{product.total}</h6>
-                                        <button onClick={()=>alert('yeah')} className='btn btn-primary btn-sm'>Stock</button>
-                                        <div><br /></div>
-                                    </>
-                                    : <div style={{minHeight: '80px'}}></div>
-                                }
-                            </div>
-                        </div>
-                    ))}
+                    { products.map((product, index) => (
+                        <Product 
+                            key={index}
+                            product={product} 
+                            handleSetProducts={setProducts} 
+                            open_category={open_category}
+                        />
+                    )) }
                 </div>
 
                 {products.length == 0 ?

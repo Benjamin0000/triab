@@ -158,12 +158,14 @@ export default function Orders() {
                 {receiptHtml && ( 
                     <h6>Receipt</h6>
                 )}
-                    <iframe
-                        id="receipt-frame"
-                        style={{ width: "80mm", height: "100%", border: "none" }}
-                        srcDoc={receiptHtml}
-                        title="Receipt"
-                    ></iframe>
+                    <div style={{height: '82vh'}}>
+                        <iframe
+                            id="receipt-frame"
+                            style={{ width: "90mm", height: "100%", border: "none" }}
+                            srcDoc={receiptHtml}
+                            title="Receipt"
+                        ></iframe>
+                    </div>
                     <div>
                         {receiptHtml && (
                             <button

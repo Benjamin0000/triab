@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use App\Models\Shop; 
 use App\Models\Product; 
 use App\Models\Order; 
 use App\Models\Cart; 
 use App\Models\Staff; 
+use App\Models\StockHistory;
 
 
 class PosController extends Controller
@@ -210,6 +212,84 @@ class PosController extends Controller
         return [
             'receipt' => $receipt
         ]; 
+    }
+
+    public function stocking(Request $request)
+    {
+        $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+            'qty' => ['required', 'numeric', 'min:1'],
+            'reason' => ['required', 'string'],
+            'type' => ['required', 'numeric', Rule::in([0, 1])], // 0 for removal, 1 for addition
+        ]);
+
+        $product = Product::find($request->product_id);
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        $token = $request->bearerToken();
+
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $staff = Staff::where([
+            ['shop_id', $product->shop_id],
+            ['token', $token],
+            ['status', 1],
+        ])->first();
+
+        if (!$staff) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $qty = (int) $request->qty;
+        $reason = $request->reason;
+        $type = (int) $request->type;
+
+        if ($type === 1) { // Adding Stock
+            if (!in_array($reason, ['New Stock', 'Stock Increase'])) {
+                return response()->json(['error' => 'Invalid reason for adding stock'], 422);
+            }
+
+            $product->total += $qty;
+            $product->save();
+
+            StockHistory::create([
+                'product_id' => $product->id,
+                'amt' => $qty,
+                'type' => 1, // Credit
+                'desc' => $reason,
+            ]);
+
+            return response()->json(['success' => 'Stock added successfully', 'total' => $product->total]);
+        }
+
+        if ($type === 0) { // Removing Stock
+            if (!in_array($reason, ['Damage', 'For Use', 'Excess'])) {
+                return response()->json(['error' => 'Invalid reason for removing stock'], 422);
+            }
+
+            if ($qty > $product->total) {
+                return response()->json(['error' => 'Insufficient stock'], 422);
+            }
+
+            $product->total -= $qty;
+            $product->save();
+
+            StockHistory::create([
+                'product_id' => $product->id,
+                'amt' => $qty,
+                'type' => 0, // Debit
+                'desc' => $reason,
+            ]);
+
+            return response()->json(['success' => 'Stock removed successfully', 'total' => $product->total]);
+        }
+
+        return response()->json(['error' => 'Invalid operation'], 400);
     }
 
 }
