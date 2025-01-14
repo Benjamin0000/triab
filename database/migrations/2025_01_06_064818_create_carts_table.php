@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('order_id')->indexed();
-            $table->uuid('product_id')->indexed();
+            $table->uuid('product_id')->indexed()->nullable();
             $table->string('name');
             $table->decimal('price', 65, 2); 
             $table->integer('qty');

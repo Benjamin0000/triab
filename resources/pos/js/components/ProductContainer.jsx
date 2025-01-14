@@ -4,6 +4,7 @@ import { successMessage, errorMessage } from './Alert';
 import { CartContext } from "./context/CartContext";
 import { AuthContext } from "./context/AuthContext";
 import Product from './Product';
+import AddProduct from '../components/Modal/AddProduct'
 
 export default function ProductContainer() {
     const { authToken, setPageLoading } = useContext(AuthContext);
@@ -13,6 +14,7 @@ export default function ProductContainer() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [searching, setSearching] = useState(false); // New state for search loading
+    const [showAddProductModal, setShowAddProductModal] = useState(false); 
 
     function get_first_image(images) {
         if (images.length > 0) {
@@ -86,6 +88,8 @@ export default function ProductContainer() {
         []
     );
 
+    
+
     return (
         <div className="product-container">
             <div className="search-bar">
@@ -101,14 +105,23 @@ export default function ProductContainer() {
                     </div>
                 )}
             </div>
-            {lastCategory.length > 0 ?
+            { lastCategory.length > 0 ?
                 <button onClick={() => go_back()} className='btn btn-primary m-2'>
                     <i className='fas fa-arrow-left'></i> Go back
                 </button>
                 : ''
             }
-
+            {/* <button className='btn btn-primary' onClick={()=>setShowAddProductModal(true)}>
+                Add { lastCategory.length <= 0 ? 'category' : 'product' }
+            </button> */}
             <div className='product_list_con container-fluid'>
+{/*             
+                <AddProduct 
+                    show={showAddProductModal} 
+                    handleClose={()=>setShowAddProductModal(false)} 
+                    updateProducts={setProducts}
+                    lastCategory={lastCategory}
+                /> */}
                 <div className="row the_row">
                     { products.map((product, index) => (
                         <Product 

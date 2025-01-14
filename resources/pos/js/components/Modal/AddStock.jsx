@@ -10,7 +10,7 @@ export default function AddStock({ product, show, handleClose, updateProducts })
 
   const { authToken, setPageLoading } = useContext(AuthContext);
   const [type, setType] = useState(ADD_STOCK);
-  const [qty, setQty] = useState(product.total);
+  const [qty, setQty] = useState(0);
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false); 
 
@@ -54,6 +54,7 @@ export default function AddStock({ product, show, handleClose, updateProducts })
         if(data.total){
             successMessage("", "Stock updated");
             updateItemTotal(product.id, data.total);
+            handleClose();
         }
     }else if(response.error){
         let error = response.error; 
