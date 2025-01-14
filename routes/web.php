@@ -29,7 +29,7 @@ Route::get('/forgot', [AuthController::class, 'show_email_form'])->name('forgot'
 Route::post('/forgot', [AuthController::class, 'send_reset_email'])->name('forgot'); 
 
 Route::get('/verify/{token}/{email}', [AuthController::class, 'verify_email_address'])->name('email.verify');
-Route::get('/reset/{token}/{email}', [AuthController::class, 'show_change_password_form'])->name('update_password'); 
+Route::get('/reset/{token}/{email}', [AuthController::class, 'show_change_password_form'])->name('password_reset_form'); 
 Route::post('/update-password', [AuthController::class, 'change_password'])->name('change_password'); 
 
 

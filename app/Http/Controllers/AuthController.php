@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Models\Token\EmailToken;
 use App\Models\Token\PasswordToken;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+
+use App\Mail\EmailVerify; 
+use App\Mail\PasswordResetMail; 
 
 class AuthController extends Controller  implements HasMiddleware
 {
@@ -123,7 +127,7 @@ class AuthController extends Controller  implements HasMiddleware
         $user->save();
         $token = EmailToken::create(['email' => $user->email]);
         // Send token as email to user.
-
+        Mail::to($user)->send(new EmailVerify($token));
         return back()->with('success', 'Account created'); 
     }
 
@@ -147,6 +151,7 @@ class AuthController extends Controller  implements HasMiddleware
             if (!$token) {
                 $token = PasswordToken::create(['email' => $email]);
                 // Send email 
+                Mail::to($user)->send(new PasswordResetMail($token));
             }
         }
 
