@@ -24,13 +24,13 @@
                     </li>
 
                     <li class="nk-menu-item">
-                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                        <a href="#" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span><span class="nk-menu-text">Funds</span>
                         </a>
                     </li>
 
                     <li class="nk-menu-item">
-                        <a href="{{route('dashboard.index')}}" class="nk-menu-link">
+                        <a href="#" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span><span class="nk-menu-text">Bills Payment</span>
                         </a>
                     </li>
