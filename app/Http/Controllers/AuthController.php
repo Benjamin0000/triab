@@ -125,9 +125,9 @@ class AuthController extends Controller  implements HasMiddleware
             $sponsor->update_gsteam_wheel_referrals();
 
         $user->save();
-        $token = EmailToken::create(['email' => $user->email]);
+        //$token = EmailToken::create(['email' => $user->email]);
         // Send token as email to user.
-        Mail::to($user)->send(new EmailVerify($token));
+        //Mail::to($user)->send(new EmailVerify($token));
         return back()->with('success', 'Account created'); 
     }
 

@@ -587,6 +587,9 @@ class EshopController extends Controller implements HasMiddleware
         if(Storage::disk('public')->exists($shop->logo))
             Storage::disk('public')->delete($shop->logo);
 
+        //delete staffs under shop
+        //delete product under the shop too. 
+
         $shop->delete(); 
         return back()->with('success', 'Shop deleted');
     }
